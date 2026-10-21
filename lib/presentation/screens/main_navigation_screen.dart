@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'home_screen.dart';
 import 'cart_checkout_screen.dart';
 import 'order_details_screen.dart';
@@ -32,10 +33,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     return Scaffold(
       body: Directionality(
         textDirection: TextDirection.rtl,
-        child: IndexedStack(
-          index: _currentIndex,
-          children: screens,
-        ),
+        child: IndexedStack(index: _currentIndex, children: screens),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

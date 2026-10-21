@@ -9,309 +9,138 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _searchController = TextEditingController(
-      text: 'ابحث عن أزياء، عبايات، أحذية أو متاجر...');
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F5),
+      backgroundColor: const Color(0xFFF9F9F8),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Top App Bar
-            _buildTopAppBar(),
-
-            // Scrollable Content
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Search & Filters
-                    _buildSearchBar(),
-                    const SizedBox(height: 12),
-                    _buildFilterChips(),
-                    const SizedBox(height: 16),
-
-                    // Rewards Card
-                    _buildRewardsCard(context),
-                    const SizedBox(height: 20),
-
-                    // Verified Stores Section
-                    _buildVerifiedStoresSection(),
-                    const SizedBox(height: 24),
-
-                    // Seasonal Picks Section
-                    _buildSeasonalPicksSection(),
-                    const SizedBox(height: 16),
-
-                    // Multi-Store Shipping Banner
-                    _buildShippingBanner(),
-                    const SizedBox(height: 16),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTopAppBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.notifications_none, color: Colors.black87),
-                  onPressed: () {},
-                ),
-              ),
+              // Header
+              _buildHeader(),
+              const SizedBox(height: 20),
+
+              // Reward Points Card
+              _buildRewardCard(context),
+              const SizedBox(height: 20),
+
+              // Certified Stores Section
+              _buildCertifiedStoresSection(),
+              const SizedBox(height: 20),
+
+              // Seasonal Picks Section
+              _buildSeasonalPicksSection(),
             ],
           ),
-          const Text(
-            'تفضّل',
-            style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1B4D3E),
-              letterSpacing: -0.5,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildHeader() {
     return Row(
       children: [
-        // Filter Button
+        // Filter Circle Button
         Container(
-          height: 48,
-          width: 48,
+          width: 44,
+          height: 44,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade300),
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.grey.shade200),
           ),
-          child: IconButton(
-            icon: const Icon(Icons.tune, color: Colors.black87),
-            onPressed: () {},
-          ),
+          child: const Icon(Icons.tune, color: Colors.black87, size: 20),
         ),
-        const SizedBox(width: 8),
-        // Search TextField
+        const SizedBox(width: 10),
+        // Search Pill
         Expanded(
           child: Container(
-            height: 48,
+            height: 44,
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: Colors.grey.shade200),
             ),
-            child: TextField(
-              controller: _searchController,
-              textAlign: TextAlign.right,
-              style: const TextStyle(fontSize: 13, color: Colors.black87),
-              decoration: const InputDecoration(
-                hintText: 'ابحث عن أزياء، عبايات، أحذية أو متاجر...',
-                hintStyle: TextStyle(fontSize: 12, color: Colors.grey),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                prefixIcon: Icon(Icons.close, size: 18, color: Colors.grey),
-                suffixIcon: Icon(Icons.search, color: Colors.grey),
-              ),
+            child: Row(
+              children: [
+                const Icon(Icons.search, color: Colors.grey, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(fontSize: 13),
+                    decoration: const InputDecoration(
+                      hintText: '...بحث',
+                      hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
+                      border: InputBorder.none,
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ),
+              ],
             ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        // Logo
+        const Text(
+          'تفضّل',
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1B4D3E),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildFilterChips() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      reverse: true, // For RTL flow
+  Widget _buildRewardCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: const Color(0xFFFEEDDF),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFFDBA74)),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.shopping_bag_outlined, size: 14, color: Color(0xFFC2410C)),
-                SizedBox(width: 4),
-                Text(
-                  '3 عناصر من متجر',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFC2410C),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 6),
-          _buildFilterChip('المتجر'),
-          const SizedBox(width: 6),
-          _buildFilterChip('اللون'),
-          const SizedBox(width: 6),
-          _buildFilterChip('المقاس'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilterChip(String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.keyboard_arrow_down, size: 16, color: Colors.black54),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 12, color: Colors.black87),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRewardsCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E2623),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF78350F),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Text(
-                  'عضو مميز',
-                  style: TextStyle(fontSize: 11, color: Color(0xFFFDE68A), fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'نقاط المكافآت: 450 نقطة',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        'تعادل رصيد \$45 نقداً',
-                        style: TextStyle(fontSize: 11, color: Color(0xFF86EFAC)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 8),
-                  Icon(Icons.stars, color: Color(0xFF22C55E), size: 28),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          // Coupon Box
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: const Color(0xFF111815),
+              color: const Color(0xFFECFDF5),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('تم نسخ كود الخصم: TAFADDAL25')),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF97316),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  icon: const Icon(Icons.copy, size: 14),
-                  label: const Text('نسخ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                ),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      'كود الخصم الحصري (-25% على أول طلب):',
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      'TAFADDAL25',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            child: const Text(
+              'كود: TAFADDAL25',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF047857),
+              ),
             ),
           ),
-          const SizedBox(height: 10),
           const Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                'استبدل نقاطك عند الدفع للحصول على خصم إضافي',
-                style: TextStyle(fontSize: 11, color: Colors.grey),
+                'نقاط المكافآت: 450 نقطة',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
-              SizedBox(width: 4),
-              Icon(Icons.info_outline, size: 14, color: Colors.grey),
+              SizedBox(width: 6),
+              Icon(Icons.stars_outlined, color: Color(0xFF047857), size: 22),
             ],
           ),
         ],
@@ -319,44 +148,38 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildVerifiedStoresSection() {
+  Widget _buildCertifiedStoresSection() {
     final stores = [
-      {'name': 'متجر الأناقة', 'city': 'دمشق'},
-      {'name': 'أزياء الشام', 'city': 'حلب'},
-      {'name': 'بوتيك النخبة', 'city': 'بيروت'},
-      {'name': 'دار الحرير', 'city': 'دبي'},
+      {'name': 'متجر الأناقة'},
+      {'name': 'أزياء الشام'},
+      {'name': 'بوتيك النخبة'},
+      {'name': 'دار الحرير'},
     ];
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
               onPressed: () {},
-              child: const Row(
-                children: [
-                  Icon(Icons.chevron_left, size: 16, color: Color(0xFFC2410C)),
-                  Text(
-                    'عرض الكل',
-                    style: TextStyle(fontSize: 13, color: Color(0xFFC2410C), fontWeight: FontWeight.bold),
-                  ),
-                ],
+              child: const Text(
+                'الكل ›',
+                style: TextStyle(fontSize: 13, color: Colors.black54),
               ),
             ),
-            const Row(
-              children: [
-                Text(
-                  'متاجر معتمدة وموثقة',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
-                ),
-                SizedBox(width: 6),
-                Icon(Icons.verified, color: Color(0xFF059669), size: 18),
-              ],
+            const Text(
+              'متاجر معتمدة',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: stores.map((s) {
@@ -366,28 +189,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   alignment: Alignment.bottomLeft,
                   children: [
                     CircleAvatar(
-                      radius: 30,
+                      radius: 28,
                       backgroundColor: Colors.grey.shade300,
-                      child: Icon(Icons.store, color: Colors.grey.shade700, size: 28),
+                      child: Icon(
+                        Icons.store,
+                        color: Colors.grey.shade700,
+                        size: 26,
+                      ),
                     ),
                     Container(
+                      padding: const EdgeInsets.all(1),
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      padding: const EdgeInsets.all(1),
-                      child: const Icon(Icons.verified, color: Color(0xFF059669), size: 16),
+                      child: const Icon(
+                        Icons.check_circle,
+                        color: Color(0xFF047857),
+                        size: 16,
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 6),
                 Text(
                   s['name']!,
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black87),
-                ),
-                Text(
-                  s['city']!,
-                  style: const TextStyle(fontSize: 10, color: Colors.grey),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
               ],
             );
@@ -400,76 +231,49 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSeasonalPicksSection() {
     final products = [
       {
-        'title': 'معطف صوف كشمير فاخر',
-        'store': 'متجر الأناقة - معتمد',
-        'stock': 'متبقي 3 في المخزون',
-        'sizes': 'M / L / XL',
-        'colors': 'أسود / كحلي',
-        'price': '185',
-        'oldPrice': '220',
-        'isWarningStock': false,
-      },
-      {
-        'title': 'فستان سهرة كريب مطرز',
-        'store': 'أزياء الشام - معتمد',
-        'stock': 'متبقي 2 في المخزون',
-        'sizes': 'S / M',
-        'colors': 'زمردي',
+        'title': 'فستان سهرة كريب',
+        'store': 'أزياء الشام',
+        'stock': 'متبقي 2',
+        'specs': 'S, M • زمردي',
         'price': '240',
-        'oldPrice': null,
-        'isWarningStock': false,
       },
       {
-        'title': 'حذاء جلدي إيطالي كلاسيك',
-        'store': 'بوتيك النخبة - معتمد',
-        'stock': 'متبقي 5 في المخزون',
-        'sizes': '41 / 42 / 43',
-        'colors': 'بني داكن',
-        'price': '130',
-        'oldPrice': null,
-        'isWarningStock': false,
+        'title': 'معطف صوف فاخر',
+        'store': 'متجر الأناقة',
+        'stock': 'متبقي 3',
+        'specs': 'L, M • أسود',
+        'price': '185',
       },
       {
-        'title': 'عباية حرير مطرزة يدوياً',
-        'store': 'دار الحرير - معتمد',
-        'stock': 'متبقي 1 فقط!',
-        'sizes': '54 / 56',
-        'colors': 'أسود ملكي',
+        'title': 'عباية حرير مطرزة',
+        'store': 'دار الحرير',
+        'stock': 'متبقي 1',
+        'specs': '54, 56 • أسود',
         'price': '310',
-        'oldPrice': null,
-        'isWarningStock': true,
+      },
+      {
+        'title': 'حذاء كلاسيك جلدي',
+        'store': 'بوتيك النخبة',
+        'stock': 'متبقي 5',
+        'specs': '42, 43 • بني',
+        'price': '130',
       },
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(12),
+            Text('4 قطع', style: TextStyle(fontSize: 12, color: Colors.grey)),
+            Text(
+              'مختارات الموسم',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
-              child: const Text(
-                '4 قطع متاحة',
-                style: TextStyle(fontSize: 11, color: Colors.black87),
-              ),
-            ),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  'مختارات أزياء الموسم',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
-                ),
-                Text(
-                  'قطع حصرية تم التحقق من جودتها وأصالتها',
-                  style: TextStyle(fontSize: 11, color: Colors.grey),
-                ),
-              ],
             ),
           ],
         ),
@@ -493,8 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildProductCard(Map<String, dynamic> p) {
-    final bool isWarning = p['isWarningStock'] as bool;
+  Widget _buildProductCard(Map<String, String> p) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -510,169 +313,111 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    color: Colors.grey.shade200,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
                   ),
                   child: Center(
-                    child: Icon(Icons.checkroom, size: 50, color: Colors.grey.shade600),
-                  ),
-                ),
-                // Favorite Heart Button
-                Positioned(
-                  top: 8,
-                  left: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
+                    child: Icon(
+                      Icons.checkroom,
+                      size: 48,
+                      color: Colors.grey.shade500,
                     ),
-                    child: const Icon(Icons.favorite_border, size: 16, color: Colors.black87),
                   ),
                 ),
-                // Stock Badge
                 Positioned(
                   top: 8,
                   right: 8,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
-                      color: isWarning ? const Color(0xFF991B1B) : const Color(0xFFFEF3C7),
-                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white.withValues(alpha: 0.9),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      p['stock'] as String,
-                      style: TextStyle(
+                      p['stock']!,
+                      style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: isWarning ? Colors.white : const Color(0xFF92400E),
+                        color: Colors.black87,
                       ),
                     ),
-                  ),
-                ),
-                // Add to Cart Floating Button
-                Positioned(
-                  bottom: 8,
-                  left: 8,
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.add_shopping_cart, size: 16, color: Colors.white),
                   ),
                 ),
               ],
             ),
           ),
-          // Info Box
+          // Content Info
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        p['store'] as String,
-                        textAlign: TextAlign.right,
-                        style: const TextStyle(fontSize: 10, color: Color(0xFF059669), fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(width: 2),
-                    const Icon(Icons.verified, size: 12, color: Color(0xFF059669)),
-                  ],
-                ),
-                const SizedBox(height: 4),
                 Text(
-                  p['title'] as String,
+                  p['title']!,
                   textAlign: TextAlign.right,
-                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black87),
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      p['colors'] as String,
-                      style: const TextStyle(fontSize: 10, color: Colors.grey),
-                    ),
-                    Text(
-                      p['sizes'] as String,
-                      style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black54),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (p['oldPrice'] != null) ...[
-                      Text(
-                        '\$ ${p['oldPrice']}',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                    ],
                     Text(
-                      '\$ ${p['price']}',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+                      p['store']!,
+                      style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    ),
+                    const SizedBox(width: 2),
+                    const Icon(
+                      Icons.check_circle,
+                      size: 12,
+                      color: Color(0xFF047857),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  p['specs']!,
+                  style: const TextStyle(fontSize: 10, color: Colors.grey),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 32,
+                      height: 32,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF1B4D3E),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ),
+                    Text(
+                      '\$${p['price']}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildShippingBanner() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFECFDF5),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFA7F3D0)),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.shield_outlined, size: 20, color: Colors.grey),
-          const SizedBox(width: 8),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  'شحن موحد متعدد المتاجر',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF065F46)),
-                ),
-                Text(
-                  'اطلب من عدة بوتيكات واستلمها بشحنة واحدة',
-                  style: TextStyle(fontSize: 11, color: Color(0xFF047857)),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Color(0xFFA7F3D0),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.local_shipping_outlined, color: Color(0xFF065F46), size: 20),
           ),
         ],
       ),
