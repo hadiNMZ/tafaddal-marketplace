@@ -13,11 +13,7 @@ class Shop {
   final String name;
   ApprovalStatus status;
 
-  Shop({
-    required this.id,
-    required this.status,
-    this.name = '',
-  });
+  Shop({required this.id, required this.status, this.name = ''});
 }
 
 class Product {
