@@ -3,9 +3,7 @@ import 'dart:async';
 import '../domain/audit_log.dart';
 
 class AuditService {
-  AuditService._() {
-    _seedInitialLogs();
-  }
+  AuditService._();
 
   static final AuditService instance = AuditService._();
 
@@ -18,13 +16,24 @@ class AuditService {
 
   List<AuditLogEntry> get logs => List.unmodifiable(_logs);
 
-  // CON-07: Append-Only Immutable Logging Guard
-  AuditLogEntry addLog(AuditAction action, String title, String desc) {
+  // CON-07: Append-Only Cryptographic Hash-Chain Logging Guard
+  AuditLogEntry addLog(
+    AuditAction action,
+    String title,
+    String desc, {
+    String actor = 'النظام الآلي',
+    String entityId = 'SYS',
+  }) {
     final now = DateTime.now();
     final id = 'LOG-${now.millisecondsSinceEpoch}-${_logs.length + 1}';
-    final hashSeed = '${now.microsecondsSinceEpoch}_${action.name}_$title';
-    final txHash =
-        'TX: 0x${hashSeed.hashCode.toRadixString(16).padLeft(8, '0')}';
+    final previousHash = _logs.isNotEmpty
+        ? _logs.first.txHash
+        : '0000000000000000';
+
+    final payload =
+        '$previousHash:${now.toIso8601String()}:${action.name}:$title:$desc:$actor:$entityId';
+    final computed = _computeDeterministicHash(payload);
+    final txHash = 'TX: 0x$computed';
 
     final entry = AuditLogEntry(
       id: id,
@@ -32,6 +41,9 @@ class AuditService {
       action: action,
       title: title,
       description: desc,
+      actor: actor,
+      entityId: entityId,
+      previousHash: previousHash,
       txHash: txHash,
     );
 
@@ -40,34 +52,16 @@ class AuditService {
     return entry;
   }
 
-  void _seedInitialLogs() {
-    if (_logs.isNotEmpty) return;
-    final now = DateTime.now();
-    _logs.addAll([
-      AuditLogEntry(
-        id: 'LOG-SEED-1',
-        timestamp: now.subtract(const Duration(minutes: 18)),
-        action: AuditAction.shopApproval,
-        title: 'اعتماد متجر #104',
-        description: 'بواسطة: أحمد سالم (مدير العمليات)',
-        txHash: 'TX: 0x9f8c3b41',
-      ),
-      AuditLogEntry(
-        id: 'LOG-SEED-2',
-        timestamp: now.subtract(const Duration(minutes: 22)),
-        action: AuditAction.statusChange,
-        title: 'تحديث مسار الطلب #SO-902',
-        description: 'بواسطة: متجر أزياء الشام',
-        txHash: 'TX: 0x7a114e89',
-      ),
-      AuditLogEntry(
-        id: 'LOG-SEED-3',
-        timestamp: now.subtract(const Duration(minutes: 45)),
-        action: AuditAction.returnRequest,
-        title: 'قبول طلب الإرجاع #RET-12',
-        description: 'بواسطة: نظام التحكيم الآلي',
-        txHash: 'TX: 0x4d6612cd',
-      ),
-    ]);
+  String _computeDeterministicHash(String input) {
+    int h1 = 0x67452301;
+    int h2 = 0xEFCDAB89;
+    for (int i = 0; i < input.length; i++) {
+      int code = input.codeUnitAt(i);
+      h1 = ((h1 ^ code) * 0x01000193) & 0xFFFFFFFF;
+      h2 = ((h2 ^ (code * 31)) * 0x050C5D17) & 0xFFFFFFFF;
+    }
+    final hex1 = h1.toRadixString(16).padLeft(8, '0');
+    final hex2 = h2.toRadixString(16).padLeft(8, '0');
+    return '$hex1$hex2';
   }
 }

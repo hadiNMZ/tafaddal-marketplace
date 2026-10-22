@@ -1,3 +1,5 @@
+import 'shop_product.dart';
+
 enum OrderState { placed, preparing, shipping, delivered, rejected }
 
 class IllegalStateTransitionException implements Exception {
@@ -27,17 +29,29 @@ class InvalidReturnStateException implements Exception {
 class ShipmentOrder {
   final String id;
   final String shopId;
-  String shippingAddress;
+  final String shopName;
+  final String customerName;
+  String _shippingAddress;
   OrderState _state;
+  final List<OrderItem> items;
 
   ShipmentOrder({
     required this.id,
     required this.shopId,
-    this.shippingAddress = 'Default Address',
+    this.shopName = 'أزياء الشام',
+    this.customerName = 'سامر الأحمد',
+    String initialShippingAddress = 'دمشق، المزة - الفيلات الغربية',
     OrderState initialState = OrderState.placed,
-  }) : _state = initialState;
+    List<OrderItem>? items,
+  }) : _shippingAddress = initialShippingAddress,
+       _state = initialState,
+       items = items ?? [];
 
   OrderState get currentState => _state;
+  String get shippingAddress => _shippingAddress;
+
+  double get totalAmount =>
+      items.fold(0.0, (sum, item) => sum + (item.price * item.quantity));
 
   // CON-04: Order Immutability Guard
   void updateShippingAddress(String newAddress) {
@@ -46,7 +60,7 @@ class ShipmentOrder {
         'CON-04: Cannot modify order data after it is placed.',
       );
     }
-    shippingAddress = newAddress;
+    _shippingAddress = newAddress;
   }
 
   // CON-05: Return Eligibility Guard
@@ -56,7 +70,6 @@ class ShipmentOrder {
         'CON-05: Returns are only allowed for delivered orders.',
       );
     }
-    // Proceed with return logic...
   }
 
   // CON-06: Strict Order State Machine

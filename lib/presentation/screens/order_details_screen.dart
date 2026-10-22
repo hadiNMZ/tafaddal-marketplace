@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/audit_log.dart';
 import '../../domain/shipment_order.dart';
-import '../../services/audit_service.dart';
+import '../../services/order_service.dart';
+import '../../utils/bidi_utils.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final ShipmentOrder? initialOrder;
@@ -13,47 +13,49 @@ class OrderDetailsScreen extends StatefulWidget {
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
-  late ShipmentOrder _order;
+  late String _activeOrderId;
 
   @override
   void initState() {
     super.initState();
-    // Default to Preparing stage as shown in Image 3
-    _order =
-        widget.initialOrder ??
-        ShipmentOrder(
-          id: 'SO-902',
-          shopId: 'shop_sham',
-          shippingAddress: 'دمشق، المزة',
-          initialState: OrderState.preparing,
-        );
+    if (widget.initialOrder != null) {
+      _activeOrderId = widget.initialOrder!.id;
+    } else if (OrderService.instance.orders.isNotEmpty) {
+      _activeOrderId = OrderService.instance.orders.first.id;
+    } else {
+      _activeOrderId = 'SO-902';
+    }
+  }
+
+  ShipmentOrder get _order {
+    if (widget.initialOrder != null) {
+      return widget.initialOrder!;
+    }
+    final list = OrderService.instance.orders;
+    try {
+      return list.firstWhere((o) => o.id == _activeOrderId);
+    } catch (_) {
+      return list.first;
+    }
   }
 
   void _handleNextStage() {
     try {
+      OrderState targetState = OrderState.preparing;
       if (_order.currentState == OrderState.placed) {
-        _order.transitionTo(OrderState.preparing);
+        targetState = OrderState.preparing;
       } else if (_order.currentState == OrderState.preparing) {
-        _order.transitionTo(OrderState.shipping);
+        targetState = OrderState.shipping;
       } else if (_order.currentState == OrderState.shipping) {
-        _order.transitionTo(OrderState.delivered);
+        targetState = OrderState.delivered;
       }
 
-      // CON-07: Log Domain State Transition
-      AuditService.instance.addLog(
-        AuditAction.statusChange,
-        'تحديث مسار الطلب #${_order.id}',
-        'بواسطة: متجر أزياء الشام (${_order.currentState.name.toUpperCase()})',
-      );
+      OrderService.instance.transitionOrderState(_order, targetState);
 
       setState(() {});
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: const Color(0xFF1B4D3E),
-          content: Text(
-            'تم الانتقال بنجاح إلى: ${_order.currentState.name.toUpperCase()}',
-          ),
-        ),
+      showCleanSnackBar(
+        context,
+        'تم الانتقال بنجاح إلى: ${_order.currentState.name.toUpperCase()}',
       );
     } on Exception catch (e) {
       _showExceptionSnackBar(e);
@@ -62,7 +64,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   void _handleInvalidTransition(OrderState targetState) {
     try {
-      _order.transitionTo(targetState);
+      OrderService.instance.transitionOrderState(_order, targetState);
       setState(() {});
     } on Exception catch (e) {
       _showExceptionSnackBar(e);
@@ -71,23 +73,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   void _handleReturnRequest() {
     try {
-      _order.requestReturn();
+      OrderService.instance.requestOrderReturn(_order);
 
-      // CON-07: Log Domain Return Approval
-      AuditService.instance.addLog(
-        AuditAction.returnRequest,
-        'قبول طلب الإرجاع #RET-12',
-        'بواسطة: نظام التحكيم الآلي (لطلب #${_order.id})',
+      showCleanSnackBar(
+        context,
+        'تم إرسال طلب الاعتماد والاستبدال بنجاح (CON-05 Valid)',
       );
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xFF1B4D3E),
-          content: Text(
-            'تم إرسال طلب الاعتماد والاستبدال بنجاح (CON-05 Valid)',
-          ),
-        ),
-      );
+      setState(() {});
     } on Exception catch (e) {
       _showExceptionSnackBar(e);
     }
@@ -103,26 +95,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       message = e.message;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: const Color(0xFF991B1B),
-        content: Row(
-          children: [
-            const Icon(Icons.error_outline, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    showCleanSnackBar(
+      context,
+      message,
+      backgroundColor: const Color(0xFF991B1B),
     );
   }
 
@@ -143,32 +119,43 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F8),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Header
-              _buildTopAppBar(context),
-              const SizedBox(height: 20),
+    return ListenableBuilder(
+      listenable: OrderService.instance,
+      builder: (context, _) {
+        final allOrders = OrderService.instance.orders;
 
-              // Settlement Summary Card
-              _buildSettlementCard(),
-              const SizedBox(height: 20),
+        return Scaffold(
+          backgroundColor: const Color(0xFFF9F9F8),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Header
+                  _buildTopAppBar(context),
+                  const SizedBox(height: 16),
 
-              // Active Shipment Card
-              _buildActiveShipmentCard(),
-              const SizedBox(height: 20),
+                  // Interactive Order Switcher Bar
+                  if (allOrders.isNotEmpty) _buildOrderSwitcher(allOrders),
+                  const SizedBox(height: 20),
 
-              // Return Request Card
-              _buildReturnRequestCard(),
-            ],
+                  // Settlement Summary Card
+                  _buildSettlementCard(),
+                  const SizedBox(height: 20),
+
+                  // Active Shipment Card
+                  _buildActiveShipmentCard(),
+                  const SizedBox(height: 20),
+
+                  // Return Request Card
+                  _buildReturnRequestCard(),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -182,18 +169,22 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             color: const Color(0xFFECFDF5),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Row(
+          child: Row(
             children: [
               Text(
-                'متجر معتمد',
-                style: TextStyle(
+                _order.shopName,
+                style: const TextStyle(
                   fontSize: 11,
                   color: Color(0xFF047857),
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(width: 4),
-              Icon(Icons.check_circle, size: 12, color: Color(0xFF047857)),
+              const SizedBox(width: 4),
+              const Icon(
+                Icons.check_circle,
+                size: 12,
+                color: Color(0xFF047857),
+              ),
             ],
           ),
         ),
@@ -217,7 +208,81 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
   }
 
+  Widget _buildOrderSwitcher(List<ShipmentOrder> allOrders) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      reverse: true,
+      child: Row(
+        children: allOrders.map((orderObj) {
+          final isSelected = _activeOrderId == orderObj.id;
+          return Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: InkWell(
+              onTap: () => setState(() => _activeOrderId = orderObj.id),
+              borderRadius: BorderRadius.circular(20),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected ? const Color(0xFF1B4D3E) : Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected
+                        ? const Color(0xFF1B4D3E)
+                        : Colors.grey.shade300,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? Colors.white24
+                            : Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        orderObj.currentState.name.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                          color: isSelected ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      formatBidi('شحنة #${orderObj.id}'),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        color: isSelected ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   Widget _buildSettlementCard() {
+    const double totalSales = 8350.0;
+    const double commissionRate = 0.15;
+    const double commissionCut = totalSales * commissionRate; // 1252.50
+    const double netDues = totalSales - commissionCut; // 7097.50
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -247,18 +312,22 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             children: [
               _buildSettlementMetric(
                 'صافي المستحقات',
-                r'$1,250',
+                '\$${netDues.toStringAsFixed(2)}',
                 const Color(0xFF047857),
                 isBold: true,
               ),
               Container(width: 1, height: 32, color: Colors.grey.shade200),
               _buildSettlementMetric(
                 'عمولة 15%',
-                r'-$1,252',
+                '-\$${commissionCut.toStringAsFixed(2)}',
                 const Color(0xFFD97706),
               ),
               Container(width: 1, height: 32, color: Colors.grey.shade200),
-              _buildSettlementMetric('المبيعات', r'$8,350', Colors.black87),
+              _buildSettlementMetric(
+                'المبيعات',
+                '\$${totalSales.toInt()}',
+                Colors.black87,
+              ),
             ],
           ),
         ],
@@ -279,7 +348,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         Text(
           value,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: isBold ? FontWeight.bold : FontWeight.w600,
             color: color,
           ),
@@ -309,14 +378,21 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
                     Text(
-                      'دمشق، المزة',
-                      style: TextStyle(fontSize: 10, color: Colors.black87),
+                      _order.shippingAddress,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: Colors.black87,
+                      ),
                     ),
-                    SizedBox(width: 4),
-                    Icon(Icons.lock_outlined, size: 10, color: Colors.black87),
+                    const SizedBox(width: 4),
+                    const Icon(
+                      Icons.lock_outlined,
+                      size: 10,
+                      color: Colors.black87,
+                    ),
                   ],
                 ),
               ),
@@ -342,7 +418,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    'شحنة #${_order.id}',
+                    formatBidi('شحنة #${_order.id}'),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -354,17 +430,30 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             ],
           ),
           const SizedBox(height: 2),
-          const Text(
-            'العميل: سامر الأحمد',
+          Text(
+            'العميل: ${_order.customerName}',
             textAlign: TextAlign.right,
-            style: TextStyle(fontSize: 11, color: Colors.grey),
+            style: const TextStyle(fontSize: 11, color: Colors.grey),
           ),
           const SizedBox(height: 14),
 
           // Items List
-          _buildItemRow('معطف صوف كشمير', 'مقاس L • أسود', r'$120'),
-          const SizedBox(height: 8),
-          _buildItemRow('قميص كلاسيكي قطن', 'مقاس M • أبيض', r'$45'),
+          if (_order.items.isNotEmpty)
+            ..._order.items.map(
+              (item) => Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: _buildItemRow(
+                  item.productTitle,
+                  item.specs,
+                  '\$${(item.price * item.quantity).toInt()}',
+                ),
+              ),
+            )
+          else ...[
+            _buildItemRow('معطف صوف كشمير', 'مقاس L • أسود', r'$120'),
+            const SizedBox(height: 8),
+            _buildItemRow('قميص كلاسيكي قطن', 'مقاس M • أبيض', r'$45'),
+          ],
           const SizedBox(height: 16),
 
           // Stepper Tracker Header
@@ -611,6 +700,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   }
 
   Widget _buildReturnRequestCard() {
+    final bool isDelivered = _order.currentState == OrderState.delivered;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -627,25 +718,35 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFECFDF5),
+                  color: isDelivered
+                      ? const Color(0xFFECFDF5)
+                      : const Color(0xFFFEF3C7),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text(
-                  'مؤهل للإرجاع (Delivered)',
+                child: Text(
+                  isDelivered ? 'مؤهل للإرجاع (Delivered)' : 'غير مؤهل للإرجاع',
                   style: TextStyle(
                     fontSize: 10,
-                    color: Color(0xFF047857),
+                    color: isDelivered
+                        ? const Color(0xFF047857)
+                        : const Color(0xFFB45309),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.circle, size: 8, color: Color(0xFF047857)),
-                  SizedBox(width: 6),
+                  Icon(
+                    Icons.circle,
+                    size: 8,
+                    color: isDelivered
+                        ? const Color(0xFF047857)
+                        : const Color(0xFFB45309),
+                  ),
+                  const SizedBox(width: 6),
                   Text(
-                    'طلب مسلَم #SO-840',
-                    style: TextStyle(
+                    formatBidi('طلب #${_order.id}'),
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
@@ -679,19 +780,21 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'فستان السهرة المطرز الملكي',
-                        style: TextStyle(
+                        _order.items.isNotEmpty
+                            ? _order.items.first.productTitle
+                            : 'فستان السهرة المطرز الملكي',
+                        style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
                       ),
-                      Text(
+                      const Text(
                         'طلب استبدال المقاس من M إلى L',
                         style: TextStyle(fontSize: 10, color: Colors.grey),
                       ),

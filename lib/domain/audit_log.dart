@@ -6,6 +6,9 @@ class AuditLogEntry {
   final AuditAction action;
   final String title;
   final String description;
+  final String actor;
+  final String entityId;
+  final String previousHash;
   final String txHash;
 
   const AuditLogEntry({
@@ -14,6 +17,9 @@ class AuditLogEntry {
     required this.action,
     required this.title,
     required this.description,
+    this.actor = 'النظام الآلي',
+    this.entityId = 'SYS',
+    this.previousHash = '0000000000000000',
     required this.txHash,
   });
 }

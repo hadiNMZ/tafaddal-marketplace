@@ -5,6 +5,7 @@ import 'package:tafaddal_marketplace/presentation/screens/home_screen.dart';
 import 'package:tafaddal_marketplace/presentation/screens/cart_checkout_screen.dart';
 import 'package:tafaddal_marketplace/presentation/screens/order_details_screen.dart';
 import 'package:tafaddal_marketplace/presentation/screens/admin_dashboard_screen.dart';
+import 'package:tafaddal_marketplace/services/cart_service.dart';
 
 void main() {
   Widget buildRtlTestApp(Widget child) {
@@ -27,10 +28,30 @@ void main() {
     testWidgets('CartCheckoutScreen renders shipment breakdown and totals', (
       WidgetTester tester,
     ) async {
+      CartService.instance.clearCart();
+      CartService.instance.addToCart(
+        id: 'p1',
+        shopId: 'shop_sham',
+        title: 'جاكيت جلد راقي',
+        storeName: 'أزياء الشام',
+        specs: 'المقاس: L | أسود',
+        price: 120,
+        shipmentCode: 'SO-902',
+      );
+      CartService.instance.addToCart(
+        id: 'p2',
+        shopId: 'shop_nokhba',
+        title: 'حقيبة جلدية أصلية',
+        storeName: 'بوتيك النخبة',
+        specs: 'اللون: بني كلاسيكي',
+        price: 95,
+        shipmentCode: 'SO-903',
+      );
+
       await tester.pumpWidget(buildRtlTestApp(const CartCheckoutScreen()));
       expect(find.text('سلة التسوق وإتمام الطلب'), findsOneWidget);
-      expect(find.text('شحنة 1: متجر أزياء الشام (#SO-902)'), findsOneWidget);
-      expect(find.text('شحنة 2: بوتيك النخبة (#SO-903)'), findsOneWidget);
+      expect(find.textContaining('أزياء الشام'), findsOneWidget);
+      expect(find.textContaining('بوتيك النخبة'), findsOneWidget);
       expect(find.text('تأكيد وإرسال الطلب'), findsOneWidget);
     });
 
@@ -60,15 +81,17 @@ void main() {
 
         expect(order.currentState, OrderState.shipping);
 
-        // Tap Invalid Action: Skip to Delivered -> Exception SnackBar
-        final invalidSkipBtn = find.text('تخطي (Delivered)');
-        expect(invalidSkipBtn, findsOneWidget);
-        await tester.ensureVisible(invalidSkipBtn);
-        await tester.tap(invalidSkipBtn);
+        // Tap Invalid Action: Backward from Shipping to Placed -> Exception SnackBar
+        final invalidBackwardBtn = find.text('رجوع (Placed)');
+        expect(invalidBackwardBtn, findsOneWidget);
+        await tester.ensureVisible(invalidBackwardBtn);
+        await tester.tap(invalidBackwardBtn);
         await tester.pumpAndSettle();
 
-        // SnackBar should display exception message
+        // SnackBar should display exact exception message & order state remains unchanged (Shipping)
         expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.textContaining('Invalid transition'), findsOneWidget);
+        expect(order.currentState, OrderState.shipping);
       },
     );
 

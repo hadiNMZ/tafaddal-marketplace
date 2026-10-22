@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/shipment_order.dart';
+import '../../services/cart_service.dart';
+import '../../services/order_service.dart';
+import '../../utils/bidi_utils.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
   final Function(ShipmentOrder)? onOrderSubmitted;
-  const CartCheckoutScreen({super.key, this.onOrderSubmitted});
+  final Function(int)? onNavigateTab;
+  const CartCheckoutScreen({
+    super.key,
+    this.onOrderSubmitted,
+    this.onNavigateTab,
+  });
 
   @override
   State<CartCheckoutScreen> createState() => _CartCheckoutScreenState();
@@ -14,65 +22,70 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
   bool _useRewardPoints = true;
   String _selectedPaymentMethod = 'wallet';
 
-  int _item1Qty = 1;
-  int _item2Qty = 1;
-  int _item3Qty = 1;
-
   @override
   Widget build(BuildContext context) {
-    final double productsTotal = 260;
-    final double shippingFee = 15;
-    final double discount = _useRewardPoints ? 45 : 0;
-    final double finalTotal = productsTotal + shippingFee - discount;
+    return ListenableBuilder(
+      listenable: CartService.instance,
+      builder: (context, _) {
+        final cartItems = CartService.instance.items;
+        final double productsTotal = CartService.instance.productsTotal;
+        final double shippingFee = cartItems.isNotEmpty ? 15 : 0;
+        final double discount = (_useRewardPoints && cartItems.isNotEmpty)
+            ? 45
+            : 0;
+        final double finalTotal = (productsTotal + shippingFee - discount)
+            .clamp(0, double.infinity);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F8),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Top Navigation Bar
-            _buildTopAppBar(),
+        return Scaffold(
+          backgroundColor: const Color(0xFFF9F9F8),
+          body: SafeArea(
+            child: Column(
+              children: [
+                // Top Navigation Bar
+                _buildTopAppBar(),
 
-            // Scrollable Content
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Title Bar
-                    _buildTitleBar(),
-                    const SizedBox(height: 20),
+                // Scrollable Content
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Title Bar
+                        _buildTitleBar(cartItems.length),
+                        const SizedBox(height: 20),
 
-                    // Smart Split Banner
-                    _buildSmartSplitBanner(),
-                    const SizedBox(height: 20),
+                        if (cartItems.isEmpty) ...[
+                          _buildEmptyCartView(),
+                        ] else ...[
+                          // Smart Split Banner
+                          _buildSmartSplitBanner(),
+                          const SizedBox(height: 20),
 
-                    // Shipment 1 Card
-                    _buildShipment1Card(),
-                    const SizedBox(height: 20),
+                          // Grouped Shipment Cards
+                          ..._buildGroupedShipmentCards(),
 
-                    // Shipment 2 Card
-                    _buildShipment2Card(),
-                    const SizedBox(height: 20),
+                          // Delivery Address Card
+                          _buildDeliveryAddressCard(),
+                          const SizedBox(height: 20),
 
-                    // Delivery Address Card
-                    _buildDeliveryAddressCard(),
-                    const SizedBox(height: 20),
-
-                    // Rewards & Payment Method Card
-                    _buildRewardsAndPaymentCard(),
-                    const SizedBox(height: 20),
-                  ],
+                          // Rewards & Payment Method Card
+                          _buildRewardsAndPaymentCard(),
+                          const SizedBox(height: 20),
+                        ],
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
 
-            // Fixed Bottom Invoice & Submit Bar
-            _buildBottomSubmitBar(context, finalTotal),
-          ],
-        ),
-      ),
+                // Fixed Bottom Invoice & Submit Bar
+                if (cartItems.isNotEmpty)
+                  _buildBottomSubmitBar(context, finalTotal),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -109,7 +122,7 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     );
   }
 
-  Widget _buildTitleBar() {
+  Widget _buildTitleBar(int totalItems) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -119,9 +132,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Text(
-            '3 عناصر',
-            style: TextStyle(fontSize: 11, color: Colors.black87),
+          child: Text(
+            '$totalItems عناصر',
+            style: const TextStyle(fontSize: 11, color: Colors.black87),
           ),
         ),
         const Text(
@@ -136,7 +149,63 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     );
   }
 
+  Widget _buildEmptyCartView() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.shopping_bag_outlined,
+            size: 64,
+            color: Colors.grey.shade400,
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'سلة التسوق فارغة حالياً',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'قم بإضافة قطع مميزة من مختارات الموسم للبدء بتجهيز طلبك',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              widget.onNavigateTab?.call(0);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF1B4D3E),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              'تصفح المنتجات الآن',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSmartSplitBanner() {
+    final grouped = CartService.instance.groupedByShipment;
+    final shipmentCount = grouped.keys.length;
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -144,221 +213,154 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFA7F3D0)),
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'تم تقسيم السلة تلقائياً إلى شحنتين حسب المتجر',
-            style: TextStyle(
+            'تم تقسيم السلة تلقائياً إلى $shipmentCount شحنات حسب المتجر',
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
               color: Color(0xFF047857),
             ),
           ),
-          SizedBox(width: 8),
-          Icon(Icons.call_split, size: 16, color: Color(0xFF047857)),
+          const SizedBox(width: 8),
+          const Icon(Icons.call_split, size: 16, color: Color(0xFF047857)),
         ],
       ),
     );
   }
 
-  Widget _buildShipment1Card() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  List<Widget> _buildGroupedShipmentCards() {
+    final grouped = CartService.instance.groupedByShipment;
+    final List<Widget> cards = [];
+
+    int index = 1;
+    grouped.forEach((shipmentCode, items) {
+      final storeName = items.first.storeName;
+      final deliveryDays = items.first.deliveryDays;
+      final double subtotal = items.fold(
+        0,
+        (sum, i) => sum + (i.price * i.quantity),
+      );
+
+      cards.add(
+        Container(
+          margin: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.grey.shade200),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFECFDF5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  '2-3 أيام',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF047857),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFECFDF5),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      deliveryDays,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF047857),
+                      ),
+                    ),
                   ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.circle,
+                        size: 8,
+                        color: Color(0xFF047857),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        formatBidi('شحنة $index: $storeName (#$shipmentCode)'),
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+
+              ...items.map(
+                (item) => Column(
+                  children: [
+                    _buildCartItemRow(item),
+                    const Divider(height: 20),
+                  ],
                 ),
               ),
-              const Row(
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.circle, size: 8, color: Color(0xFF047857)),
-                  SizedBox(width: 6),
                   Text(
-                    'شحنة 1: متجر أزياء الشام (#SO-902)',
-                    style: TextStyle(
-                      fontSize: 13,
+                    '\$${subtotal.toInt()}',
+                    style: const TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
+                  ),
+                  Text(
+                    'المجموع الفرعي (${items.length} عناصر)',
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 14),
+        ),
+      );
+      index++;
+    });
 
-          _buildCartItemRow(
-            title: 'جاكيت جلد راقي',
-            specs: 'المقاس: L | أسود',
-            price: r'$120',
-            qty: _item1Qty,
-            onIncrement: () => setState(() => _item1Qty++),
-            onDecrement: () =>
-                setState(() => _item1Qty = _item1Qty > 1 ? _item1Qty - 1 : 1),
-          ),
-          const Divider(height: 20),
-
-          _buildCartItemRow(
-            title: 'قميص كلاسيكي قطني',
-            specs: 'المقاس: M | أبيض عاجي',
-            price: r'$45',
-            qty: _item2Qty,
-            onIncrement: () => setState(() => _item2Qty++),
-            onDecrement: () =>
-                setState(() => _item2Qty = _item2Qty > 1 ? _item2Qty - 1 : 1),
-          ),
-          const Divider(height: 20),
-
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                r'$165',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              Text(
-                'المجموع الفرعي (منتجان)',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+    return cards;
   }
 
-  Widget _buildShipment2Card() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFECFDF5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  '3-5 أيام',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF047857),
-                  ),
-                ),
-              ),
-              const Row(
-                children: [
-                  Icon(Icons.circle, size: 8, color: Color(0xFF047857)),
-                  SizedBox(width: 6),
-                  Text(
-                    'شحنة 2: بوتيك النخبة (#SO-903)',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-
-          _buildCartItemRow(
-            title: 'حقيبة جلدية أصلية',
-            specs: 'اللون: بني كلاسيكي',
-            price: r'$95',
-            qty: _item3Qty,
-            onIncrement: () => setState(() => _item3Qty++),
-            onDecrement: () =>
-                setState(() => _item3Qty = _item3Qty > 1 ? _item3Qty - 1 : 1),
-          ),
-          const Divider(height: 20),
-
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                r'$95',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              Text(
-                'المجموع الفرعي (منتج واحد)',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCartItemRow({
-    required String title,
-    required String specs,
-    required String price,
-    required int qty,
-    required VoidCallback onIncrement,
-    required VoidCallback onDecrement,
-  }) {
+  Widget _buildCartItemRow(CartItemModel item) {
     return Row(
       children: [
+        IconButton(
+          icon: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
+          onPressed: () {
+            CartService.instance.removeItem(item.id);
+            showCleanSnackBar(context, 'تم حذف (${item.title}) من السلة');
+          },
+        ),
         Container(
-          width: 52,
-          height: 52,
+          width: 48,
+          height: 48,
           decoration: BoxDecoration(
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Icon(Icons.checkroom, color: Colors.grey.shade600, size: 24),
+          child: Icon(Icons.checkroom, color: Colors.grey.shade600, size: 22),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                title,
+                item.title,
                 textAlign: TextAlign.right,
                 style: const TextStyle(
                   fontSize: 13,
@@ -368,18 +370,18 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               ),
               const SizedBox(height: 2),
               Text(
-                specs,
+                formatBidi(item.specs),
                 style: const TextStyle(fontSize: 11, color: Colors.grey),
               ),
             ],
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              price,
+              '\$${(item.price * item.quantity).toInt()}',
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -396,7 +398,17 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               child: Row(
                 children: [
                   InkWell(
-                    onTap: onIncrement,
+                    onTap: () {
+                      try {
+                        CartService.instance.incrementQuantity(item.id);
+                      } on Exception catch (e) {
+                        showCleanSnackBar(
+                          context,
+                          e.toString(),
+                          backgroundColor: const Color(0xFF991B1B),
+                        );
+                      }
+                    },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
@@ -409,14 +421,15 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     ),
                   ),
                   Text(
-                    '$qty',
+                    '${item.quantity}',
                     style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   InkWell(
-                    onTap: onDecrement,
+                    onTap: () =>
+                        CartService.instance.decrementQuantity(item.id),
                     child: const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
@@ -665,21 +678,34 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
           ),
           ElevatedButton.icon(
             onPressed: () {
-              final order1 = ShipmentOrder(id: 'SO-902', shopId: 'shop_sham');
-              final order2 = ShipmentOrder(id: 'SO-903', shopId: 'shop_nokhba');
+              try {
+                // Group cart items by vendor shipment and create ShipmentOrders
+                final grouped = CartService.instance.groupedByShipment;
+                final newOrders = OrderService.instance.createOrdersFromCart(
+                  grouped,
+                );
 
-              if (widget.onOrderSubmitted != null) {
-                widget.onOrderSubmitted!(order1);
+                if (widget.onOrderSubmitted != null && newOrders.isNotEmpty) {
+                  widget.onOrderSubmitted!(newOrders.first);
+                }
+
+                CartService.instance.clearCart();
+
+                final orderIds = newOrders.map((o) => o.id).join(' & ');
+                showCleanSnackBar(
+                  context,
+                  'تم تأكيد وإرسال الشحنات ($orderIds) بنجاح!',
+                );
+
+                // Smoothly transition to the Orders tab (index 2)
+                widget.onNavigateTab?.call(2);
+              } on Exception catch (e) {
+                showCleanSnackBar(
+                  context,
+                  e.toString(),
+                  backgroundColor: const Color(0xFF991B1B),
+                );
               }
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: const Color(0xFF1B4D3E),
-                  content: Text(
-                    'تم تأكيد وإرسال الطلب (${order1.id} & ${order2.id}) بنجاح!',
-                  ),
-                ),
-              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF1B4D3E),
