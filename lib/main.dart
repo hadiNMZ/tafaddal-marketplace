@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'presentation/screens/main_navigation_screen.dart';
+import 'presentation/theme/app_theme.dart';
 
 void main() {
   runApp(const TafaddalApp());
@@ -14,36 +15,13 @@ class TafaddalApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tafaddal Marketplace - تفضّل',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Roboto',
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1B4D3E),
-          primary: const Color(0xFF1B4D3E),
-          secondary: const Color(0xFF047857),
-          surface: const Color(0xFFF9F9F8),
-        ),
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF9F9F8),
-        cardTheme: CardThemeData(
-          color: Colors.white,
-          elevation: 0.5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: Colors.grey.shade200),
-          ),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFF9F9F8),
-          elevation: 0,
-          centerTitle: true,
-        ),
-        snackBarTheme: const SnackBarThemeData(
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          ),
-        ),
-      ),
+      theme: AtelierTheme.theme,
+      builder: (context, child) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: child ?? const SizedBox(),
+        );
+      },
       home: const MainNavigationScreen(),
     );
   }

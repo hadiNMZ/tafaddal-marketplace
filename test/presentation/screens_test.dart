@@ -18,16 +18,94 @@ void main() {
     testWidgets('HomeScreen renders marketplace products and rewards card', (
       WidgetTester tester,
     ) async {
+      tester.view.physicalSize = const Size(360, 780);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
       await tester.pumpWidget(buildRtlTestApp(const HomeScreen()));
       expect(find.text('تفضّل'), findsWidgets);
       expect(find.text('نقاط المكافآت: 450 نقطة'), findsOneWidget);
       expect(find.text('معطف صوف فاخر'), findsOneWidget);
       expect(find.text('فستان سهرة كريب'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('HomeScreen renders new luxury stores and filtered categories', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(360, 780);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(buildRtlTestApp(const HomeScreen()));
+      expect(find.text('دار الياسمين'), findsWidgets);
+      expect(find.text('أتيليه القصب'), findsWidgets);
+      expect(find.text('مشغل الفيروز'), findsWidgets);
+      expect(find.text('دار الجواهر'), findsWidgets);
+
+      expect(find.text('بدلات'), findsOneWidget);
+      expect(find.text('حقائب'), findsOneWidget);
+
+      // Filter by 'بدلات'
+      final suitsFilter = find.text('بدلات');
+      await tester.ensureVisible(suitsFilter);
+      await tester.tap(suitsFilter);
+      await tester.pumpAndSettle();
+
+      expect(find.text('بدلة تويد كلاسيكية'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('HomeScreen tapping الكل shows all stores modal without overflow', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(360, 780);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(buildRtlTestApp(const HomeScreen()));
+
+      final allStoresBtn = find.text('الكل ›');
+      expect(allStoresBtn, findsOneWidget);
+      await tester.tap(allStoresBtn);
+      await tester.pumpAndSettle();
+
+      // Verify all stores modal opened
+      expect(find.text('المتاجر المعتمدة في تفضّل'), findsOneWidget);
+      expect(find.text('جميع المتاجر'), findsOneWidget);
+      expect(find.text('أزياء الشام'), findsWidgets);
+      expect(find.text('أتيليه القصب'), findsWidgets);
+      expect(find.text('دار الياسمين'), findsWidgets);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('CartCheckoutScreen tapping bell icon opens notifications modal', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(360, 780);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(buildRtlTestApp(const CartCheckoutScreen()));
+
+      final bellBtn = find.byIcon(Icons.notifications_none_outlined);
+      expect(bellBtn, findsOneWidget);
+      await tester.tap(bellBtn);
+      await tester.pumpAndSettle();
+
+      // Verify notifications modal opened
+      expect(find.text('مركز الإشعارات والتنبيهات'), findsOneWidget);
+      expect(find.text('تحديثات الشحنات والامتيازات الحصرية'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets('CartCheckoutScreen renders shipment breakdown and totals', (
       WidgetTester tester,
     ) async {
+      tester.view.physicalSize = const Size(360, 780);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
       CartService.instance.clearCart();
       CartService.instance.addToCart(
         id: 'p1',
@@ -53,12 +131,13 @@ void main() {
       expect(find.textContaining('أزياء الشام'), findsOneWidget);
       expect(find.textContaining('بوتيك النخبة'), findsOneWidget);
       expect(find.text('تأكيد وإرسال الطلب'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets(
       'OrderDetailsScreen transitions stage and catches illegal transition',
       (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(800, 1600);
+        tester.view.physicalSize = const Size(360, 1000);
         tester.view.devicePixelRatio = 1.0;
         addTearDown(tester.view.reset);
 

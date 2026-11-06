@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/audit_log.dart';
 import '../../domain/shop_product.dart';
 import '../../services/audit_service.dart';
 import '../../services/catalog_service.dart';
 import '../../utils/bidi_utils.dart';
+import '../theme/app_theme.dart';
+import '../widgets/atelier_components.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -66,7 +69,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     showCleanSnackBar(
       context,
       'تم رفض اعتماد المتجر ${shop.name} (#${shop.id}).',
-      backgroundColor: const Color(0xFF991B1B),
+      backgroundColor: AtelierColors.error,
     );
   }
 
@@ -184,16 +187,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         }
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF9F9F8),
+          backgroundColor: AtelierColors.bg,
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Header
                   _buildTopAppBar(context),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
 
                   // KPI Stats Row
                   _buildKpiStatsRow(),
@@ -206,34 +209,36 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   Text(
                     filterTitle,
                     textAlign: TextAlign.right,
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                    style: GoogleFonts.tajawal(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AtelierColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
 
                   if (!showShop104 && !showShopElegance && !showProduct)
                     Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 24),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AtelierColors.surface,
                         borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AtelierColors.borderSubtle),
                       ),
                       child: Column(
                         children: [
                           const Icon(
-                            Icons.inbox_outlined,
+                            Icons.inventory_2_outlined,
                             size: 40,
-                            color: Colors.grey,
+                            color: AtelierColors.textMuted,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 10),
                           Text(
                             'لا توجد عناصر في قائمة ($filterTitle)',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
+                            style: GoogleFonts.tajawal(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: AtelierColors.textSecondary,
                             ),
                           ),
                         ],
@@ -242,20 +247,21 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   else ...[
                     if (showShop104) ...[
                       _buildShopApprovalCard(shop104),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 18),
                     ],
                     if (showShopElegance) ...[
                       _buildShopApprovalCard(shopElegance),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 18),
                     ],
                     if (showProduct) ...[
                       _buildProductInspectionCard(dressProduct, shopSham),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 18),
                     ],
                   ],
 
                   // Dynamic Audit Log Card
                   _buildAuditLogCard(),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -269,45 +275,50 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFEF3C7),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Row(
-            children: [
-              Text(
-                'تفضّل Ops',
-                style: TextStyle(
-                  fontSize: 11,
-                  color: Color(0xFFB45309),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(width: 4),
-              Icon(Icons.circle, size: 8, color: Color(0xFFF59E0B)),
-            ],
-          ),
-        ),
-        const Expanded(
-          child: Text(
-            'إدارة العمليات والرقابة',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-        ),
+        // Back Button on the RIGHT (start of screen in RTL)
         IconButton(
-          icon: const Icon(Icons.arrow_forward, color: Colors.black87),
+          icon: const Icon(Icons.arrow_forward, color: AtelierColors.textPrimary),
           onPressed: () {
             if (Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
             }
           },
+        ),
+        // Title in the center
+        Expanded(
+          child: Text(
+            'إدارة العمليات والرقابة',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.tajawal(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: AtelierColors.textPrimary,
+            ),
+          ),
+        ),
+        // Ops Badge on the LEFT (end of screen in RTL)
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: AtelierColors.goldTint,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AtelierColors.goldBorder, width: 0.8),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.circle, size: 7, color: AtelierColors.gold),
+              const SizedBox(width: 4),
+              Text(
+                'تفضّل Ops',
+                style: GoogleFonts.tajawal(
+                  fontSize: 11,
+                  color: AtelierColors.goldDark,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -320,51 +331,60 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           child: _buildKpiCard(
             '158',
             'شحنة مكتملة',
-            const Color(0xFFECFDF5),
-            const Color(0xFF047857),
+            AtelierColors.primary,
+            AtelierColors.primaryTint,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         Expanded(
           child: _buildKpiCard(
             '12',
             'متجر نشط',
-            const Color(0xFFEFF6FF),
-            const Color(0xFF1D4ED8),
+            AtelierColors.info,
+            AtelierColors.infoBg,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         Expanded(
           child: _buildKpiCard(
             '3',
             'طلبات معلقة',
-            const Color(0xFFFEF3C7),
-            const Color(0xFFB45309),
+            AtelierColors.warning,
+            AtelierColors.warningBg,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildKpiCard(String value, String label, Color bg, Color textColor) {
+  Widget _buildKpiCard(String value, String label, Color accentColor, Color bg) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
       decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(12),
+        color: AtelierColors.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AtelierColors.borderSubtle),
+        boxShadow: AtelierTheme.subtleShadow,
       ),
       child: Column(
         children: [
           Text(
             value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: textColor,
+            style: GoogleFonts.outfit(
+              fontSize: 20,
+              fontWeight: FontWeight.w800,
+              color: accentColor,
             ),
           ),
-          const SizedBox(height: 2),
-          Text(label, style: TextStyle(fontSize: 10, color: textColor)),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: GoogleFonts.tajawal(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: AtelierColors.textSecondary,
+            ),
+          ),
         ],
       ),
     );
@@ -375,37 +395,37 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       children: [
         // Search Input
         Container(
-          height: 44,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          height: 46,
+          padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade200),
+            color: AtelierColors.surface,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AtelierColors.border),
+            boxShadow: AtelierTheme.subtleShadow,
           ),
           child: Row(
             children: [
-              if (_searchController.text.isNotEmpty)
-                GestureDetector(
-                  onTap: () => _searchController.clear(),
-                  child: const Icon(Icons.clear, color: Colors.grey, size: 16),
-                )
-              else
-                const Icon(Icons.search, color: Colors.grey, size: 18),
+              const Icon(Icons.search, color: AtelierColors.textMuted, size: 18),
               const SizedBox(width: 8),
               Expanded(
                 child: TextField(
                   controller: _searchController,
                   textAlign: TextAlign.right,
-                  style: const TextStyle(fontSize: 12),
-                  decoration: const InputDecoration(
-                    hintText: '...ابحث بالاسم، المعرّف، أو المتجر',
-                    hintStyle: TextStyle(fontSize: 11, color: Colors.grey),
+                  style: GoogleFonts.tajawal(fontSize: 12, fontWeight: FontWeight.w500),
+                  decoration: InputDecoration(
+                    hintText: 'ابحث بالاسم، المعرّف، أو المتجر...',
+                    hintStyle: GoogleFonts.tajawal(fontSize: 11, color: AtelierColors.textMuted),
                     border: InputBorder.none,
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
                   ),
                 ),
               ),
+              if (_searchController.text.isNotEmpty)
+                GestureDetector(
+                  onTap: () => _searchController.clear(),
+                  child: const Icon(Icons.clear, color: AtelierColors.textMuted, size: 16),
+                ),
             ],
           ),
         ),
@@ -414,15 +434,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         // Filter Pills
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          reverse: true,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _buildFilterPill('مرفوض (Rejected)', 'rejected'),
-              const SizedBox(width: 6),
-              _buildFilterPill('معتمد (Approved)', 'approved'),
-              const SizedBox(width: 6),
               _buildFilterPill('معلق (Pending)', 'pending'),
+              const SizedBox(width: 8),
+              _buildFilterPill('معتمد (Approved)', 'approved'),
+              const SizedBox(width: 8),
+              _buildFilterPill('مرفوض (Rejected)', 'rejected'),
             ],
           ),
         ),
@@ -434,21 +452,32 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     final bool isSelected = _activeFilter == code;
     return InkWell(
       onTap: () => setState(() => _activeFilter = code),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      borderRadius: BorderRadius.circular(20),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF1B4D3E) : Colors.white,
+          color: isSelected ? AtelierColors.primary : AtelierColors.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? const Color(0xFF1B4D3E) : Colors.grey.shade200,
+            color: isSelected ? AtelierColors.primary : AtelierColors.borderSubtle,
           ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AtelierColors.primary.withValues(alpha: 0.2),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : AtelierTheme.subtleShadow,
         ),
         child: Text(
           label,
-          style: TextStyle(
+          style: GoogleFonts.tajawal(
             fontSize: 11,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected ? Colors.white : Colors.black87,
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+            color: isSelected ? Colors.white : AtelierColors.textPrimary,
           ),
         ),
       ),
@@ -460,86 +489,81 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     final isApproved = shop.status == ApprovalStatus.approved;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        color: AtelierColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AtelierColors.borderSubtle),
+        boxShadow: AtelierTheme.subtleShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: isApproved
-                      ? const Color(0xFFECFDF5)
-                      : Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  formatBidi('#${shop.id}'),
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: isApproved ? const Color(0xFF047857) : Colors.grey,
-                  ),
-                ),
+              // Store Avatar on the RIGHT (start of row in RTL)
+              AtelierStoreAvatar(
+                storeName: shop.name,
+                isSelected: isApproved,
+                radius: 20,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
+              // Store Name & Subtitle in the MIDDLE
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
                   children: [
                     Text(
                       shop.name,
-                      textAlign: TextAlign.right,
-                      style: const TextStyle(
+                      style: GoogleFonts.tajawal(
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        fontWeight: FontWeight.w700,
+                        color: AtelierColors.textPrimary,
                       ),
                     ),
                     Text(
                       isApproved
                           ? 'متجر معتمد وموثق'
                           : 'طلب توثيق واعتماد متجر',
-                      textAlign: TextAlign.right,
-                      style: const TextStyle(fontSize: 10, color: Colors.grey),
+                      style: GoogleFonts.tajawal(
+                        fontSize: 11,
+                        color: isApproved ? AtelierColors.primary : AtelierColors.goldDark,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(width: 10),
+              // Store ID Badge on the LEFT (end of row in RTL)
               Container(
-                width: 40,
-                height: 40,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: isApproved
-                      ? const Color(0xFFECFDF5)
-                      : Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(10),
+                      ? AtelierColors.primaryTint
+                      : AtelierColors.surfaceElevated,
+                  borderRadius: BorderRadius.circular(6),
                 ),
-                child: Icon(
-                  Icons.storefront,
-                  color: isApproved
-                      ? const Color(0xFF047857)
-                      : Colors.grey.shade700,
-                  size: 22,
+                child: Text(
+                  formatBidi('#${shop.id}'),
+                  style: GoogleFonts.outfit(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: isApproved ? AtelierColors.primary : AtelierColors.textMuted,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
 
           // File Card
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFF9F9F8),
-              borderRadius: BorderRadius.circular(10),
+              color: AtelierColors.surfaceElevated,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AtelierColors.borderSubtle),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -551,16 +575,21 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       'معاينة السجل التجاري لـ ${shop.name}.pdf',
                     );
                   },
-                  child: const Text(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
                     'معاينة',
-                    style: TextStyle(
+                    style: GoogleFonts.tajawal(
                       fontSize: 11,
-                      color: Color(0xFF047857),
-                      fontWeight: FontWeight.bold,
+                      color: AtelierColors.primary,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -568,15 +597,19 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         child: Text(
                           'السجل التجاري.pdf',
                           textAlign: TextAlign.right,
-                          style: TextStyle(fontSize: 11, color: Colors.black87),
+                          style: GoogleFonts.tajawal(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: AtelierColors.textPrimary,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SizedBox(width: 6),
-                      Icon(
+                      const SizedBox(width: 6),
+                      const Icon(
                         Icons.description_outlined,
                         size: 16,
-                        color: Colors.grey,
+                        color: AtelierColors.goldDark,
                       ),
                     ],
                   ),
@@ -584,7 +617,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
 
           // Commission Row
           Row(
@@ -598,30 +631,37 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   ),
                   const SizedBox(width: 4),
                   SizedBox(
-                    width: 40,
+                    width: 44,
                     child: TextField(
                       controller: _commissionController,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: GoogleFonts.outfit(
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
+                        color: AtelierColors.textPrimary,
                       ),
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.symmetric(vertical: 4),
-                        border: UnderlineInputBorder(),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AtelierColors.gold),
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
-              const Text(
+              Text(
                 'نسبة العمولة:',
-                style: TextStyle(fontSize: 11, color: Colors.grey),
+                style: GoogleFonts.tajawal(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: AtelierColors.textSecondary,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
 
           // Action Buttons
           if (isPending)
@@ -631,42 +671,43 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   child: ElevatedButton(
                     onPressed: () => _handleRejectShop(shop),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFEF2F2),
-                      foregroundColor: const Color(0xFF991B1B),
+                      backgroundColor: AtelierColors.errorBg,
+                      foregroundColor: AtelierColors.error,
                       elevation: 0,
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(color: AtelierColors.errorBorder),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'رفض',
-                      style: TextStyle(
+                      style: GoogleFonts.tajawal(
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
                   flex: 2,
                   child: ElevatedButton(
                     onPressed: () => _handleApproveShop(shop),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1B4D3E),
+                      backgroundColor: AtelierColors.primary,
                       foregroundColor: Colors.white,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      elevation: 1,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'اعتماد',
-                      style: TextStyle(
+                      style: GoogleFonts.tajawal(
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
@@ -675,22 +716,27 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             )
           else
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 color: isApproved
-                    ? const Color(0xFFECFDF5)
-                    : const Color(0xFFFEF2F2),
-                borderRadius: BorderRadius.circular(8),
+                    ? AtelierColors.primaryTint
+                    : AtelierColors.errorBg,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: isApproved
+                      ? AtelierColors.primaryBorder
+                      : AtelierColors.errorBorder,
+                ),
               ),
               child: Center(
                 child: Text(
-                  isApproved ? 'تم اعتماد وتفعيل المتجر ✓' : 'تم رفض المتجر ✕',
-                  style: TextStyle(
+                  isApproved ? 'تم اعتماد وتفعيل المتجر' : 'تم رفض المتجر',
+                  style: GoogleFonts.tajawal(
                     fontSize: 11,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                     color: isApproved
-                        ? const Color(0xFF047857)
-                        : const Color(0xFF991B1B),
+                        ? AtelierColors.primary
+                        : AtelierColors.error,
                   ),
                 ),
               ),
@@ -704,119 +750,135 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     final isApproved = product.status == ApprovalStatus.approved;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        color: AtelierColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AtelierColors.borderSubtle),
+        boxShadow: AtelierTheme.subtleShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             children: [
-              Text(
-                '\$${product.price.toInt()}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+              // Product Visual Thumbnail on the RIGHT
+              SizedBox(
+                width: 48,
+                height: 48,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: AtelierProductVisual(
+                    productName: product.name,
+                    category: product.category,
+                    height: 48,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
+              // Product Name & Store in the MIDDLE
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
                   children: [
                     Text(
                       product.name,
-                      textAlign: TextAlign.right,
-                      style: const TextStyle(
+                      style: GoogleFonts.tajawal(
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                        fontWeight: FontWeight.w700,
+                        color: AtelierColors.textPrimary,
                       ),
                     ),
                     Text(
                       'المتجر: ${shop.name}',
-                      textAlign: TextAlign.right,
-                      style: const TextStyle(fontSize: 10, color: Colors.grey),
+                      style: GoogleFonts.tajawal(
+                        fontSize: 11,
+                        color: AtelierColors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(width: 10),
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  Icons.checkroom,
-                  color: Colors.grey.shade600,
-                  size: 22,
+              // Price on the LEFT
+              Text(
+                '\$${product.price.toInt()}',
+                style: GoogleFonts.outfit(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: AtelierColors.textPrimary,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 14),
 
-          // Quality Inspection Info Box
+          // Quality Inspection Certificate Box
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFECFDF5),
-              borderRadius: BorderRadius.circular(10),
+              color: AtelierColors.primaryTint,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AtelierColors.primaryBorder),
             ),
-            child: const Row(
+            child: Row(
               children: [
                 Expanded(
                   child: Text(
                     'تم فحص الصور بدقة عالية ومطابقة معايير المنصة الفاخرة وخلو المحتوى من أي انتهاكات.',
                     textAlign: TextAlign.right,
-                    style: TextStyle(fontSize: 10, color: Color(0xFF047857)),
+                    style: GoogleFonts.tajawal(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: AtelierColors.primary,
+                      height: 1.4,
+                    ),
                   ),
                 ),
-                SizedBox(width: 6),
-                Icon(Icons.check_circle, color: Color(0xFF047857), size: 16),
+                const SizedBox(width: 8),
+                const Icon(Icons.verified, color: AtelierColors.gold, size: 18),
               ],
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
 
           if (!isApproved)
             ElevatedButton.icon(
               onPressed: () => _handleApproveProduct(product, shop),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1B4D3E),
+                backgroundColor: AtelierColors.primary,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                elevation: 1,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
               icon: const Icon(Icons.check_circle_outline, size: 16),
-              label: const Text(
+              label: Text(
                 'اعتماد ونشر للعملاء',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style: GoogleFonts.tajawal(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             )
           else
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                color: const Color(0xFFECFDF5),
-                borderRadius: BorderRadius.circular(8),
+                color: AtelierColors.primaryTint,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AtelierColors.primaryBorder),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'تم اعتماد ونشر المنتج للعملاء ✓',
-                  style: TextStyle(
+                  'تم اعتماد ونشر المنتج للعملاء',
+                  style: GoogleFonts.tajawal(
                     fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF047857),
+                    fontWeight: FontWeight.w700,
+                    color: AtelierColors.primary,
                   ),
                 ),
               ),
@@ -828,42 +890,65 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
   Widget _buildAuditLogCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        color: AtelierColors.surface,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AtelierColors.borderSubtle),
+        boxShadow: AtelierTheme.subtleShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.circle, size: 8, color: Color(0xFF047857)),
-              Text(
-                'سجل التدقيق الأمني (للقراءة فقط 🔒)',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+              // Title on the RIGHT
+              Row(
+                children: [
+                  const Icon(
+                    Icons.security,
+                    size: 16,
+                    color: AtelierColors.gold,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'سجل التدقيق الأمني (للقراءة فقط)',
+                    style: GoogleFonts.tajawal(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AtelierColors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+              // Status Beacon Dot on the LEFT
+              Container(
+                width: 8,
+                height: 8,
+                decoration: const BoxDecoration(
+                  color: AtelierColors.primary,
+                  shape: BoxShape.circle,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           StreamBuilder<List<AuditLogEntry>>(
             stream: AuditService.instance.logStream,
             initialData: AuditService.instance.logs,
             builder: (context, snapshot) {
               final logs = snapshot.data ?? [];
               if (logs.isEmpty) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
                     'لا توجد سجلات تدقيق حتى الآن',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                    style: GoogleFonts.tajawal(
+                      fontSize: 11,
+                      color: AtelierColors.textMuted,
+                    ),
                   ),
                 );
               }
@@ -872,7 +957,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: logs.length,
-                separatorBuilder: (context, index) => const Divider(height: 16),
+                separatorBuilder: (context, index) => const Divider(
+                  height: 20,
+                  color: AtelierColors.borderSubtle,
+                ),
                 itemBuilder: (context, index) {
                   final log = logs[index];
                   final hour12 = log.timestamp.hour % 12 == 0
@@ -883,37 +971,49 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       '${hour12.toString().padLeft(2, '0')}:${log.timestamp.minute.toString().padLeft(2, '0')} $period';
 
                   return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        formatBidi(timeStr),
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
+                      // Title & Description on the RIGHT
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
                           children: [
                             Text(
                               formatBidi(log.title),
-                              textAlign: TextAlign.right,
-                              style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
+                              style: GoogleFonts.tajawal(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: AtelierColors.textPrimary,
                               ),
                             ),
+                            const SizedBox(height: 2),
                             Text(
                               formatBidi(log.description),
-                              textAlign: TextAlign.right,
-                              style: const TextStyle(
-                                fontSize: 9,
-                                color: Colors.grey,
+                              style: GoogleFonts.tajawal(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: AtelierColors.textSecondary,
+                                height: 1.35,
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      // Time badge on the LEFT
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: AtelierColors.surfaceElevated,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          formatBidi(timeStr),
+                          style: GoogleFonts.outfit(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: AtelierColors.textMuted,
+                          ),
                         ),
                       ),
                     ],

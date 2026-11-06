@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/shipment_order.dart';
 import '../../services/cart_service.dart';
 import '../../services/order_service.dart';
 import '../../utils/bidi_utils.dart';
+import '../theme/app_theme.dart';
+import '../widgets/atelier_components.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
   final Function(ShipmentOrder)? onOrderSubmitted;
@@ -37,17 +40,17 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             .clamp(0, double.infinity);
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF9F9F8),
+          backgroundColor: AtelierColors.bg,
           body: SafeArea(
             child: Column(
               children: [
-                // Top Navigation Bar
+                // Top Masthead Bar
                 _buildTopAppBar(),
 
                 // Scrollable Content
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -65,13 +68,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           // Grouped Shipment Cards
                           ..._buildGroupedShipmentCards(),
 
-                          // Delivery Address Card
-                          _buildDeliveryAddressCard(),
-                          const SizedBox(height: 20),
-
-                          // Rewards & Payment Method Card
-                          _buildRewardsAndPaymentCard(),
-                          const SizedBox(height: 20),
+                          // Inset Grouped Surface for Delivery, Rewards & Payment
+                          _buildCheckoutPreferencesPanel(),
+                          const SizedBox(height: 24),
                         ],
                       ],
                     ),
@@ -91,32 +90,70 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
 
   Widget _buildTopAppBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-            child: const Icon(
-              Icons.notifications_none,
-              color: Colors.black87,
-              size: 20,
+          InkWell(
+            onTap: () => showAtelierNotificationsModal(context),
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AtelierColors.surface,
+                shape: BoxShape.circle,
+                border: Border.all(color: AtelierColors.borderSubtle),
+                boxShadow: AtelierTheme.subtleShadow,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Icon(
+                    Icons.notifications_none_outlined,
+                    color: AtelierColors.textPrimary,
+                    size: 20,
+                  ),
+                  Positioned(
+                    top: 9,
+                    right: 9,
+                    child: Container(
+                      width: 7,
+                      height: 7,
+                      decoration: const BoxDecoration(
+                        color: AtelierColors.gold,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          const Text(
-            'تفضّل',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1B4D3E),
-            ),
+          Column(
+            children: [
+              Text(
+                'تفضّل',
+                style: GoogleFonts.tajawal(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: AtelierColors.primary,
+                  height: 1.1,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              Text(
+                'CHECKOUT & DISPATCH',
+                style: GoogleFonts.outfit(
+                  fontSize: 8,
+                  fontWeight: FontWeight.w700,
+                  color: AtelierColors.goldDark,
+                  letterSpacing: 2.0,
+                ),
+              ),
+            ],
           ),
+          const SizedBox(width: 40), // Optical balance spacer
         ],
       ),
     );
@@ -126,23 +163,34 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        // Right side in RTL: Title
+        Expanded(
+          child: Text(
+            'سلة التسوق وإتمام الطلب',
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.tajawal(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: AtelierColors.textPrimary,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        // Left side in RTL: Count Badge
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: AtelierColors.surfaceSubtle,
             borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AtelierColors.borderSubtle),
           ),
           child: Text(
             '$totalItems عناصر',
-            style: const TextStyle(fontSize: 11, color: Colors.black87),
-          ),
-        ),
-        const Text(
-          'سلة التسوق وإتمام الطلب',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+            style: GoogleFonts.tajawal(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: AtelierColors.textSecondary,
+            ),
           ),
         ),
       ],
@@ -151,50 +199,68 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
 
   Widget _buildEmptyCartView() {
     return Container(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+        color: AtelierColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AtelierColors.borderSubtle),
+        boxShadow: AtelierTheme.subtleShadow,
       ),
       child: Column(
         children: [
-          Icon(
-            Icons.shopping_bag_outlined,
-            size: 64,
-            color: Colors.grey.shade400,
+          Container(
+            width: 80,
+            height: 80,
+            decoration: const BoxDecoration(
+              color: AtelierColors.goldTint,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.shopping_bag_outlined,
+              size: 40,
+              color: AtelierColors.gold,
+            ),
           ),
-          const SizedBox(height: 16),
-          const Text(
+          const SizedBox(height: 20),
+          Text(
             'سلة التسوق فارغة حالياً',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+            style: GoogleFonts.tajawal(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: AtelierColors.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'قم بإضافة قطع مميزة من مختارات الموسم للبدء بتجهيز طلبك',
+          Text(
+            'قم بإضافة قطع مميزة من مختارات الموسم للبدء بتجهيز طلبك الفاخر',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12, color: Colors.grey),
+            style: GoogleFonts.tajawal(
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+              color: AtelierColors.textSecondary,
+              height: 1.5,
+            ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {
               widget.onNavigateTab?.call(0);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1B4D3E),
+              backgroundColor: AtelierColors.primary,
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
               ),
+              elevation: 2,
             ),
-            child: const Text(
+            child: Text(
               'تصفح المنتجات الآن',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              style: GoogleFonts.tajawal(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],
@@ -207,25 +273,28 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     final shipmentCount = grouped.keys.length;
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFECFDF5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFA7F3D0)),
+        color: AtelierColors.primaryTint,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AtelierColors.primaryBorder),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'تم تقسيم السلة تلقائياً إلى $shipmentCount شحنات حسب المتجر',
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF047857),
+          const Icon(Icons.hub_outlined, size: 18, color: AtelierColors.primary),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              'تم تقسيم السلة تلقائياً إلى $shipmentCount شحنات حسب المتجر',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.tajawal(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: AtelierColors.primary,
+              ),
             ),
           ),
-          const SizedBox(width: 8),
-          const Icon(Icons.call_split, size: 16, color: Color(0xFF047857)),
         ],
       ),
     );
@@ -247,81 +316,114 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       cards.add(
         Container(
           margin: const EdgeInsets.only(bottom: 20),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.grey.shade200),
+            color: AtelierColors.surface,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AtelierColors.borderSubtle, width: 1.0),
+            boxShadow: AtelierTheme.subtleShadow,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Shipment Header (Strict RTL: Title on Right, Delivery pill on Left)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFECFDF5),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      deliveryDays,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF047857),
-                      ),
+                  // Right side in RTL: Shipment Title & Store Badge
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 28,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            color: AtelierColors.surfaceElevated,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AtelierColors.borderSubtle),
+                          ),
+                          child: const Icon(
+                            Icons.storefront_outlined,
+                            size: 15,
+                            color: AtelierColors.primary,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            formatBidi('شحنة $index: $storeName (#$shipmentCode)'),
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.tajawal(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: AtelierColors.textPrimary,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.circle,
-                        size: 8,
-                        color: Color(0xFF047857),
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        formatBidi('شحنة $index: $storeName (#$shipmentCode)'),
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                  const SizedBox(width: 8),
+                  // Left side in RTL: Delivery Days Badge
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AtelierColors.goldTint,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AtelierColors.goldBorder, width: 0.8),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.schedule, size: 12, color: AtelierColors.goldDark),
+                        const SizedBox(width: 4),
+                        Text(
+                          deliveryDays,
+                          style: GoogleFonts.tajawal(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: AtelierColors.goldDark,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 16),
 
               ...items.map(
                 (item) => Column(
                   children: [
                     _buildCartItemRow(item),
-                    const Divider(height: 20),
+                    const Divider(height: 24, color: AtelierColors.borderSubtle),
                   ],
                 ),
               ),
 
+              // Subtotal Summary
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '\$${subtotal.toInt()}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                  Expanded(
+                    child: Text(
+                      'المجموع الفرعي (${items.length} عناصر)',
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.tajawal(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: AtelierColors.textSecondary,
+                      ),
                     ),
                   ),
+                  const SizedBox(width: 8),
                   Text(
-                    'المجموع الفرعي (${items.length} عناصر)',
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    '\$${subtotal.toInt()}',
+                    style: GoogleFonts.outfit(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AtelierColors.textPrimary,
+                    ),
                   ),
                 ],
               ),
@@ -337,180 +439,275 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
 
   Widget _buildCartItemRow(CartItemModel item) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        IconButton(
-          icon: const Icon(Icons.delete_outline, color: Colors.red, size: 20),
-          onPressed: () {
-            CartService.instance.removeItem(item.id);
-            showCleanSnackBar(context, 'تم حذف (${item.title}) من السلة');
-          },
-        ),
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(8),
+        // Right side in RTL: Mini couture thumbnail visual
+        SizedBox(
+          width: 50,
+          height: 50,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: AtelierProductVisual(
+              productName: item.title,
+              category: '',
+              height: 50,
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
-          child: Icon(Icons.checkroom, color: Colors.grey.shade600, size: 22),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
+        // Middle: Title and Specs (Aligned to Right in RTL)
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 item.title,
-                textAlign: TextAlign.right,
-                style: const TextStyle(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.tajawal(
                   fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  fontWeight: FontWeight.w700,
+                  color: AtelierColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 2),
               Text(
                 formatBidi(item.specs),
-                style: const TextStyle(fontSize: 11, color: Colors.grey),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.tajawal(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400,
+                  color: AtelierColors.textMuted,
+                ),
               ),
             ],
           ),
         ),
-        const SizedBox(width: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '\$${(item.price * item.quantity).toInt()}',
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Container(
-              height: 28,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      try {
-                        CartService.instance.incrementQuantity(item.id);
-                      } on Exception catch (e) {
-                        showCleanSnackBar(
-                          context,
-                          e.toString(),
-                          backgroundColor: const Color(0xFF991B1B),
-                        );
-                      }
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        '+',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    '${item.quantity}',
-                    style: const TextStyle(
-                      fontSize: 11,
+        const SizedBox(width: 8),
+        // Stepper: [- Qty +]
+        Container(
+          height: 28,
+          decoration: BoxDecoration(
+            color: AtelierColors.surfaceElevated,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AtelierColors.borderSubtle),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                onTap: () {
+                  try {
+                    CartService.instance.incrementQuantity(item.id);
+                  } on Exception catch (e) {
+                    showCleanSnackBar(
+                      context,
+                      e.toString(),
+                      backgroundColor: AtelierColors.error,
+                    );
+                  }
+                },
+                borderRadius: const BorderRadius.horizontal(right: Radius.circular(8)),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Text(
+                    '+',
+                    style: TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.bold,
+                      color: AtelierColors.textPrimary,
                     ),
                   ),
-                  InkWell(
-                    onTap: () =>
-                        CartService.instance.decrementQuantity(item.id),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Text(
-                        '-',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  '${item.quantity}',
+                  style: GoogleFonts.outfit(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AtelierColors.textPrimary,
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () =>
+                    CartService.instance.decrementQuantity(item.id),
+                borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Text(
+                    '-',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AtelierColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 8),
+        // Item Price (Numeral in Outfit font)
+        Text(
+          '\$${(item.price * item.quantity).toInt()}',
+          style: GoogleFonts.outfit(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: AtelierColors.textPrimary,
+          ),
+        ),
+        // Left side in RTL: Delete Button
+        IconButton(
+          icon: const Icon(
+            Icons.delete_outline,
+            color: AtelierColors.textMuted,
+            size: 19,
+          ),
+          splashRadius: 18,
+          onPressed: () {
+            CartService.instance.removeItem(item.id);
+            showCleanSnackBar(context, 'تم حذف (${item.title}) من السلة');
+          },
         ),
       ],
     );
   }
 
-  Widget _buildDeliveryAddressCard() {
-    return Container(
+  /// Inset Grouped Surface for Delivery Address, Loyalty Rewards, and Payment Options
+  Widget _buildCheckoutPreferencesPanel() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Section Eyebrow Header with Hairline Accent
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                'إعدادات التسليم والامتيازات',
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.tajawal(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  color: AtelierColors.textPrimary,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            const Expanded(
+              child: Divider(
+                height: 1,
+                thickness: 0.8,
+                color: AtelierColors.borderSubtle,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+
+        // Unified Inset Grouped Surface
+        Container(
+          decoration: BoxDecoration(
+            color: AtelierColors.surface,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AtelierColors.borderSubtle, width: 1.0),
+            boxShadow: AtelierTheme.subtleShadow,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // 1. Delivery Address Row
+              _buildDeliveryAddressRow(),
+
+              // Hairline Row Divider
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(height: 1, thickness: 0.8, color: AtelierColors.borderSubtle),
+              ),
+
+              // 2. Privilege Rewards Switch Row
+              _buildRewardsRow(),
+
+              // Hairline Row Divider
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(height: 1, thickness: 0.8, color: AtelierColors.borderSubtle),
+              ),
+
+              // 3. Payment Method Section
+              _buildPaymentMethodSection(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDeliveryAddressRow() {
+    return Padding(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
       child: Row(
         children: [
+          // Right side in RTL: Location Icon Circle
           Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
+            width: 38,
+            height: 38,
+            decoration: const BoxDecoration(
+              color: AtelierColors.surfaceElevated,
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.lock_outlined,
-              size: 18,
-              color: Colors.black87,
+              Icons.location_on_outlined,
+              size: 19,
+              color: AtelierColors.primary,
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          // Middle in RTL: Address Info
+          Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'عنوان التوصيل: دمشق، المزة',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ],
+                Text(
+                  'عنوان التوصيل: دمشق، المزة',
+                  style: GoogleFonts.tajawal(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AtelierColors.textPrimary,
+                  ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'لا يمكن تعديل العنوان بعد تأكيد الطلب',
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
+                  style: GoogleFonts.tajawal(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    color: AtelierColors.textMuted,
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
+          // Left side in RTL: Status Badge
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
-              color: const Color(0xFFECFDF5),
+              color: AtelierColors.primaryTint,
               borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: AtelierColors.primaryBorder),
             ),
-            child: const Text(
+            child: Text(
               'معتمد',
-              style: TextStyle(
+              style: GoogleFonts.tajawal(
                 fontSize: 10,
-                color: Color(0xFF047857),
-                fontWeight: FontWeight.bold,
+                color: AtelierColors.primary,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -519,64 +716,106 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     );
   }
 
-  Widget _buildRewardsAndPaymentCard() {
-    return Container(
+  Widget _buildRewardsRow() {
+    return Padding(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Right side in RTL: Star Icon & Info
+          Container(
+            width: 38,
+            height: 38,
+            decoration: const BoxDecoration(
+              color: AtelierColors.goldTint,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.stars,
+              size: 20,
+              color: AtelierColors.goldDark,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  r'استخدام 450 نقطة مكافآت (-$45)',
+                  style: GoogleFonts.tajawal(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AtelierColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  _useRewardPoints
+                      ? 'خصم فوري مطبق على إجمالي الطلب'
+                      : 'تم إلغاء استخدام النقاط',
+                  style: GoogleFonts.tajawal(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: _useRewardPoints ? AtelierColors.goldDark : AtelierColors.textMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          // Left side in RTL: Switch
+          Switch(
+            value: _useRewardPoints,
+            activeThumbColor: Colors.white,
+            activeTrackColor: AtelierColors.primary,
+            inactiveTrackColor: AtelierColors.surfaceSubtle,
+            onChanged: (val) => setState(() => _useRewardPoints = val),
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildPaymentMethodSection() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Rewards Switch Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Switch(
-                value: _useRewardPoints,
-                activeTrackColor: const Color(0xFF047857),
-                onChanged: (val) => setState(() => _useRewardPoints = val),
-              ),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        r'استخدام 450 نقطة مكافآت (-$45)',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      SizedBox(width: 6),
-                      Icon(Icons.stars, color: Color(0xFFF59E0B), size: 18),
-                    ],
+              Expanded(
+                child: Text(
+                  'طريقة الدفع',
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.tajawal(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AtelierColors.textPrimary,
                   ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.shield_outlined, size: 12, color: AtelierColors.textMuted),
+                  const SizedBox(width: 4),
                   Text(
-                    'خصم فوري مطبق',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                    'دفع مشفر وآمن',
+                    style: GoogleFonts.tajawal(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                      color: AtelierColors.textMuted,
+                    ),
                   ),
                 ],
               ),
             ],
           ),
-          const Divider(height: 24),
-
-          const Text(
-            'طريقة الدفع',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 10),
-
+          const SizedBox(height: 12),
           // Payment Options Row
           Row(
             children: [
@@ -614,32 +853,43 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
     final bool isSelected = _selectedPaymentMethod == id;
     return InkWell(
       onTap: () => setState(() => _selectedPaymentMethod = id),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+      borderRadius: BorderRadius.circular(12),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFECFDF5) : Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          color: isSelected ? AtelierColors.primaryTint : AtelierColors.surface,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? const Color(0xFF047857) : Colors.grey.shade300,
+            color: isSelected ? AtelierColors.primary : AtelierColors.borderSubtle,
             width: isSelected ? 1.5 : 1.0,
           ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: AtelierColors.primary.withValues(alpha: 0.12),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : null,
         ),
         child: Column(
           children: [
             Icon(
               icon,
-              size: 20,
+              size: 22,
               color: isSelected
-                  ? const Color(0xFF047857)
-                  : Colors.grey.shade700,
+                  ? AtelierColors.primary
+                  : AtelierColors.textSecondary,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected ? const Color(0xFF047857) : Colors.black87,
+              style: GoogleFonts.tajawal(
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                color: isSelected ? AtelierColors.primary : AtelierColors.textPrimary,
               ),
             ),
           ],
@@ -650,10 +900,17 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
 
   Widget _buildBottomSubmitBar(BuildContext context, double finalTotal) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      decoration: const BoxDecoration(
+        color: AtelierColors.surface,
+        border: Border(top: BorderSide(color: AtelierColors.borderSubtle)),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x0A1A1208),
+            blurRadius: 16,
+            offset: Offset(0, -4),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -662,63 +919,74 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'الإجمالي النهائي',
-                style: TextStyle(fontSize: 10, color: Colors.grey),
+                style: GoogleFonts.tajawal(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  color: AtelierColors.textMuted,
+                ),
               ),
               Text(
                 '\$${finalTotal.toInt()}',
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                style: GoogleFonts.outfit(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: AtelierColors.textPrimary,
                 ),
               ),
             ],
           ),
-          ElevatedButton.icon(
-            onPressed: () {
-              try {
-                // Group cart items by vendor shipment and create ShipmentOrders
-                final grouped = CartService.instance.groupedByShipment;
-                final newOrders = OrderService.instance.createOrdersFromCart(
-                  grouped,
-                );
+          const SizedBox(width: 12),
+          Flexible(
+            child: ElevatedButton.icon(
+              onPressed: () {
+                try {
+                  final grouped = CartService.instance.groupedByShipment;
+                  final newOrders = OrderService.instance.createOrdersFromCart(
+                    grouped,
+                  );
 
-                if (widget.onOrderSubmitted != null && newOrders.isNotEmpty) {
-                  widget.onOrderSubmitted!(newOrders.first);
+                  if (widget.onOrderSubmitted != null && newOrders.isNotEmpty) {
+                    widget.onOrderSubmitted!(newOrders.first);
+                  }
+
+                  CartService.instance.clearCart();
+
+                  final orderIds = newOrders.map((o) => o.id).join(' & ');
+                  showCleanSnackBar(
+                    context,
+                    'تم تأكيد وإرسال الشحنات ($orderIds) بنجاح!',
+                  );
+
+                  widget.onNavigateTab?.call(2);
+                } on Exception catch (e) {
+                  showCleanSnackBar(
+                    context,
+                    e.toString(),
+                    backgroundColor: AtelierColors.error,
+                  );
                 }
-
-                CartService.instance.clearCart();
-
-                final orderIds = newOrders.map((o) => o.id).join(' & ');
-                showCleanSnackBar(
-                  context,
-                  'تم تأكيد وإرسال الشحنات ($orderIds) بنجاح!',
-                );
-
-                // Smoothly transition to the Orders tab (index 2)
-                widget.onNavigateTab?.call(2);
-              } on Exception catch (e) {
-                showCleanSnackBar(
-                  context,
-                  e.toString(),
-                  backgroundColor: const Color(0xFF991B1B),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF1B4D3E),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AtelierColors.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
               ),
-            ),
-            icon: const Icon(Icons.arrow_back, size: 18),
-            label: const Text(
-              'تأكيد وإرسال الطلب',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              icon: const Icon(Icons.arrow_back, size: 16),
+              label: Text(
+                'تأكيد وإرسال الطلب',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.tajawal(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
           ),
         ],
