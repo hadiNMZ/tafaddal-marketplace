@@ -50,7 +50,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 // Scrollable Content
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 12.0,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -282,7 +285,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.hub_outlined, size: 18, color: AtelierColors.primary),
+          const Icon(
+            Icons.hub_outlined,
+            size: 18,
+            color: AtelierColors.primary,
+          ),
           const SizedBox(width: 8),
           Flexible(
             child: Text(
@@ -340,7 +347,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                           decoration: BoxDecoration(
                             color: AtelierColors.surfaceElevated,
                             shape: BoxShape.circle,
-                            border: Border.all(color: AtelierColors.borderSubtle),
+                            border: Border.all(
+                              color: AtelierColors.borderSubtle,
+                            ),
                           ),
                           child: const Icon(
                             Icons.storefront_outlined,
@@ -351,7 +360,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                         const SizedBox(width: 8),
                         Flexible(
                           child: Text(
-                            formatBidi('شحنة $index: $storeName (#$shipmentCode)'),
+                            formatBidi(
+                              'شحنة $index: $storeName (#$shipmentCode)',
+                            ),
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.tajawal(
                               fontSize: 13,
@@ -366,16 +377,26 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   const SizedBox(width: 8),
                   // Left side in RTL: Delivery Days Badge
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AtelierColors.goldTint,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AtelierColors.goldBorder, width: 0.8),
+                      border: Border.all(
+                        color: AtelierColors.goldBorder,
+                        width: 0.8,
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.schedule, size: 12, color: AtelierColors.goldDark),
+                        const Icon(
+                          Icons.schedule,
+                          size: 12,
+                          color: AtelierColors.goldDark,
+                        ),
                         const SizedBox(width: 4),
                         Text(
                           deliveryDays,
@@ -396,7 +417,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 (item) => Column(
                   children: [
                     _buildCartItemRow(item),
-                    const Divider(height: 24, color: AtelierColors.borderSubtle),
+                    const Divider(
+                      height: 24,
+                      color: AtelierColors.borderSubtle,
+                    ),
                   ],
                 ),
               ),
@@ -509,7 +533,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                     );
                   }
                 },
-                borderRadius: const BorderRadius.horizontal(right: Radius.circular(8)),
+                borderRadius: const BorderRadius.horizontal(
+                  right: Radius.circular(8),
+                ),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Text(
@@ -534,9 +560,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                 ),
               ),
               InkWell(
-                onTap: () =>
-                    CartService.instance.decrementQuantity(item.id),
-                borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
+                onTap: () => CartService.instance.decrementQuantity(item.id),
+                borderRadius: const BorderRadius.horizontal(
+                  left: Radius.circular(8),
+                ),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Text(
@@ -627,7 +654,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               // Hairline Row Divider
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(height: 1, thickness: 0.8, color: AtelierColors.borderSubtle),
+                child: Divider(
+                  height: 1,
+                  thickness: 0.8,
+                  color: AtelierColors.borderSubtle,
+                ),
               ),
 
               // 2. Privilege Rewards Switch Row
@@ -636,7 +667,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               // Hairline Row Divider
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(height: 1, thickness: 0.8, color: AtelierColors.borderSubtle),
+                child: Divider(
+                  height: 1,
+                  thickness: 0.8,
+                  color: AtelierColors.borderSubtle,
+                ),
               ),
 
               // 3. Payment Method Section
@@ -757,7 +792,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
                   style: GoogleFonts.tajawal(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
-                    color: _useRewardPoints ? AtelierColors.goldDark : AtelierColors.textMuted,
+                    color: _useRewardPoints
+                        ? AtelierColors.goldDark
+                        : AtelierColors.textMuted,
                   ),
                 ),
               ],
@@ -801,7 +838,11 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.shield_outlined, size: 12, color: AtelierColors.textMuted),
+                  const Icon(
+                    Icons.shield_outlined,
+                    size: 12,
+                    color: AtelierColors.textMuted,
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     'دفع مشفر وآمن',
@@ -861,7 +902,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
           color: isSelected ? AtelierColors.primaryTint : AtelierColors.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? AtelierColors.primary : AtelierColors.borderSubtle,
+            color: isSelected
+                ? AtelierColors.primary
+                : AtelierColors.borderSubtle,
             width: isSelected ? 1.5 : 1.0,
           ),
           boxShadow: isSelected
@@ -889,7 +932,9 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               style: GoogleFonts.tajawal(
                 fontSize: 12,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                color: isSelected ? AtelierColors.primary : AtelierColors.textPrimary,
+                color: isSelected
+                    ? AtelierColors.primary
+                    : AtelierColors.textPrimary,
               ),
             ),
           ],
@@ -971,7 +1016,10 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AtelierColors.primary,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 elevation: 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),

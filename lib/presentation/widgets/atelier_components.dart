@@ -171,7 +171,11 @@ class AtelierProductVisual extends StatelessWidget {
   _AestheticStyle _getAestheticStyle(String name, String cat) {
     final lower = name.toLowerCase();
 
-    if (lower.contains('سهرة') || lower.contains('كريب') || lower.contains('فستان') || lower.contains('درابيه') || cat == 'فساتين') {
+    if (lower.contains('سهرة') ||
+        lower.contains('كريب') ||
+        lower.contains('فستان') ||
+        lower.contains('درابيه') ||
+        cat == 'فساتين') {
       return _AestheticStyle(
         gradientColors: [
           const Color(0xFF0D281E),
@@ -182,7 +186,12 @@ class AtelierProductVisual extends StatelessWidget {
         iconData: Icons.dry_cleaning_outlined,
         fabricLabel: 'حرير كريب ملكي',
       );
-    } else if (lower.contains('معطف') || lower.contains('صوف') || lower.contains('كشمير') || lower.contains('كاب') || lower.contains('جاكيت') || cat == 'معاطف') {
+    } else if (lower.contains('معطف') ||
+        lower.contains('صوف') ||
+        lower.contains('كشمير') ||
+        lower.contains('كاب') ||
+        lower.contains('جاكيت') ||
+        cat == 'معاطف') {
       return _AestheticStyle(
         gradientColors: [
           const Color(0xFF1A1C20),
@@ -193,7 +202,10 @@ class AtelierProductVisual extends StatelessWidget {
         iconData: Icons.shield_moon_outlined,
         fabricLabel: 'صوف كشمير نقي',
       );
-    } else if (lower.contains('عباية') || lower.contains('قفطان') || lower.contains('مقصّب') || cat == 'عبايات') {
+    } else if (lower.contains('عباية') ||
+        lower.contains('قفطان') ||
+        lower.contains('مقصّب') ||
+        cat == 'عبايات') {
       return _AestheticStyle(
         gradientColors: [
           const Color(0xFF1E1724),
@@ -204,7 +216,10 @@ class AtelierProductVisual extends StatelessWidget {
         iconData: Icons.auto_awesome_outlined,
         fabricLabel: 'حرير فاخر مطرز',
       );
-    } else if (lower.contains('بدلة') || lower.contains('تويد') || lower.contains('تاكسيدو') || cat == 'بدلات') {
+    } else if (lower.contains('بدلة') ||
+        lower.contains('تويد') ||
+        lower.contains('تاكسيدو') ||
+        cat == 'بدلات') {
       return _AestheticStyle(
         gradientColors: [
           const Color(0xFF141E28),
@@ -215,7 +230,9 @@ class AtelierProductVisual extends StatelessWidget {
         iconData: Icons.checkroom_outlined,
         fabricLabel: 'تويد إنجليزي فاخر',
       );
-    } else if (lower.contains('حذاء') || lower.contains('أوكسفورد') || cat == 'أحذية') {
+    } else if (lower.contains('حذاء') ||
+        lower.contains('أوكسفورد') ||
+        cat == 'أحذية') {
       return _AestheticStyle(
         gradientColors: [
           const Color(0xFF2A1C14),
@@ -226,7 +243,10 @@ class AtelierProductVisual extends StatelessWidget {
         iconData: Icons.straighten_outlined,
         fabricLabel: 'جلد فينيسي طبيعي',
       );
-    } else if (lower.contains('حقيبة') || lower.contains('شال') || lower.contains('جلد') || cat == 'حقائب') {
+    } else if (lower.contains('حقيبة') ||
+        lower.contains('شال') ||
+        lower.contains('جلد') ||
+        cat == 'حقائب') {
       return _AestheticStyle(
         gradientColors: [
           const Color(0xFF381F10),
@@ -351,18 +371,12 @@ class AtelierStoreAvatar extends StatelessWidget {
                       ? const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFF143026),
-                            Color(0xFF265444),
-                          ],
+                          colors: [Color(0xFF143026), Color(0xFF265444)],
                         )
                       : const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFFFFFFFF),
-                            Color(0xFFF7F3EB),
-                          ],
+                          colors: [Color(0xFFFFFFFF), Color(0xFFF7F3EB)],
                         ),
                   border: Border.all(
                     color: isSelected
@@ -386,7 +400,9 @@ class AtelierStoreAvatar extends StatelessWidget {
                     style: GoogleFonts.tajawal(
                       fontSize: radius * 0.72,
                       fontWeight: FontWeight.w700,
-                      color: isSelected ? AtelierColors.goldLight : AtelierColors.primary,
+                      color: isSelected
+                          ? AtelierColors.goldLight
+                          : AtelierColors.primary,
                       height: 1.1,
                     ),
                   ),
@@ -419,7 +435,9 @@ class AtelierStoreAvatar extends StatelessWidget {
             style: GoogleFonts.tajawal(
               fontSize: 11,
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-              color: isSelected ? AtelierColors.primary : AtelierColors.textSecondary,
+              color: isSelected
+                  ? AtelierColors.primary
+                  : AtelierColors.textSecondary,
             ),
           ),
         ],
@@ -455,7 +473,8 @@ class AtelierCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? AtelierColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: border ?? Border.all(color: AtelierColors.borderSubtle, width: 1.0),
+        border:
+            border ?? Border.all(color: AtelierColors.borderSubtle, width: 1.0),
         boxShadow: AtelierTheme.subtleShadow,
       ),
       child: child,
@@ -497,10 +516,7 @@ class AtelierBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: borderColor ?? backgroundColor,
-          width: 0.8,
-        ),
+        border: Border.all(color: borderColor ?? backgroundColor, width: 0.8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -606,7 +622,11 @@ void showAtelierNotificationsModal(BuildContext context) {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: const Icon(Icons.close, color: AtelierColors.textSecondary, size: 20),
+                      icon: const Icon(
+                        Icons.close,
+                        color: AtelierColors.textSecondary,
+                        size: 20,
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -621,7 +641,8 @@ void showAtelierNotificationsModal(BuildContext context) {
                     children: [
                       _buildNotificationItemTile(
                         title: 'شحنة أزياء الشام (#SO-902)',
-                        subtitle: 'بدأ خياطو الأتيليه في تحضير وتطريز طلبك الفاخر.',
+                        subtitle:
+                            'بدأ خياطو الأتيليه في تحضير وتطريز طلبك الفاخر.',
                         time: 'منذ 15 دقيقة',
                         category: 'شحنات',
                         icon: Icons.local_shipping_outlined,
@@ -675,10 +696,14 @@ Widget _buildNotificationItemTile({
     margin: const EdgeInsets.only(bottom: 10),
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
-      color: isUnread ? AtelierColors.primaryTint : AtelierColors.surfaceElevated,
+      color: isUnread
+          ? AtelierColors.primaryTint
+          : AtelierColors.surfaceElevated,
       borderRadius: BorderRadius.circular(14),
       border: Border.all(
-        color: isUnread ? AtelierColors.primaryBorder : AtelierColors.borderSubtle,
+        color: isUnread
+            ? AtelierColors.primaryBorder
+            : AtelierColors.borderSubtle,
         width: 0.8,
       ),
     ),
@@ -692,14 +717,18 @@ Widget _buildNotificationItemTile({
             color: isUnread ? Colors.white : AtelierColors.surface,
             shape: BoxShape.circle,
             border: Border.all(
-              color: isUnread ? AtelierColors.primary : AtelierColors.borderSubtle,
+              color: isUnread
+                  ? AtelierColors.primary
+                  : AtelierColors.borderSubtle,
               width: 0.8,
             ),
           ),
           child: Icon(
             icon,
             size: 18,
-            color: isUnread ? AtelierColors.primary : AtelierColors.textSecondary,
+            color: isUnread
+                ? AtelierColors.primary
+                : AtelierColors.textSecondary,
           ),
         ),
         const SizedBox(width: 12),
@@ -715,7 +744,9 @@ Widget _buildNotificationItemTile({
                       title,
                       style: GoogleFonts.tajawal(
                         fontSize: 13,
-                        fontWeight: isUnread ? FontWeight.w800 : FontWeight.w600,
+                        fontWeight: isUnread
+                            ? FontWeight.w800
+                            : FontWeight.w600,
                         color: AtelierColors.textPrimary,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -723,11 +754,17 @@ Widget _buildNotificationItemTile({
                   ),
                   const SizedBox(width: 6),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: AtelierColors.surface,
                       borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: AtelierColors.borderSubtle, width: 0.6),
+                      border: Border.all(
+                        color: AtelierColors.borderSubtle,
+                        width: 0.6,
+                      ),
                     ),
                     child: Text(
                       category,

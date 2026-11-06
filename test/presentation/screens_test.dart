@@ -30,74 +30,80 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('HomeScreen renders new luxury stores and filtered categories', (
-      WidgetTester tester,
-    ) async {
-      tester.view.physicalSize = const Size(360, 780);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.reset);
+    testWidgets(
+      'HomeScreen renders new luxury stores and filtered categories',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(360, 780);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.reset);
 
-      await tester.pumpWidget(buildRtlTestApp(const HomeScreen()));
-      expect(find.text('دار الياسمين'), findsWidgets);
-      expect(find.text('أتيليه القصب'), findsWidgets);
-      expect(find.text('مشغل الفيروز'), findsWidgets);
-      expect(find.text('دار الجواهر'), findsWidgets);
+        await tester.pumpWidget(buildRtlTestApp(const HomeScreen()));
+        expect(find.text('دار الياسمين'), findsWidgets);
+        expect(find.text('أتيليه القصب'), findsWidgets);
+        expect(find.text('مشغل الفيروز'), findsWidgets);
+        expect(find.text('دار الجواهر'), findsWidgets);
 
-      expect(find.text('بدلات'), findsOneWidget);
-      expect(find.text('حقائب'), findsOneWidget);
+        expect(find.text('بدلات'), findsOneWidget);
+        expect(find.text('حقائب'), findsOneWidget);
 
-      // Filter by 'بدلات'
-      final suitsFilter = find.text('بدلات');
-      await tester.ensureVisible(suitsFilter);
-      await tester.tap(suitsFilter);
-      await tester.pumpAndSettle();
+        // Filter by 'بدلات'
+        final suitsFilter = find.text('بدلات');
+        await tester.ensureVisible(suitsFilter);
+        await tester.tap(suitsFilter);
+        await tester.pumpAndSettle();
 
-      expect(find.text('بدلة تويد كلاسيكية'), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    });
+        expect(find.text('بدلة تويد كلاسيكية'), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      },
+    );
 
-    testWidgets('HomeScreen tapping الكل shows all stores modal without overflow', (
-      WidgetTester tester,
-    ) async {
-      tester.view.physicalSize = const Size(360, 780);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.reset);
+    testWidgets(
+      'HomeScreen tapping الكل shows all stores modal without overflow',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(360, 780);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.reset);
 
-      await tester.pumpWidget(buildRtlTestApp(const HomeScreen()));
+        await tester.pumpWidget(buildRtlTestApp(const HomeScreen()));
 
-      final allStoresBtn = find.text('الكل ›');
-      expect(allStoresBtn, findsOneWidget);
-      await tester.tap(allStoresBtn);
-      await tester.pumpAndSettle();
+        final allStoresBtn = find.text('الكل ›');
+        expect(allStoresBtn, findsOneWidget);
+        await tester.tap(allStoresBtn);
+        await tester.pumpAndSettle();
 
-      // Verify all stores modal opened
-      expect(find.text('المتاجر المعتمدة في تفضّل'), findsOneWidget);
-      expect(find.text('جميع المتاجر'), findsOneWidget);
-      expect(find.text('أزياء الشام'), findsWidgets);
-      expect(find.text('أتيليه القصب'), findsWidgets);
-      expect(find.text('دار الياسمين'), findsWidgets);
-      expect(tester.takeException(), isNull);
-    });
+        // Verify all stores modal opened
+        expect(find.text('المتاجر المعتمدة في تفضّل'), findsOneWidget);
+        expect(find.text('جميع المتاجر'), findsOneWidget);
+        expect(find.text('أزياء الشام'), findsWidgets);
+        expect(find.text('أتيليه القصب'), findsWidgets);
+        expect(find.text('دار الياسمين'), findsWidgets);
+        expect(tester.takeException(), isNull);
+      },
+    );
 
-    testWidgets('CartCheckoutScreen tapping bell icon opens notifications modal', (
-      WidgetTester tester,
-    ) async {
-      tester.view.physicalSize = const Size(360, 780);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.reset);
+    testWidgets(
+      'CartCheckoutScreen tapping bell icon opens notifications modal',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(360, 780);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.reset);
 
-      await tester.pumpWidget(buildRtlTestApp(const CartCheckoutScreen()));
+        await tester.pumpWidget(buildRtlTestApp(const CartCheckoutScreen()));
 
-      final bellBtn = find.byIcon(Icons.notifications_none_outlined);
-      expect(bellBtn, findsOneWidget);
-      await tester.tap(bellBtn);
-      await tester.pumpAndSettle();
+        final bellBtn = find.byIcon(Icons.notifications_none_outlined);
+        expect(bellBtn, findsOneWidget);
+        await tester.tap(bellBtn);
+        await tester.pumpAndSettle();
 
-      // Verify notifications modal opened
-      expect(find.text('مركز الإشعارات والتنبيهات'), findsOneWidget);
-      expect(find.text('تحديثات الشحنات والامتيازات الحصرية'), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    });
+        // Verify notifications modal opened
+        expect(find.text('مركز الإشعارات والتنبيهات'), findsOneWidget);
+        expect(
+          find.text('تحديثات الشحنات والامتيازات الحصرية'),
+          findsOneWidget,
+        );
+        expect(tester.takeException(), isNull);
+      },
+    );
 
     testWidgets('CartCheckoutScreen renders shipment breakdown and totals', (
       WidgetTester tester,

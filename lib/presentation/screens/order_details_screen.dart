@@ -98,11 +98,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       message = e.message;
     }
 
-    showCleanSnackBar(
-      context,
-      message,
-      backgroundColor: AtelierColors.error,
-    );
+    showCleanSnackBar(context, message, backgroundColor: AtelierColors.error);
   }
 
   int _getStepIndex() {
@@ -131,7 +127,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           backgroundColor: AtelierColors.bg,
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 16.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -169,7 +168,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       children: [
         // Back Button on the RIGHT (start of screen in RTL)
         IconButton(
-          icon: const Icon(Icons.arrow_forward, color: AtelierColors.textPrimary),
+          icon: const Icon(
+            Icons.arrow_forward,
+            color: AtelierColors.textPrimary,
+          ),
           onPressed: () {
             if (Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
@@ -210,11 +212,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ),
               const SizedBox(width: 4),
-              const Icon(
-                Icons.verified,
-                size: 13,
-                color: AtelierColors.gold,
-              ),
+              const Icon(Icons.verified, size: 13, color: AtelierColors.gold),
             ],
           ),
         ),
@@ -240,7 +238,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected ? AtelierColors.primary : AtelierColors.surface,
+                  color: isSelected
+                      ? AtelierColors.primary
+                      : AtelierColors.surface,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: isSelected
@@ -276,7 +276,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         style: GoogleFonts.outfit(
                           fontSize: 9,
                           fontWeight: FontWeight.w700,
-                          color: isSelected ? Colors.white : AtelierColors.textSecondary,
+                          color: isSelected
+                              ? Colors.white
+                              : AtelierColors.textSecondary,
                         ),
                       ),
                     ),
@@ -288,7 +290,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         fontWeight: isSelected
                             ? FontWeight.w700
                             : FontWeight.w500,
-                        color: isSelected ? Colors.white : AtelierColors.textPrimary,
+                        color: isSelected
+                            ? Colors.white
+                            : AtelierColors.textPrimary,
                       ),
                     ),
                   ],
@@ -313,7 +317,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       decoration: BoxDecoration(
         color: AtelierColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AtelierColors.goldBorder.withValues(alpha: 0.7)),
+        border: Border.all(
+          color: AtelierColors.goldBorder.withValues(alpha: 0.7),
+        ),
         boxShadow: AtelierTheme.subtleShadow,
       ),
       child: Column(
@@ -353,7 +359,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 decoration: BoxDecoration(
                   color: AtelierColors.goldTint,
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: AtelierColors.goldBorder, width: 0.8),
+                  border: Border.all(
+                    color: AtelierColors.goldBorder,
+                    width: 0.8,
+                  ),
                 ),
                 child: Text(
                   'دورة يناير الحالية',
@@ -382,7 +391,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   isBold: true,
                 ),
               ),
-              Container(width: 1, height: 38, color: AtelierColors.borderSubtle),
+              Container(
+                width: 1,
+                height: 38,
+                color: AtelierColors.borderSubtle,
+              ),
               Expanded(
                 child: _buildSettlementMetric(
                   'عمولة 15%',
@@ -391,7 +404,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   isNegative: true,
                 ),
               ),
-              Container(width: 1, height: 38, color: AtelierColors.borderSubtle),
+              Container(
+                width: 1,
+                height: 38,
+                color: AtelierColors.borderSubtle,
+              ),
               Expanded(
                 child: _buildSettlementMetric(
                   'المبيعات',
@@ -546,23 +563,24 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
           // Receipt Items List (Clean, airy, uncrowded without nested heavy boxes)
           if (_order.items.isNotEmpty)
-            ..._order.items.asMap().entries.map(
-              (entry) {
-                final idx = entry.key;
-                final item = entry.value;
-                return Column(
-                  children: [
-                    _buildItemRow(
-                      item.productTitle,
-                      item.specs,
-                      '\$${(item.price * item.quantity).toInt()}',
+            ..._order.items.asMap().entries.map((entry) {
+              final idx = entry.key;
+              final item = entry.value;
+              return Column(
+                children: [
+                  _buildItemRow(
+                    item.productTitle,
+                    item.specs,
+                    '\$${(item.price * item.quantity).toInt()}',
+                  ),
+                  if (idx < _order.items.length - 1)
+                    const Divider(
+                      height: 16,
+                      color: AtelierColors.borderSubtle,
                     ),
-                    if (idx < _order.items.length - 1)
-                      const Divider(height: 16, color: AtelierColors.borderSubtle),
-                  ],
-                );
-              },
-            )
+                ],
+              );
+            })
           else ...[
             _buildItemRow('معطف صوف كشمير', 'مقاس L • أسود', r'$120'),
             const Divider(height: 16, color: AtelierColors.borderSubtle),
@@ -639,7 +657,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           const SizedBox(width: 14),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
+              crossAxisAlignment:
+                  CrossAxisAlignment.start, // Right aligned in RTL
               children: [
                 Text(
                   title,
@@ -754,7 +773,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             style: GoogleFonts.tajawal(
               fontSize: 10,
               fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
-              color: isCurrent ? AtelierColors.primary : AtelierColors.textMuted,
+              color: isCurrent
+                  ? AtelierColors.primary
+                  : AtelierColors.textMuted,
             ),
           ),
         ],
@@ -790,7 +811,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         ElevatedButton.icon(
           onPressed:
               _order.currentState == OrderState.delivered ||
-                   _order.currentState == OrderState.rejected
+                  _order.currentState == OrderState.rejected
               ? null
               : _handleNextStage,
           style: ElevatedButton.styleFrom(
@@ -827,7 +848,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                icon: const Icon(Icons.shield_outlined, size: 13, color: AtelierColors.textMuted),
+                icon: const Icon(
+                  Icons.shield_outlined,
+                  size: 13,
+                  color: AtelierColors.textMuted,
+                ),
                 label: Text(
                   'تخطي (Delivered)',
                   style: GoogleFonts.tajawal(
@@ -849,7 +874,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                icon: const Icon(Icons.lock_reset_outlined, size: 13, color: AtelierColors.textMuted),
+                icon: const Icon(
+                  Icons.lock_reset_outlined,
+                  size: 13,
+                  color: AtelierColors.textMuted,
+                ),
                 label: Text(
                   'رجوع (Placed)',
                   style: GoogleFonts.tajawal(
@@ -911,7 +940,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               const SizedBox(width: 8),
               // Left side in RTL: Eligibility Badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: isDelivered
                       ? AtelierColors.primaryTint
@@ -963,7 +995,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start, // Right aligned in RTL
                     children: [
                       Text(
                         _order.items.isNotEmpty

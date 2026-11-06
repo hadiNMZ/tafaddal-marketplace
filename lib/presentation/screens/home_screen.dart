@@ -130,7 +130,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(width: 8),
                       IconButton(
-                        icon: const Icon(Icons.close, color: AtelierColors.textSecondary, size: 20),
+                        icon: const Icon(
+                          Icons.close,
+                          color: AtelierColors.textSecondary,
+                          size: 20,
+                        ),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ],
@@ -144,7 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       physics: const BouncingScrollPhysics(),
                       children: [
                         ListTile(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
                           leading: Container(
                             width: 36,
                             height: 36,
@@ -192,19 +198,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           trailing: _selectedStoreFilter == null
-                              ? const Icon(Icons.check_circle, color: AtelierColors.primary, size: 20)
+                              ? const Icon(
+                                  Icons.check_circle,
+                                  color: AtelierColors.primary,
+                                  size: 20,
+                                )
                               : null,
                           onTap: () {
                             setState(() => _selectedStoreFilter = null);
                             Navigator.pop(context);
                           },
                         ),
-                        const Divider(height: 1, color: AtelierColors.borderSubtle),
+                        const Divider(
+                          height: 1,
+                          color: AtelierColors.borderSubtle,
+                        ),
                         ...approvedShops.map(
                           (shop) => Column(
                             children: [
                               ListTile(
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
                                 leading: Container(
                                   width: 36,
                                   height: 36,
@@ -236,7 +251,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   shop.name,
                                   style: GoogleFonts.tajawal(
                                     fontSize: 14,
-                                    fontWeight: _selectedStoreFilter == shop.name
+                                    fontWeight:
+                                        _selectedStoreFilter == shop.name
                                         ? FontWeight.w700
                                         : FontWeight.w500,
                                     color: _selectedStoreFilter == shop.name
@@ -252,14 +268,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 trailing: _selectedStoreFilter == shop.name
-                                    ? const Icon(Icons.check_circle, color: AtelierColors.primary, size: 20)
+                                    ? const Icon(
+                                        Icons.check_circle,
+                                        color: AtelierColors.primary,
+                                        size: 20,
+                                      )
                                     : null,
                                 onTap: () {
-                                  setState(() => _selectedStoreFilter = shop.name);
+                                  setState(
+                                    () => _selectedStoreFilter = shop.name,
+                                  );
                                   Navigator.pop(context);
                                 },
                               ),
-                              const Divider(height: 1, color: AtelierColors.borderSubtle),
+                              const Divider(
+                                height: 1,
+                                color: AtelierColors.borderSubtle,
+                              ),
                             ],
                           ),
                         ),
@@ -287,7 +312,10 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: AtelierColors.bg,
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 16.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -302,7 +330,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Active Store Filter Indicator
                   if (_selectedStoreFilter != null) ...[
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: AtelierColors.primaryTint,
                         borderRadius: BorderRadius.circular(10),
@@ -333,7 +364,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 const SizedBox(width: 4),
-                                const Icon(Icons.close, size: 14, color: AtelierColors.error),
+                                const Icon(
+                                  Icons.close,
+                                  size: 14,
+                                  color: AtelierColors.error,
+                                ),
                               ],
                             ),
                           ),
@@ -442,7 +477,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   color: AtelierColors.surface,
                   shape: BoxShape.circle,
-                  border: Border.all(color: AtelierColors.borderSubtle, width: 1.0),
+                  border: Border.all(
+                    color: AtelierColors.borderSubtle,
+                    width: 1.0,
+                  ),
                   boxShadow: AtelierTheme.subtleShadow,
                 ),
                 child: Stack(
@@ -485,7 +523,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.search, color: AtelierColors.textMuted, size: 20),
+              const Icon(
+                Icons.search,
+                color: AtelierColors.textMuted,
+                size: 20,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: TextField(
@@ -529,7 +571,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildCategoryPills() {
-    final categories = ['الكل', 'فساتين', 'معاطف', 'عبايات', 'بدلات', 'حقائب', 'أحذية'];
+    final categories = [
+      'الكل',
+      'فساتين',
+      'معاطف',
+      'عبايات',
+      'بدلات',
+      'حقائب',
+      'أحذية',
+    ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -547,7 +597,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected ? AtelierColors.primary : AtelierColors.surface,
+                  color: isSelected
+                      ? AtelierColors.primary
+                      : AtelierColors.surface,
                   borderRadius: BorderRadius.circular(22),
                   border: Border.all(
                     color: isSelected
@@ -558,7 +610,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: AtelierColors.primary.withValues(alpha: 0.25),
+                            color: AtelierColors.primary.withValues(
+                              alpha: 0.25,
+                            ),
                             blurRadius: 8,
                             offset: const Offset(0, 3),
                           ),
@@ -570,7 +624,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: GoogleFonts.tajawal(
                     fontSize: 12,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                    color: isSelected ? Colors.white : AtelierColors.textPrimary,
+                    color: isSelected
+                        ? Colors.white
+                        : AtelierColors.textPrimary,
                   ),
                 ),
               ),
@@ -587,7 +643,10 @@ class _HomeScreenState extends State<HomeScreen> {
       decoration: BoxDecoration(
         color: AtelierColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AtelierColors.goldBorder.withValues(alpha: 0.8), width: 1.0),
+        border: Border.all(
+          color: AtelierColors.goldBorder.withValues(alpha: 0.8),
+          width: 1.0,
+        ),
         boxShadow: AtelierTheme.subtleShadow,
       ),
       child: Row(
@@ -600,18 +659,15 @@ class _HomeScreenState extends State<HomeScreen> {
               color: AtelierColors.goldTint,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.stars,
-              color: AtelierColors.gold,
-              size: 20,
-            ),
+            child: const Icon(Icons.stars, color: AtelierColors.gold, size: 20),
           ),
           const SizedBox(width: 10),
 
           // 2. Rewards Text Column (Flexible & Expanded, zero overflow)
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
+              crossAxisAlignment:
+                  CrossAxisAlignment.start, // Right aligned in RTL
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
@@ -659,7 +715,11 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.copy_outlined, size: 11, color: AtelierColors.goldDark),
+                  const Icon(
+                    Icons.copy_outlined,
+                    size: 11,
+                    color: AtelierColors.goldDark,
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     'كود: TAFADDAL25',
@@ -703,11 +763,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(width: 6),
-                const Icon(
-                  Icons.verified,
-                  color: AtelierColors.gold,
-                  size: 16,
-                ),
+                const Icon(Icons.verified, color: AtelierColors.gold, size: 16),
               ],
             ),
             // Left (child 1 in RTL): View All Link
@@ -900,7 +956,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 top: 8,
                 right: 8,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.black.withValues(alpha: 0.5),
                     borderRadius: BorderRadius.circular(10),
@@ -954,7 +1013,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Icon(
                       isFav ? Icons.favorite : Icons.favorite_border,
-                      color: isFav ? AtelierColors.error : AtelierColors.textSecondary,
+                      color: isFav
+                          ? AtelierColors.error
+                          : AtelierColors.textSecondary,
                       size: 15,
                     ),
                   ),
@@ -991,11 +1052,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(width: 3),
-            const Icon(
-              Icons.verified,
-              size: 12,
-              color: AtelierColors.gold,
-            ),
+            const Icon(Icons.verified, size: 12, color: AtelierColors.gold),
           ],
         ),
         const SizedBox(height: 1),
@@ -1076,11 +1133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 17,
-                ),
+                child: const Icon(Icons.add, color: Colors.white, size: 17),
               ),
             ),
           ],

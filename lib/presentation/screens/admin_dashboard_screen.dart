@@ -190,7 +190,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           backgroundColor: AtelierColors.bg,
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 16.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -219,7 +222,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
                   if (!showShop104 && !showShopElegance && !showProduct)
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 24),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 36,
+                        horizontal: 24,
+                      ),
                       decoration: BoxDecoration(
                         color: AtelierColors.surface,
                         borderRadius: BorderRadius.circular(16),
@@ -277,7 +283,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       children: [
         // Back Button on the RIGHT (start of screen in RTL)
         IconButton(
-          icon: const Icon(Icons.arrow_forward, color: AtelierColors.textPrimary),
+          icon: const Icon(
+            Icons.arrow_forward,
+            color: AtelierColors.textPrimary,
+          ),
           onPressed: () {
             if (Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
@@ -357,7 +366,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  Widget _buildKpiCard(String value, String label, Color accentColor, Color bg) {
+  Widget _buildKpiCard(
+    String value,
+    String label,
+    Color accentColor,
+    Color bg,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
       decoration: BoxDecoration(
@@ -405,16 +419,26 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.search, color: AtelierColors.textMuted, size: 18),
+              const Icon(
+                Icons.search,
+                color: AtelierColors.textMuted,
+                size: 18,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: TextField(
                   controller: _searchController,
                   textAlign: TextAlign.right,
-                  style: GoogleFonts.tajawal(fontSize: 12, fontWeight: FontWeight.w500),
+                  style: GoogleFonts.tajawal(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                   decoration: InputDecoration(
                     hintText: 'ابحث بالاسم، المعرّف، أو المتجر...',
-                    hintStyle: GoogleFonts.tajawal(fontSize: 11, color: AtelierColors.textMuted),
+                    hintStyle: GoogleFonts.tajawal(
+                      fontSize: 11,
+                      color: AtelierColors.textMuted,
+                    ),
                     border: InputBorder.none,
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
@@ -424,7 +448,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               if (_searchController.text.isNotEmpty)
                 GestureDetector(
                   onTap: () => _searchController.clear(),
-                  child: const Icon(Icons.clear, color: AtelierColors.textMuted, size: 16),
+                  child: const Icon(
+                    Icons.clear,
+                    color: AtelierColors.textMuted,
+                    size: 16,
+                  ),
                 ),
             ],
           ),
@@ -460,7 +488,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           color: isSelected ? AtelierColors.primary : AtelierColors.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AtelierColors.primary : AtelierColors.borderSubtle,
+            color: isSelected
+                ? AtelierColors.primary
+                : AtelierColors.borderSubtle,
           ),
           boxShadow: isSelected
               ? [
@@ -511,7 +541,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               // Store Name & Subtitle in the MIDDLE
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, // Right aligned in RTL
                   children: [
                     Text(
                       shop.name,
@@ -527,7 +558,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           : 'طلب توثيق واعتماد متجر',
                       style: GoogleFonts.tajawal(
                         fontSize: 11,
-                        color: isApproved ? AtelierColors.primary : AtelierColors.goldDark,
+                        color: isApproved
+                            ? AtelierColors.primary
+                            : AtelierColors.goldDark,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -549,7 +582,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   style: GoogleFonts.outfit(
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
-                    color: isApproved ? AtelierColors.primary : AtelierColors.textMuted,
+                    color: isApproved
+                        ? AtelierColors.primary
+                        : AtelierColors.textMuted,
                   ),
                 ),
               ),
@@ -576,7 +611,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     );
                   },
                   style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -677,7 +715,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
-                        side: const BorderSide(color: AtelierColors.errorBorder),
+                        side: const BorderSide(
+                          color: AtelierColors.errorBorder,
+                        ),
                       ),
                     ),
                     child: Text(
@@ -780,7 +820,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               // Product Name & Store in the MIDDLE
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, // Right aligned in RTL
                   children: [
                     Text(
                       product.name,
@@ -976,7 +1017,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       // Title & Description on the RIGHT
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, // Right aligned in RTL
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start, // Right aligned in RTL
                           children: [
                             Text(
                               formatBidi(log.title),
@@ -1002,7 +1044,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       const SizedBox(width: 10),
                       // Time badge on the LEFT
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: AtelierColors.surfaceElevated,
                           borderRadius: BorderRadius.circular(6),

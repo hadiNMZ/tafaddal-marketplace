@@ -103,7 +103,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              child: const Icon(Icons.shopping_bag_outlined, size: 22),
+                              child: const Icon(
+                                Icons.shopping_bag_outlined,
+                                size: 22,
+                              ),
                             )
                           : const Icon(Icons.shopping_bag_outlined, size: 22),
                     ),
@@ -140,7 +143,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   const BottomNavigationBarItem(
                     icon: Padding(
                       padding: EdgeInsets.only(bottom: 2),
-                      child: Icon(Icons.admin_panel_settings_outlined, size: 22),
+                      child: Icon(
+                        Icons.admin_panel_settings_outlined,
+                        size: 22,
+                      ),
                     ),
                     activeIcon: Padding(
                       padding: EdgeInsets.only(bottom: 2),
