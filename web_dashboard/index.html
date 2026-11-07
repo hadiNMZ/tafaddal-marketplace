@@ -193,6 +193,7 @@
       flex-direction: column;
       gap: 4px;
       list-style: none;
+      overflow-y: auto;
     }
 
     .sidebar-menu-item a {
@@ -206,6 +207,7 @@
       font-size: 14px;
       font-weight: 600;
       transition: all 0.15s ease;
+      cursor: pointer;
     }
 
     .sidebar-menu-item.active a,
@@ -248,7 +250,7 @@
       margin-right: 250px;
       flex: 1;
       padding: 32px 36px 60px;
-      max-width: 1380px;
+      max-width: 1400px;
     }
 
     /* Header Section */
@@ -300,6 +302,27 @@
 
     .btn-primary:hover {
       background-color: var(--brand-primary-light);
+    }
+
+    .btn-secondary {
+      background-color: #FFFFFF;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-surface-elevated);
+      border-color: var(--brand-gold);
     }
 
     /* KPI Cards Grid */
@@ -391,6 +414,36 @@
       font-size: 11px;
       color: var(--text-muted);
       font-family: 'Outfit', 'Tajawal', sans-serif;
+    }
+
+    /* Filter Pills Container */
+    .filter-pills-bar {
+      display: flex;
+      gap: 8px;
+      padding: 12px 20px;
+      background: #FAF8F5;
+      border-bottom: 1px solid var(--border-subtle);
+      overflow-x: auto;
+    }
+
+    .filter-pill {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 5px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .filter-pill:hover,
+    .filter-pill.active {
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      border-color: var(--brand-primary);
     }
 
     /* Lists inside panels */
@@ -567,6 +620,34 @@
       color: var(--text-muted);
     }
 
+    /* Stock Counter Controls */
+    .stock-counter {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .stock-counter button {
+      background: var(--bg-surface-elevated);
+      border: none;
+      width: 28px;
+      height: 28px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    .stock-counter span {
+      width: 36px;
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
     /* Audit Log Cryptographic Styles */
     .audit-entry {
       padding: 14px 20px;
@@ -624,6 +705,60 @@
       border-top: 1px solid var(--border-subtle);
     }
 
+    /* Form Styles */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      background: #fff;
+    }
+
+    .form-control:focus {
+      border-color: var(--brand-gold);
+    }
+
     /* Modal Styling */
     .modal-overlay {
       position: fixed;
@@ -646,7 +781,7 @@
     .modal-card {
       background: #fff;
       border-radius: var(--radius-lg);
-      width: 480px;
+      width: 520px;
       max-width: 90%;
       box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
       border: 1px solid var(--border-color);
@@ -670,7 +805,7 @@
     .modal-close-btn {
       background: none;
       border: none;
-      font-size: 20px;
+      font-size: 22px;
       cursor: pointer;
       color: var(--text-muted);
     }
@@ -680,31 +815,6 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-group label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .form-control {
-      padding: 10px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 13px;
-      outline: none;
-    }
-
-    .form-control:focus {
-      border-color: var(--brand-gold);
     }
 
     .modal-footer {
@@ -747,6 +857,14 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
+    /* Views visibility */
+    .portal-view {
+      display: none;
+    }
+    .portal-view.active {
+      display: block;
+    }
+
     /* Responsive adjustments */
     @media (max-width: 1080px) {
       .dashboard-split {
@@ -757,6 +875,9 @@
       }
       .kpi-grid-5 {
         grid-template-columns: repeat(3, 1fr);
+      }
+      .form-grid-2 {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -805,39 +926,39 @@
           </div>
         </div>
         
-        <ul class="sidebar-menu">
-          <li class="sidebar-menu-item active">
-            <a href="#">
+        <ul class="sidebar-menu" id="merchant-menu">
+          <li class="sidebar-menu-item active" data-view="merchant-view-dashboard">
+            <a onclick="switchMerchantView('merchant-view-dashboard', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
               لوحة التاجر
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="merchant-view-products">
+            <a onclick="switchMerchantView('merchant-view-products', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
               المنتجات
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="merchant-view-inventory">
+            <a onclick="switchMerchantView('merchant-view-inventory', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
               المخزون
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="merchant-view-orders">
+            <a onclick="switchMerchantView('merchant-view-orders', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               الطلبات
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="merchant-view-sales">
+            <a onclick="switchMerchantView('merchant-view-sales', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
               المبيعات والمستحقات
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="merchant-view-settings">
+            <a onclick="switchMerchantView('merchant-view-settings', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               الإعدادات
             </a>
@@ -854,161 +975,383 @@
 
       <!-- Merchant Main Viewport -->
       <main class="main-viewport">
-        <!-- Dashboard Header -->
-        <div class="dashboard-header">
-          <div class="dashboard-title-group">
-            <h1>لوحة تحكم المتجر – أزياء الشام</h1>
-            <p>متجر معتمد وموثق • عمولة المنصة 15%</p>
+        
+        <!-- ============================== -->
+        <!-- VIEW 1: Merchant Main Overview -->
+        <!-- ============================== -->
+        <div id="merchant-view-dashboard" class="portal-view active">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>لوحة تحكم المتجر – أزياء الشام</h1>
+              <p>متجر معتمد وموثق • عمولة المنصة 15%</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn-primary" onclick="openAddProductModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                إضافة منتج
+              </button>
+            </div>
           </div>
-          <div class="header-actions">
-            <button class="btn-primary" onclick="openAddProductModal()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              إضافة منتج
-            </button>
-          </div>
-        </div>
 
-        <!-- KPI Indicator Cards Row -->
-        <div class="kpi-grid">
-          <div class="kpi-card golden-kpi">
-            <div class="kpi-label">صافي المستحقات (بعد العمولة)</div>
-            <div class="kpi-value">$2,082</div>
+          <!-- KPI Indicator Cards Row -->
+          <div class="kpi-grid">
+            <div class="kpi-card golden-kpi">
+              <div class="kpi-label">صافي المستحقات (بعد العمولة)</div>
+              <div class="kpi-value" id="kpi-net-payout">$2,082</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">مبيعات الأسبوع</div>
+              <div class="kpi-value">$2,450</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">قيد التحضير / الشحن</div>
+              <div class="kpi-value" id="kpi-prep-ship">5</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">طلبات جديدة (Placed)</div>
+              <div class="kpi-value" id="kpi-placed">3</div>
+            </div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-label">مبيعات الأسبوع</div>
-            <div class="kpi-value">$2,450</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">قيد التحضير / الشحن</div>
-            <div class="kpi-value" id="kpi-prep-ship">5</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">طلبات جديدة (Placed)</div>
-            <div class="kpi-value" id="kpi-placed">3</div>
-          </div>
-        </div>
 
-        <!-- Split Columns: Left info cards, Right Orders Table -->
-        <div class="dashboard-split">
-          
-          <!-- Left Column (Product Approvals & Inventory Alert) -->
-          <div>
-            <!-- Product Approval Status Card -->
+          <!-- Split Columns: Left info cards, Right Orders Table -->
+          <div class="dashboard-split">
+            <!-- Left Column (Product Approvals & Inventory Alert) -->
+            <div>
+              <!-- Product Approval Status Card -->
+              <div class="panel-card">
+                <div class="panel-header">
+                  <div class="panel-title">حالة اعتماد المنتجات</div>
+                  <a onclick="switchMerchantView('merchant-view-products')" style="font-size: 11px; color: var(--brand-gold-dark); font-weight: 700; cursor: pointer;">إدارة المنتجات ›</a>
+                </div>
+                <ul class="list-group" id="merchant-product-list">
+                  <!-- Populated by JavaScript -->
+                </ul>
+                <div class="card-footer-note">
+                  المنتجات غير المعتمدة لا تظهر للعملاء (CON-01)
+                </div>
+              </div>
+
+              <!-- Stock Alert Card -->
+              <div class="alert-card">
+                <div class="alert-header">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  تنبيه المخزون
+                </div>
+                <div class="alert-body" id="stock-alert-text">
+                  مخزون "سترة جلد سويدي" أقل من 5 قطع. لا يمكن قبول كمية تتجاوز المتاح (CON-03).
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Orders Table -->
             <div class="panel-card">
               <div class="panel-header">
-                <div class="panel-title">حالة اعتماد المنتجات</div>
+                <div class="panel-title">الطلبات الواردة إلى المتجر</div>
+                <div class="panel-subtitle">كل طلب = شحنة واحدة (Shipment Order)</div>
               </div>
-              <ul class="list-group" id="merchant-product-list">
-                <li class="list-item">
-                  <div class="list-item-meta">
-                    <div class="list-item-title">فستان سهرة كريب</div>
-                    <div class="list-item-sub">متبقي 6</div>
-                  </div>
-                  <span class="badge badge-approved">معتمد</span>
-                </li>
-                <li class="list-item">
-                  <div class="list-item-meta">
-                    <div class="list-item-title">فستان سواريه مطرز</div>
-                    <div class="list-item-sub">متبقي 4</div>
-                  </div>
-                  <span class="badge badge-pending">معلق</span>
-                </li>
-                <li class="list-item">
-                  <div class="list-item-meta">
-                    <div class="list-item-title">كاب صوف إيطالي</div>
-                    <div class="list-item-sub">متبقي 0</div>
-                  </div>
-                  <span class="badge badge-rejected">مرفوض</span>
-                </li>
-              </ul>
-              <div class="card-footer-note">
-                المنتجات غير المعتمدة لا تظهر للعملاء (CON-01)
-              </div>
-            </div>
-
-            <!-- Stock Alert Card -->
-            <div class="alert-card">
-              <div class="alert-header">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                تنبيه المخزون
-              </div>
-              <div class="alert-body">
-                مخزون "سترة جلد سويدي" أقل من 5 قطع. لا يمكن قبول كمية تتجاوز المتاح (CON-03).
+              <div class="data-table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>الشحنة</th>
+                      <th>العميل</th>
+                      <th>المنتج</th>
+                      <th>المبلغ</th>
+                      <th>الحالة</th>
+                      <th>الإجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody id="merchant-orders-body">
+                    <!-- Populated by JavaScript -->
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Right Column: Orders Table -->
+        <!-- ============================== -->
+        <!-- VIEW 2: Merchant Products Page -->
+        <!-- ============================== -->
+        <div id="merchant-view-products" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>إدارة منتجات المتجر</h1>
+              <p>كتالوج المنتجات • التحديث التلقائي ومراقبة معايير الحوكمة (CON-01)</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn-primary" onclick="openAddProductModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                + إضافة منتج جديد
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header" style="background: #FAF8F5;">
+              <div class="filter-pills-bar" style="padding: 0; background: none; border: none;">
+                <button class="filter-pill active" onclick="filterProductsTable('all', this)">جميع المنتجات</button>
+                <button class="filter-pill" onclick="filterProductsTable('approved', this)">المعتمدة (Approved)</button>
+                <button class="filter-pill" onclick="filterProductsTable('pending', this)">قيد المراجعة (Pending)</button>
+                <button class="filter-pill" onclick="filterProductsTable('rejected', this)">المرفوضة (Rejected)</button>
+              </div>
+              <input type="text" class="form-control" id="product-search-input" placeholder="بحث باسم المنتج..." onkeyup="searchProductsTable(this.value)" style="width: 240px;">
+            </div>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>معرّف المنتج</th>
+                    <th>اسم المنتج</th>
+                    <th>الفئة</th>
+                    <th>المخزون</th>
+                    <th>السعر</th>
+                    <th>حالة الاعتماد</th>
+                    <th>ظهور للعملاء</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="full-products-table-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================== -->
+        <!-- VIEW 3: Merchant Inventory Page -->
+        <!-- ============================== -->
+        <div id="merchant-view-inventory" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>إدارة المخزون والتنبيهات</h1>
+              <p>مراقبة الرصيد الفعلي وحصانة الحجز المسبق للطلبات (CON-03 Guard)</p>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">إجمالي الأصناف</div>
+              <div class="kpi-value" id="inv-total-items">8</div>
+            </div>
+            <div class="kpi-card" style="border-color: #F4E2C5; background: #FDF9F0;">
+              <div class="kpi-label" style="color: #946824;">أصناف منخفضة المخزون (&lt; 5)</div>
+              <div class="kpi-value" id="inv-low-items" style="color: #946824;">2</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">أصناف نفدت من المخزون</div>
+              <div class="kpi-value" id="inv-out-items" style="color: var(--status-rejected-text);">1</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">إجمالي رصيد القطع</div>
+              <div class="kpi-value" id="inv-total-qty">28</div>
+            </div>
+          </div>
+
           <div class="panel-card">
             <div class="panel-header">
-              <div class="panel-title">الطلبات الواردة إلى المتجر</div>
-              <div class="panel-subtitle">كل طلب = شحنة واحدة (Shipment Order)</div>
+              <div class="panel-title">جدول رصيد المخزون الفوري وتعديل الكميات المتاحة</div>
+              <div class="panel-subtitle">التحديث ينعكس فورياً في كارت المنتج وسلة العميل</div>
+            </div>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>المنتج</th>
+                    <th>الفئة</th>
+                    <th>الرصيد المتاح</th>
+                    <th>مستوى التحذير</th>
+                    <th>تعديل فوري للرصيد</th>
+                    <th>حالة الشراء (CON-03)</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-table-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================== -->
+        <!-- VIEW 4: Merchant Orders Page   -->
+        <!-- ============================== -->
+        <div id="merchant-view-orders" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>إدارة كافة الطلبات الواردة</h1>
+              <p>تتبع مراحل الشحنات المستقلة ومتابعة دورة حياة الطلب (CON-04 &amp; CON-06)</p>
+            </div>
+            <div class="header-actions">
+              <input type="text" class="form-control" placeholder="بحث برقم الشحنة أو اسم العميل..." onkeyup="searchMerchantOrders(this.value)" style="width: 260px;">
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="filter-pills-bar">
+              <button class="filter-pill active" onclick="filterMerchantOrders('all', this)">جميع الطلبات</button>
+              <button class="filter-pill" onclick="filterMerchantOrders('Placed', this)">طلبات جديدة (Placed)</button>
+              <button class="filter-pill" onclick="filterMerchantOrders('Preparing', this)">قيد التحضير (Preparing)</button>
+              <button class="filter-pill" onclick="filterMerchantOrders('Shipping', this)">تم التسليم للشحن (Shipping)</button>
+              <button class="filter-pill" onclick="filterMerchantOrders('Delivered', this)">مكتملة (Delivered)</button>
+              <button class="filter-pill" onclick="filterMerchantOrders('Rejected', this)">المرفوضة (Rejected)</button>
             </div>
             <div class="data-table-container">
               <table class="data-table">
                 <thead>
                   <tr>
                     <th>الشحنة</th>
+                    <th>تاريخ الطلب</th>
                     <th>العميل</th>
-                    <th>المنتج</th>
-                    <th>المبلغ</th>
-                    <th>الحالة</th>
-                    <th>الإجراء</th>
+                    <th>المنتجات والكمية</th>
+                    <th>المبلغ الإجمالي</th>
+                    <th>حالة الشحنة</th>
+                    <th>الإجراء المسموح به</th>
+                    <th>التفاصيل</th>
                   </tr>
                 </thead>
-                <tbody id="merchant-orders-body">
-                  <!-- Row 1: Placed -->
-                  <tr id="order-row-902">
-                    <td class="col-shipment">#SO-902</td>
-                    <td>سامر الأحمد</td>
-                    <td>فستان سهرة كريب</td>
-                    <td class="col-price">$240</td>
-                    <td><span class="badge badge-placed" id="badge-902">Placed</span></td>
-                    <td id="action-902">
-                      <div class="action-btn-group">
-                        <button class="btn-action-primary" onclick="merchantStartPreparing('902')">بدء التحضير</button>
-                        <button class="btn-action-danger" onclick="merchantRejectOrder('902')">رفض</button>
-                      </div>
-                    </td>
-                  </tr>
+                <tbody id="full-orders-table-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-                  <!-- Row 2: Preparing -->
-                  <tr id="order-row-897">
-                    <td class="col-shipment">#SO-897</td>
-                    <td>ليلى حداد</td>
-                    <td>معطف صوف فاخر</td>
-                    <td class="col-price">$185</td>
-                    <td><span class="badge badge-preparing" id="badge-897">Preparing</span></td>
-                    <td id="action-897">
-                      <button class="btn-action-primary" onclick="merchantHandoverToShipping('897')">تسليم لشركة الشحن</button>
-                    </td>
-                  </tr>
+        <!-- =================================== -->
+        <!-- VIEW 5: Merchant Sales & Payouts    -->
+        <!-- =================================== -->
+        <div id="merchant-view-sales" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>المبيعات والمستحقات المالية</h1>
+              <p>الحسابات الدقيقة بعد استقطاع عمولة المنصة (15%) وجدول التحويلات البنكية</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn-primary" onclick="openPayoutModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                طلب سحب الأرباح
+              </button>
+            </div>
+          </div>
 
-                  <!-- Row 3: Shipping -->
-                  <tr id="order-row-890">
-                    <td class="col-shipment">#SO-890</td>
-                    <td>نور القاسم</td>
-                    <td>عباية حرير مطرزة</td>
-                    <td class="col-price">$310</td>
-                    <td><span class="badge badge-shipping">Shipping</span></td>
-                    <td><span class="status-text-completed">بانتظار شركة الشحن</span></td>
-                  </tr>
+          <div class="kpi-grid">
+            <div class="kpi-card golden-kpi">
+              <div class="kpi-label">الرصيد القابل للسحب الفوري</div>
+              <div class="kpi-value" id="sales-withdrawable">$2,082.50</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">إجمالي المبيعات (Gross)</div>
+              <div class="kpi-value">$2,450.00</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">عمولة المنصة المقتطعة (15%)</div>
+              <div class="kpi-value" style="color: #A82222;">-$367.50</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">إجمالي التحويلات السابقة</div>
+              <div class="kpi-value">$14,820.00</div>
+            </div>
+          </div>
 
-                  <!-- Row 4: Delivered -->
-                  <tr id="order-row-884">
-                    <td class="col-shipment">#SO-884</td>
-                    <td>رامي العلي</td>
-                    <td>حقيبة جلدية أصلية</td>
-                    <td class="col-price">$130</td>
-                    <td><span class="badge badge-delivered">Delivered</span></td>
-                    <td><span class="status-text-completed">مكتمل</span></td>
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">سجل التسويات والتحويلات البنكية السابقة</div>
+            </div>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>رقم الحوالة</th>
+                    <th>تاريخ التسوية</th>
+                    <th>المبلغ المحول</th>
+                    <th>الحساب البنكي (IBAN)</th>
+                    <th>الحالة</th>
+                    <th>إيصال التحويل</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="col-shipment">#PAY-7712</td>
+                    <td>01 نوفمبر 2026</td>
+                    <td class="col-price">$3,420</td>
+                    <td style="font-family: 'JetBrains Mono';">SA82 **** **** 1092</td>
+                    <td><span class="badge badge-delivered">تم التحويل بنجاح</span></td>
+                    <td><button class="btn-secondary" onclick="showToast('تم تحميل إشعار التحويل البنكي PDF')">تحميل PDF</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col-shipment">#PAY-6945</td>
+                    <td>15 أكتوبر 2026</td>
+                    <td class="col-price">$5,180</td>
+                    <td style="font-family: 'JetBrains Mono';">SA82 **** **** 1092</td>
+                    <td><span class="badge badge-delivered">تم التحويل بنجاح</span></td>
+                    <td><button class="btn-secondary" onclick="showToast('تم تحميل إشعار التحويل البنكي PDF')">تحميل PDF</button></td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-
         </div>
+
+        <!-- ============================== -->
+        <!-- VIEW 6: Merchant Settings Page -->
+        <!-- ============================== -->
+        <div id="merchant-view-settings" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>إعدادات المتجر وبيانات التوثيق</h1>
+              <p>إدارة الملف التعريفي، شهادات الاعتماد والربط البنكي للتحويلات</p>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-card">
+              <div class="form-card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                بيانات المتجر والتوثيق الرسمي
+              </div>
+              <div class="form-group">
+                <label>اسم المتجر في المنصة</label>
+                <input type="text" class="form-control" id="store-name-input" value="أزياء الشام">
+              </div>
+              <div class="form-group">
+                <label>حالة التوثيق الرسمية</label>
+                <div><span class="badge badge-approved" style="font-size: 13px; padding: 6px 14px;">متجر معتمد وموثق ✓</span></div>
+              </div>
+              <div class="form-group">
+                <label>رقم السجل التجاري / الرخصة</label>
+                <input type="text" class="form-control" value="CR-904128472-SHAM">
+              </div>
+              <div class="form-group">
+                <label>الهاتف وخدمة العملاء</label>
+                <input type="text" class="form-control" value="+966 50 123 4567">
+              </div>
+              <button class="btn-primary" onclick="saveStoreSettings()">حفظ التعديلات</button>
+            </div>
+
+            <div class="form-card">
+              <div class="form-card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                الحساب البنكي لاستلام المستحقات
+              </div>
+              <div class="form-group">
+                <label>اسم البنك</label>
+                <input type="text" class="form-control" value="بنك الرياض (Riyad Bank)">
+              </div>
+              <div class="form-group">
+                <label>اسم المستفيد المعتمد</label>
+                <input type="text" class="form-control" value="مؤسسة أزياء الشام للخياطة الراقية">
+              </div>
+              <div class="form-group">
+                <label>رقم الآيبان (IBAN)</label>
+                <input type="text" class="form-control" value="SA82 2000 0001 2345 6789 1092" style="font-family: 'JetBrains Mono'; direction: ltr; text-align: right;">
+              </div>
+              <button class="btn-primary" onclick="saveStoreSettings()">تحديث الحساب البنكي</button>
+            </div>
+          </div>
+        </div>
+
       </main>
     </div>
 
@@ -1030,39 +1373,39 @@
           </div>
         </div>
         
-        <ul class="sidebar-menu">
-          <li class="sidebar-menu-item active">
-            <a href="#">
+        <ul class="sidebar-menu" id="ops-menu">
+          <li class="sidebar-menu-item active" data-view="ops-view-dashboard">
+            <a onclick="switchOpsView('ops-view-dashboard', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
               لوحة العمليات
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="ops-view-approvals">
+            <a onclick="switchOpsView('ops-view-approvals', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               اعتماد المتاجر والمنتجات
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="ops-view-orders">
+            <a onclick="switchOpsView('ops-view-orders', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               متابعة الطلبات
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="ops-view-returns">
+            <a onclick="switchOpsView('ops-view-returns', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
               الإرجاع والاستبدال
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="ops-view-commissions">
+            <a onclick="switchOpsView('ops-view-commissions', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
               العمولات والتسويات
             </a>
           </li>
-          <li class="sidebar-menu-item">
-            <a href="#">
+          <li class="sidebar-menu-item" data-view="ops-view-audit">
+            <a onclick="switchOpsView('ops-view-audit', this)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
               سجل التدقيق
             </a>
@@ -1079,168 +1422,322 @@
 
       <!-- Operations Main Viewport -->
       <main class="main-viewport">
-        <!-- Operations Header -->
-        <div class="dashboard-header">
-          <div class="dashboard-title-group">
-            <h1>لوحة العمليات والحوكمة</h1>
-            <p>اعتماد المتاجر والمنتجات • متابعة الطلبات • سجل التدقيق غير القابل للتعديل</p>
+        
+        <!-- ============================== -->
+        <!-- VIEW 1: Operations Overview    -->
+        <!-- ============================== -->
+        <div id="ops-view-dashboard" class="portal-view active">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>لوحة العمليات والحوكمة</h1>
+              <p>اعتماد المتاجر والمنتجات • متابعة الطلبات • سجل التدقيق غير القابل للتعديل</p>
+            </div>
+            <div class="header-actions">
+              <span class="badge badge-approved" id="ops-approved-stores" style="padding: 6px 14px; font-size: 13px;">8 متاجر معتمدة</span>
+              <span class="badge badge-pending" id="ops-pending-stores" style="padding: 6px 14px; font-size: 13px;">4 بانتظار الاعتماد</span>
+            </div>
           </div>
-          <div class="header-actions">
-            <span class="badge badge-approved" id="ops-approved-stores" style="padding: 6px 14px; font-size: 13px;">8 متاجر معتمدة</span>
-            <span class="badge badge-pending" id="ops-pending-stores" style="padding: 6px 14px; font-size: 13px;">4 بانتظار الاعتماد</span>
+
+          <!-- 5 Status Counters Row -->
+          <div class="kpi-grid kpi-grid-5">
+            <div class="kpi-card" style="align-items: center; text-align: center;">
+              <span class="badge badge-rejected" style="font-family: 'Outfit'; font-size: 11px;">Rejected</span>
+              <div class="kpi-value" id="ops-count-rejected" style="margin-top: 6px;">4</div>
+            </div>
+            <div class="kpi-card" style="align-items: center; text-align: center;">
+              <span class="badge badge-delivered" style="font-family: 'Outfit'; font-size: 11px;">Delivered</span>
+              <div class="kpi-value" id="ops-count-delivered" style="margin-top: 6px;">86</div>
+            </div>
+            <div class="kpi-card" style="align-items: center; text-align: center;">
+              <span class="badge badge-shipping" style="font-family: 'Outfit'; font-size: 11px;">Shipping</span>
+              <div class="kpi-value" id="ops-count-shipping" style="margin-top: 6px;">14</div>
+            </div>
+            <div class="kpi-card" style="align-items: center; text-align: center;">
+              <span class="badge badge-preparing" style="font-family: 'Outfit'; font-size: 11px;">Preparing</span>
+              <div class="kpi-value" id="ops-count-preparing" style="margin-top: 6px;">9</div>
+            </div>
+            <div class="kpi-card" style="align-items: center; text-align: center;">
+              <span class="badge badge-placed" style="font-family: 'Outfit'; font-size: 11px;">Placed</span>
+              <div class="kpi-value" id="ops-count-placed" style="margin-top: 6px;">12</div>
+            </div>
+          </div>
+
+          <!-- Split Columns: Left Immutable Audit Log, Right Pending Approvals & Returns -->
+          <div class="dashboard-split dashboard-split-equal">
+            
+            <!-- Left Column: Immutable Security Audit Log (Read-Only) -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  سجل التدقيق الأمني (للقراءة فقط)
+                </div>
+                <a onclick="switchOpsView('ops-view-audit')" style="font-size: 11px; color: var(--brand-gold-dark); font-weight: 700; cursor: pointer;">سجل التدقيق الكامل ›</a>
+              </div>
+              
+              <div id="audit-log-entries">
+                <!-- Populated by JavaScript -->
+              </div>
+
+              <div class="card-footer-note">
+                كل سجل مرتبط بتجزئة السجل السابق (previousHash) فلا يمكن حذفه أو تعديله (CON-07).
+              </div>
+            </div>
+
+            <!-- Right Column: Pending Approvals & Returns -->
+            <div>
+              <!-- Card 1: Pending Approvals -->
+              <div class="panel-card">
+                <div class="panel-header">
+                  <div class="panel-title">طلبات الاعتماد المعلقة (أحدث طلبين)</div>
+                  <a onclick="switchOpsView('ops-view-approvals')" style="font-size: 11px; color: var(--brand-gold-dark); font-weight: 700; cursor: pointer;">طابور الاعتماد الكامل ›</a>
+                </div>
+                <ul class="list-group" id="ops-pending-list">
+                  <!-- Populated by JavaScript -->
+                </ul>
+              </div>
+
+              <!-- Card 2: Return & Exchange Queue -->
+              <div class="panel-card">
+                <div class="panel-header">
+                  <div class="panel-title">طلبات الإرجاع والاستبدال</div>
+                  <span class="badge badge-count" id="ops-return-badge">1 جديد</span>
+                </div>
+                <ul class="list-group" id="ops-returns-list">
+                  <!-- Populated by JavaScript -->
+                </ul>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <!-- 5 Status Counters Row -->
-        <div class="kpi-grid kpi-grid-5">
-          <div class="kpi-card" style="align-items: center; text-align: center;">
-            <span class="badge badge-rejected" style="font-family: 'Outfit'; font-size: 11px;">Rejected</span>
-            <div class="kpi-value" id="ops-count-rejected" style="margin-top: 6px;">4</div>
+        <!-- ============================================== -->
+        <!-- VIEW 2: Operations Approvals Workbench         -->
+        <!-- ============================================== -->
+        <div id="ops-view-approvals" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>طابور مراجعة واعتماد المتاجر والمنتجات</h1>
+              <p>تطبيق معايير الامتثال والجودة وحاجز الظهور (CON-01 &amp; CON-02 Tenant Guard)</p>
+            </div>
           </div>
-          <div class="kpi-card" style="align-items: center; text-align: center;">
-            <span class="badge badge-delivered" style="font-family: 'Outfit'; font-size: 11px;">Delivered</span>
-            <div class="kpi-value" id="ops-count-delivered" style="margin-top: 6px;">86</div>
-          </div>
-          <div class="kpi-card" style="align-items: center; text-align: center;">
-            <span class="badge badge-shipping" style="font-family: 'Outfit'; font-size: 11px;">Shipping</span>
-            <div class="kpi-value" id="ops-count-shipping" style="margin-top: 6px;">14</div>
-          </div>
-          <div class="kpi-card" style="align-items: center; text-align: center;">
-            <span class="badge badge-preparing" style="font-family: 'Outfit'; font-size: 11px;">Preparing</span>
-            <div class="kpi-value" id="ops-count-preparing" style="margin-top: 6px;">9</div>
-          </div>
-          <div class="kpi-card" style="align-items: center; text-align: center;">
-            <span class="badge badge-placed" style="font-family: 'Outfit'; font-size: 11px;">Placed</span>
-            <div class="kpi-value" id="ops-count-placed" style="margin-top: 6px;">12</div>
+
+          <div class="dashboard-split dashboard-split-equal">
+            <!-- Pending Shops Queue -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title">طابور اعتماد المتاجر الجديدة</div>
+                <span class="badge badge-pending">فحص التراخيص التجارية</span>
+              </div>
+              <ul class="list-group" id="ops-full-shops-queue">
+                <!-- Populated by JavaScript -->
+              </ul>
+            </div>
+
+            <!-- Pending Products Queue -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title">طابور فحص وتدقيق المنتجات</div>
+                <span class="badge badge-pending">فحص الصور ومطابقة المعايير</span>
+              </div>
+              <ul class="list-group" id="ops-full-products-queue">
+                <!-- Populated by JavaScript -->
+              </ul>
+            </div>
           </div>
         </div>
 
-        <!-- Split Columns: Left Immutable Audit Log, Right Pending Approvals & Returns -->
-        <div class="dashboard-split dashboard-split-equal">
-          
-          <!-- Left Column: Immutable Security Audit Log (Read-Only) -->
+        <!-- ============================================== -->
+        <!-- VIEW 3: Operations Global Orders Monitoring    -->
+        <!-- ============================================== -->
+        <div id="ops-view-orders" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>الرقابة المركزية على كافة شحنات المنصة</h1>
+              <p>متابعة سير الشحنات بين المتاجر وشركات الخدمات اللوجستية في الوقت الفعلي</p>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header" style="background: #FAF8F5;">
+              <div class="filter-pills-bar" style="padding: 0; background: none; border: none;">
+                <button class="filter-pill active" onclick="filterOpsGlobalOrders('all', this)">كافة الشحنات</button>
+                <button class="filter-pill" onclick="filterOpsGlobalOrders('Placed', this)">جديدة</button>
+                <button class="filter-pill" onclick="filterOpsGlobalOrders('Preparing', this)">قيد التحضير</button>
+                <button class="filter-pill" onclick="filterOpsGlobalOrders('Shipping', this)">مع شركة الشحن</button>
+                <button class="filter-pill" onclick="filterOpsGlobalOrders('Delivered', this)">مكتملة</button>
+              </div>
+            </div>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>رقم الشحنة</th>
+                    <th>المتجر الشريك</th>
+                    <th>العميل</th>
+                    <th>المنتج</th>
+                    <th>القيمة</th>
+                    <th>الحالة التشغيلية</th>
+                    <th>التحديث الرقابي</th>
+                  </tr>
+                </thead>
+                <tbody id="ops-global-orders-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- VIEW 4: Operations Returns & Exchanges         -->
+        <!-- ============================================== -->
+        <div id="ops-view-returns" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>مركز إدارة الإرجاع والاستبدال</h1>
+              <p>التدقيق القانوني لمهلة 14 يوماً وحصانة الشحنات المستلمة (CON-05)</p>
+            </div>
+          </div>
+
           <div class="panel-card">
             <div class="panel-header">
-              <div class="panel-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                سجل التدقيق الأمني (للقراءة فقط)
-              </div>
+              <div class="panel-title">الطلبات المسجلة للإرجاع أو الاستبدال</div>
             </div>
-            
-            <div id="audit-log-entries">
-              <!-- Entry 1 -->
-              <div class="audit-entry">
-                <div class="audit-entry-top">
-                  <div class="audit-entry-title">
-                    <span class="audit-dot"></span>
-                    اعتماد متجر #0412-S
-                  </div>
-                  <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">shopApproval</span>
-                </div>
-                <div class="audit-entry-sub">بواسطة: أحمد سالم (مدير العمليات)</div>
-                <div class="audit-hash-chain">prev: a91f...03c2 → tx: 5c07...e1b8</div>
-              </div>
-
-              <!-- Entry 2 -->
-              <div class="audit-entry">
-                <div class="audit-entry-top">
-                  <div class="audit-entry-title">
-                    <span class="audit-dot"></span>
-                    تحديث مسار الشحنة #SO-897
-                  </div>
-                  <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">statusChange</span>
-                </div>
-                <div class="audit-entry-sub">بواسطة: أزياء الشام - Placed → Preparing</div>
-                <div class="audit-hash-chain">prev: 5c07...e1b8 → tx: 7d4e...9a10</div>
-              </div>
-
-              <!-- Entry 3 -->
-              <div class="audit-entry">
-                <div class="audit-entry-top">
-                  <div class="audit-entry-title">
-                    <span class="audit-dot"></span>
-                    طلب استبدال للطلب #SO-884
-                  </div>
-                  <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">returnRequest</span>
-                </div>
-                <div class="audit-entry-sub">طلب استبدال المقاس من M إلى L (CON-05 Valid)</div>
-                <div class="audit-hash-chain">prev: 7d4e...9a10 → tx: f2b3...44d7</div>
-              </div>
-            </div>
-
-            <div class="card-footer-note">
-              كل سجل مرتبط بتجزئة السجل السابق (previousHash) فلا يمكن حذفه أو تعديله (CON-07).
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>رقم الطلب الأصلي</th>
+                    <th>العميل</th>
+                    <th>المتجر</th>
+                    <th>نوع الإجراء</th>
+                    <th>الشرط القانوني</th>
+                    <th>القرار والاعتماد</th>
+                  </tr>
+                </thead>
+                <tbody id="ops-returns-table-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
             </div>
           </div>
-
-          <!-- Right Column: Pending Approvals & Returns -->
-          <div>
-            <!-- Card 1: Pending Approvals -->
-            <div class="panel-card">
-              <div class="panel-header">
-                <div class="panel-title">طلبات الاعتماد المعلقة (أحدث طلبين)</div>
-              </div>
-              <ul class="list-group" id="ops-pending-list">
-                <!-- Shop Approval Item -->
-                <li class="list-item" id="pending-item-zaizafoun">
-                  <div class="list-item-meta">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <div class="list-item-title">أتيليه الزيزفون</div>
-                      <span class="badge badge-pending">معلق (Pending)</span>
-                    </div>
-                    <div class="list-item-sub">متجر • السجل التجاري pdf</div>
-                  </div>
-                  <div class="action-btn-group">
-                    <button class="btn-action-primary" onclick="opsApproveShop('zaizafoun', 'أتيليه الزيزفون')">اعتماد ونشر</button>
-                    <button class="btn-action-danger" onclick="opsRejectShop('zaizafoun', 'أتيليه الزيزفون')">رفض</button>
-                  </div>
-                </li>
-
-                <!-- Product Approval Item -->
-                <li class="list-item" id="pending-item-dress-sham">
-                  <div class="list-item-meta">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <div class="list-item-title">فستان سواريه مطرز – أزياء الشام</div>
-                      <span class="badge badge-pending">معلق (Pending)</span>
-                    </div>
-                    <div class="list-item-sub">منتج • تم فحص الصور ومطابقة المعايير</div>
-                  </div>
-                  <div class="action-btn-group">
-                    <button class="btn-action-primary" onclick="opsApproveProduct('dress-sham', 'فستان سواريه مطرز')">اعتماد ونشر</button>
-                    <button class="btn-action-danger" onclick="opsRejectProduct('dress-sham', 'فستان سواريه مطرز')">رفض</button>
-                  </div>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Card 2: Return & Exchange Queue -->
-            <div class="panel-card">
-              <div class="panel-header">
-                <div class="panel-title">طلبات الإرجاع والاستبدال</div>
-                <span class="badge badge-count" id="ops-return-badge">1 جديد</span>
-              </div>
-              <ul class="list-group" id="ops-returns-list">
-                <li class="list-item" id="return-item-884">
-                  <div class="list-item-meta">
-                    <div class="list-item-title">استبدال مقاس #SO-884 – M → L</div>
-                    <div class="list-item-sub">الحالة: مؤهل للإرجاع (Delivered) ، ضمن مهلة 14 يوماً</div>
-                  </div>
-                  <div class="action-btn-group">
-                    <button class="btn-action-primary" onclick="opsApproveReturn('884')">اعتماد الاستبدال</button>
-                    <button class="btn-action-danger" onclick="opsRejectReturn('884')">رفض</button>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-
         </div>
+
+        <!-- ============================================== -->
+        <!-- VIEW 5: Operations Commissions & Settlements   -->
+        <!-- ============================================== -->
+        <div id="ops-view-commissions" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>العمولات والتسويات المالية للمنصة</h1>
+              <p>إدارة حصة المنصة (15%) وجداول الإيداع البنكي لحسابات التجار المعتمدين</p>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card golden-kpi">
+              <div class="kpi-label">إجمالي أرباح المنصة (15% Net)</div>
+              <div class="kpi-value">$18,450</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">مستحقات معلقة بانتظار الصرف</div>
+              <div class="kpi-value">$6,120</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">تسويات تم تحويلها هذا الشهر</div>
+              <div class="kpi-value">$42,800</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">نسبة التحصيل التلقائي</div>
+              <div class="kpi-value">100%</div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">جدول أرصدة وتسويات المتاجر الشريكة</div>
+            </div>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>المتجر</th>
+                    <th>المبيعات الإجمالية</th>
+                    <th>عمولة المنصة (15%)</th>
+                    <th>صافي مستحق المتجر</th>
+                    <th>حالة الدفع</th>
+                    <th>الإجراء البنكي</th>
+                  </tr>
+                </thead>
+                <tbody id="ops-commissions-table-body">
+                  <tr>
+                    <td style="font-weight: 700;">أزياء الشام</td>
+                    <td class="col-price">$2,450</td>
+                    <td style="color: #A82222; font-weight: 700;">$367.50</td>
+                    <td class="col-price" style="color: var(--brand-primary);">$2,082.50</td>
+                    <td><span class="badge badge-pending">بانتظار التحويل</span></td>
+                    <td><button class="btn-action-primary" onclick="opsExecutePayout('أزياء الشام', 2082.50)">تحويل فوري للأرباح</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: 700;">بوتيك النخبة</td>
+                    <td class="col-price">$4,120</td>
+                    <td style="color: #A82222; font-weight: 700;">$618.00</td>
+                    <td class="col-price" style="color: var(--brand-primary);">$3,502.00</td>
+                    <td><span class="badge badge-delivered">تمت التسوية</span></td>
+                    <td><button class="btn-secondary" disabled>تم الإيداع</button></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: 700;">دار الحرير</td>
+                    <td class="col-price">$1,890</td>
+                    <td style="color: #A82222; font-weight: 700;">$283.50</td>
+                    <td class="col-price" style="color: var(--brand-primary);">$1,606.50</td>
+                    <td><span class="badge badge-delivered">تمت التسوية</span></td>
+                    <td><button class="btn-secondary" disabled>تم الإيداع</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- VIEW 6: Operations Immutable Audit Ledger      -->
+        <!-- ============================================== -->
+        <div id="ops-view-audit" class="portal-view">
+          <div class="dashboard-header">
+            <div class="dashboard-title-group">
+              <h1>سجل التدقيق الأمني التراكمي (Immutable Audit Log)</h1>
+              <p>سجل مشفر غير قابل للتعديل أو الحذف يعتمد الربط التسلسلي (CON-07 Cryptographic Ledger)</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn-primary" onclick="verifyChainIntegrity()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                التحقق من سلامة السلسلة
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header" style="background: #FAF8F5;">
+              <div class="panel-title">
+                <span class="badge badge-approved" id="ledger-status-badge">سلسلة صحيحة ومؤمنة (Cryptographically Sound)</span>
+              </div>
+              <input type="text" class="form-control" placeholder="بحث في المعاملات أو الهاش..." onkeyup="searchAuditLedger(this.value)" style="width: 260px;">
+            </div>
+            <div id="full-audit-ledger-list">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
       </main>
     </div>
 
   </div>
 
-  <!-- Add Product Modal -->
+  <!-- Modal: Add Product -->
   <div class="modal-overlay" id="add-product-modal">
     <div class="modal-card">
       <div class="modal-header">
@@ -1260,6 +1757,7 @@
             <option value="عبايات">عبايات</option>
             <option value="أحذية">أحذية</option>
             <option value="حقائب">حقائب</option>
+            <option value="بدلات">بدلات</option>
           </select>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -1272,6 +1770,10 @@
             <input type="number" class="form-control" id="new-prod-stock" placeholder="5">
           </div>
         </div>
+        <div class="form-group">
+          <label>المواصفات والمقاسات</label>
+          <input type="text" class="form-control" id="new-prod-specs" placeholder="S, M, L • كحلي ملكي">
+        </div>
         <div style="font-size: 11px; color: var(--text-muted); background: #FAF8F5; padding: 8px 12px; border-radius: 6px;">
           تنبيه: سيخضع المنتج لرقابة إدارة العمليات ولن يظهر للعملاء حتى تتم مراجعته واعتماده (CON-01).
         </div>
@@ -1283,11 +1785,109 @@
     </div>
   </div>
 
+  <!-- Modal: Order Details Inspection -->
+  <div class="modal-overlay" id="order-details-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-order-title">تفاصيل الشحنة</h3>
+        <button class="modal-close-btn" onclick="closeOrderModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-order-content">
+        <!-- Dynamic -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" onclick="closeOrderModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Request Payout -->
+  <div class="modal-overlay" id="payout-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>طلب سحب الأرباح لحساب المتجر</h3>
+        <button class="modal-close-btn" onclick="closePayoutModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: var(--brand-gold-tint); border: 1px solid var(--brand-gold-border); padding: 14px; border-radius: 8px;">
+          <div style="font-size: 12px; color: var(--brand-gold-dark); font-weight: 600;">الرصيد المتاح للسحب بعد خصم العمولة:</div>
+          <div style="font-size: 24px; font-weight: 800; font-family: 'Outfit'; color: var(--brand-gold-dark);" id="modal-payout-balance">$2,082.50</div>
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+          <label>المبلغ المطلوب سحبه ($)</label>
+          <input type="number" class="form-control" id="payout-amount" value="2082.50">
+        </div>
+        <div class="form-group">
+          <label>الحساب البنكي المحول إليه</label>
+          <input type="text" class="form-control" value="بنك الرياض - SA82 2000 0001 2345 6789 1092" readonly style="background: #F8F8F8;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-action-danger" onclick="closePayoutModal()">إلغاء</button>
+        <button class="btn-primary" onclick="confirmPayoutRequest()">تأكيد طلب السحب</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Reactive Logic & Simulation -->
+  <!-- ============================================== -->
+  <!-- Central State Management & Reactive Logic JS  -->
+  <!-- ============================================== -->
   <script>
+    // Global Application State
+    const AppState = {
+      // Products
+      products: [
+        { id: 'p_dress', name: 'فستان سهرة كريب', category: 'فساتين', specs: 'S, M, L • زمردي', price: 240, stock: 6, status: 'approved' },
+        { id: 'p_soiree', name: 'فستان سواريه مطرز', category: 'فساتين', specs: 'M, L • ذهبي', price: 280, stock: 4, status: 'pending' },
+        { id: 'p_cape', name: 'كاب صوف إيطالي', category: 'معاطف', specs: 'One Size • أسود', price: 195, stock: 0, status: 'rejected' },
+        { id: 'p_suede', name: 'سترة جلد سويدي', category: 'معاطف', specs: 'L, XL • بني محروق', price: 340, stock: 3, status: 'approved' },
+        { id: 'p_kaftan', name: 'قفطان مخمل مقصّب', category: 'عبايات', specs: 'M, L • عنابي', price: 380, stock: 5, status: 'approved' },
+        { id: 'p_abaya', name: 'عباية حرير مطرزة', category: 'عبايات', specs: '54, 56 • أسود ملكي', price: 310, stock: 8, status: 'approved' },
+        { id: 'p_shoes', name: 'حذاء كلاسيك جلدي', category: 'أحذية', specs: '42, 43 • بني كلاسيك', price: 130, stock: 2, status: 'approved' },
+      ],
+
+      // Merchant Orders
+      orders: [
+        { id: '902', shipment: '#SO-902', customer: 'سامر الأحمد', date: '07 نوفمبر 2026', product: 'فستان سهرة كريب', qty: 1, price: 240, status: 'Placed', address: 'الرياض، حي العليا، شارع الأمير سلطان' },
+        { id: '897', shipment: '#SO-897', customer: 'ليلى حداد', date: '06 نوفمبر 2026', product: 'معطف صوف فاخر', qty: 1, price: 185, status: 'Preparing', address: 'جدة، حي الشاطئ، برج الجوهرة' },
+        { id: '890', shipment: '#SO-890', customer: 'نور القاسم', date: '05 نوفمبر 2026', product: 'عباية حرير مطرزة', qty: 1, price: 310, status: 'Shipping', address: 'الدمام، حي الشاطئ الشرقي' },
+        { id: '884', shipment: '#SO-884', customer: 'رامي العلي', date: '03 نوفمبر 2026', product: 'حقيبة جلدية أصلية', qty: 1, price: 130, status: 'Delivered', address: 'الرياض، حي الملقا' },
+      ],
+
+      // Operations Global Orders
+      globalOrders: [
+        { id: '902', shipment: '#SO-902', store: 'أزياء الشام', customer: 'سامر الأحمد', product: 'فستان سهرة كريب', price: 240, status: 'Placed' },
+        { id: '897', shipment: '#SO-897', store: 'أزياء الشام', customer: 'ليلى حداد', product: 'معطف صوف فاخر', price: 185, status: 'Preparing' },
+        { id: '890', shipment: '#SO-890', store: 'أزياء الشام', customer: 'نور القاسم', product: 'عباية حرير مطرزة', price: 310, status: 'Shipping' },
+        { id: '884', shipment: '#SO-884', store: 'أزياء الشام', customer: 'رامي العلي', product: 'حقيبة جلدية أصلية', price: 130, status: 'Delivered' },
+        { id: '879', shipment: '#SO-879', store: 'بوتيك النخبة', customer: 'فهد العتيبي', product: 'حذاء كلاسيك جلدي', price: 130, status: 'Delivered' },
+        { id: '865', shipment: '#SO-865', store: 'دار الحرير', customer: 'منيرة الدوسري', product: 'قفطان مخمل مقصّب', price: 380, status: 'Delivered' },
+      ],
+
+      // Operations Pending Approvals
+      pendingShops: [
+        { id: 'shop_zaizafoun', name: 'أتيليه الزيزفون', type: 'متجر فاخر', doc: 'السجل التجاري وعقد التأسيس.pdf' },
+        { id: 'shop_lamsa', name: 'متجر لمسة أزياء', type: 'بوتيك راقٍ', doc: 'رخصة العمل الحر والشهادة الضريبية.pdf' },
+      ],
+
+      // Returns & Exchanges Queue
+      returns: [
+        { id: '884', shipment: '#SO-884', customer: 'رامي العلي', store: 'أزياء الشام', title: 'استبدال مقاس #SO-884 – M → L', condition: 'مؤهل للإرجاع (Delivered) ، ضمن مهلة 14 يوماً (CON-05)', status: 'pending' },
+      ],
+
+      // Immutable Cryptographic Audit Log
+      auditLedger: [
+        { id: 'tx-1', title: 'طلب استبدال للطلب #SO-884', actor: 'طلب استبدال المقاس من M إلى L (CON-05 Valid)', cat: 'returnRequest', prev: '7d4e9a10', curr: 'f2b344d7', time: 'منذ 10 دقائق' },
+        { id: 'tx-2', title: 'تحديث مسار الشحنة #SO-897', actor: 'أزياء الشام - Placed → Preparing', cat: 'statusChange', prev: '5c07e1b8', curr: '7d4e9a10', time: 'منذ 25 دقيقة' },
+        { id: 'tx-3', title: 'اعتماد متجر #0412-S', actor: 'أحمد سالم (مدير العمليات)', cat: 'shopApproval', prev: 'a91f03c2', curr: '5c07e1b8', time: 'منذ ساعتين' },
+      ],
+
+      lastHash: 'f2b344d7',
+    };
+
     // Portal Switcher
     function switchPortal(portal) {
       const merchantPortal = document.getElementById('merchant-portal');
@@ -1308,40 +1908,105 @@
       }
     }
 
-    // Cryptographic Hash Simulator (Simple Hex Generator for Chained Audit Ledger)
-    let lastTxHash = "f2b3c8a144d7";
-    function generateTxHash() {
-      const chars = "0123456789abcdef";
-      let str = "";
-      for (let i = 0; i < 12; i++) {
-        str += chars[Math.floor(Math.random() * chars.length)];
+    // View Switchers within Portals
+    function switchMerchantView(viewId, clickedEl) {
+      document.querySelectorAll('#merchant-portal .portal-view').forEach(v => v.classList.remove('active'));
+      const targetView = document.getElementById(viewId);
+      if (targetView) targetView.classList.add('active');
+
+      document.querySelectorAll('#merchant-menu .sidebar-menu-item').forEach(item => item.classList.remove('active'));
+      if (clickedEl) {
+        clickedEl.parentElement.classList.add('active');
+      } else {
+        const item = document.querySelector(`#merchant-menu [data-view="${viewId}"]`);
+        if (item) item.classList.add('active');
       }
-      const prev = lastTxHash.slice(0, 4) + "..." + lastTxHash.slice(-4);
-      lastTxHash = str;
-      const curr = str.slice(0, 4) + "..." + str.slice(-4);
-      return `prev: ${prev} → tx: ${curr}`;
     }
 
-    function appendAuditLog(title, actor, category) {
-      const auditContainer = document.getElementById('audit-log-entries');
-      const hashStr = generateTxHash();
-      
-      const entry = document.createElement('div');
-      entry.className = 'audit-entry';
-      entry.innerHTML = `
-        <div class="audit-entry-top">
-          <div class="audit-entry-title">
-            <span class="audit-dot"></span>
-            ${title}
+    function switchOpsView(viewId, clickedEl) {
+      document.querySelectorAll('#ops-portal .portal-view').forEach(v => v.classList.remove('active'));
+      const targetView = document.getElementById(viewId);
+      if (targetView) targetView.classList.add('active');
+
+      document.querySelectorAll('#ops-menu .sidebar-menu-item').forEach(item => item.classList.remove('active'));
+      if (clickedEl) {
+        clickedEl.parentElement.classList.add('active');
+      } else {
+        const item = document.querySelector(`#ops-menu [data-view="${viewId}"]`);
+        if (item) item.classList.add('active');
+      }
+    }
+
+    // Hash Chain Generator
+    function generateNextHash(title, actor) {
+      const chars = "0123456789abcdef";
+      let hex = "";
+      for (let i = 0; i < 8; i++) {
+        hex += chars[Math.floor(Math.random() * chars.length)];
+      }
+      const prev = AppState.lastHash;
+      AppState.lastHash = hex;
+      return { prev, curr: hex };
+    }
+
+    function addAuditEntry(title, actor, category) {
+      const hashes = generateNextHash(title, actor);
+      const newEntry = {
+        id: 'tx-' + Date.now(),
+        title: title,
+        actor: actor,
+        cat: category,
+        prev: hashes.prev,
+        curr: hashes.curr,
+        time: 'الآن',
+      };
+      AppState.auditLedger.unshift(newEntry);
+      renderAuditLogs();
+    }
+
+    function renderAuditLogs() {
+      // 1. Overview panel
+      const overviewContainer = document.getElementById('audit-log-entries');
+      if (overviewContainer) {
+        overviewContainer.innerHTML = AppState.auditLedger.slice(0, 4).map(entry => `
+          <div class="audit-entry">
+            <div class="audit-entry-top">
+              <div class="audit-entry-title">
+                <span class="audit-dot"></span>
+                ${entry.title}
+              </div>
+              <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">${entry.cat}</span>
+            </div>
+            <div class="audit-entry-sub">بواسطة: ${entry.actor} • ${entry.time}</div>
+            <div class="audit-hash-chain">prev: ${entry.prev} → tx: ${entry.curr}</div>
           </div>
-          <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">${category}</span>
-        </div>
-        <div class="audit-entry-sub">بواسطة: ${actor}</div>
-        <div class="audit-hash-chain">${hashStr}</div>
-      `;
-      auditContainer.insertBefore(entry, auditContainer.firstChild);
+        `).join('');
+      }
+
+      // 2. Full Ledger Page
+      const fullLedger = document.getElementById('full-audit-ledger-list');
+      if (fullLedger) {
+        fullLedger.innerHTML = AppState.auditLedger.map(entry => `
+          <div class="audit-entry">
+            <div class="audit-entry-top">
+              <div class="audit-entry-title" style="font-size: 14px;">
+                <span class="audit-dot"></span>
+                ${entry.title}
+              </div>
+              <span class="badge badge-approved" style="font-family: 'Outfit'; font-size: 11px;">Verified Block #${entry.curr}</span>
+            </div>
+            <div class="audit-entry-sub" style="font-size: 13px; margin-top: 2px;">
+              الجهة المنفذة: <strong>${entry.actor}</strong> • التوقيت: ${entry.time} • التصنيف: <code>${entry.cat}</code>
+            </div>
+            <div class="audit-hash-chain" style="font-size: 12px; margin-top: 6px;">
+              previousHash: 0x${entry.prev}9817... ───► blockHash: 0x${entry.curr}241a...
+            </div>
+          </div>
+        `).join('');
+      }
     }
 
+    // Toast Notification System
     function showToast(message) {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -1358,77 +2023,366 @@
       }, 3500);
     }
 
-    // Merchant Order Transitions
-    function merchantStartPreparing(orderId) {
-      const badge = document.getElementById(`badge-${orderId}`);
-      const actionCell = document.getElementById(`action-${orderId}`);
-      
-      badge.className = 'badge badge-preparing';
-      badge.innerText = 'Preparing';
-      
-      actionCell.innerHTML = `
-        <button class="btn-action-primary" onclick="merchantHandoverToShipping('${orderId}')">تسليم لشركة الشحن</button>
-      `;
+    // Render Merchant Overview & Orders
+    function renderMerchantDashboard() {
+      // 1. Product Approvals sidebar list
+      const prodList = document.getElementById('merchant-product-list');
+      if (prodList) {
+        prodList.innerHTML = AppState.products.slice(0, 4).map(p => {
+          let badgeClass = p.status === 'approved' ? 'badge-approved' : p.status === 'pending' ? 'badge-pending' : 'badge-rejected';
+          let badgeText = p.status === 'approved' ? 'معتمد' : p.status === 'pending' ? 'معلق' : 'مرفوض';
+          return `
+            <li class="list-item">
+              <div class="list-item-meta">
+                <div class="list-item-title">${p.name}</div>
+                <div class="list-item-sub">متبقي ${p.stock}</div>
+              </div>
+              <span class="badge ${badgeClass}">${badgeText}</span>
+            </li>
+          `;
+        }).join('');
+      }
+
+      // 2. Orders Table
+      const ordersBody = document.getElementById('merchant-orders-body');
+      if (ordersBody) {
+        ordersBody.innerHTML = AppState.orders.map(o => {
+          let badgeClass = `badge-${o.status.toLowerCase()}`;
+          let actionHtml = '';
+
+          if (o.status === 'Placed') {
+            actionHtml = `
+              <div class="action-btn-group">
+                <button class="btn-action-primary" onclick="merchantStartPreparing('${o.id}')">بدء التحضير</button>
+                <button class="btn-action-danger" onclick="merchantRejectOrder('${o.id}')">رفض</button>
+              </div>
+            `;
+          } else if (o.status === 'Preparing') {
+            actionHtml = `
+              <button class="btn-action-primary" onclick="merchantHandoverToShipping('${o.id}')">تسليم لشركة الشحن</button>
+            `;
+          } else if (o.status === 'Shipping') {
+            actionHtml = `<span class="status-text-completed">بانتظار شركة الشحن</span>`;
+          } else if (o.status === 'Delivered') {
+            actionHtml = `<span class="status-text-completed">مكتمل</span>`;
+          } else if (o.status === 'Rejected') {
+            actionHtml = `<span class="status-text-completed" style="color: var(--status-rejected-text)">تم الرفض</span>`;
+          }
+
+          return `
+            <tr id="order-row-${o.id}">
+              <td class="col-shipment">${o.shipment}</td>
+              <td>${o.customer}</td>
+              <td>${o.product}</td>
+              <td class="col-price">$${o.price}</td>
+              <td><span class="badge ${badgeClass}" id="badge-${o.id}">${o.status}</span></td>
+              <td id="action-${o.id}">${actionHtml}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // 3. Full Orders Table Page
+      const fullOrdersBody = document.getElementById('full-orders-table-body');
+      if (fullOrdersBody) {
+        fullOrdersBody.innerHTML = AppState.orders.map(o => {
+          let badgeClass = `badge-${o.status.toLowerCase()}`;
+          return `
+            <tr>
+              <td class="col-shipment">${o.shipment}</td>
+              <td>${o.date}</td>
+              <td><strong>${o.customer}</strong></td>
+              <td>${o.product} (×${o.qty})</td>
+              <td class="col-price">$${o.price}</td>
+              <td><span class="badge ${badgeClass}">${o.status}</span></td>
+              <td>
+                ${o.status === 'Placed' ? `<button class="btn-action-primary" onclick="merchantStartPreparing('${o.id}')">بدء التحضير</button>` :
+                  o.status === 'Preparing' ? `<button class="btn-action-primary" onclick="merchantHandoverToShipping('${o.id}')">تسليم للشحن</button>` :
+                  `<span class="status-text-completed">—</span>`}
+              </td>
+              <td><button class="btn-secondary" onclick="openOrderModal('${o.id}')">عرض التفاصيل</button></td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // 4. Products Table Page
+      const fullProdBody = document.getElementById('full-products-table-body');
+      if (fullProdBody) {
+        fullProdBody.innerHTML = AppState.products.map(p => {
+          let badgeClass = p.status === 'approved' ? 'badge-approved' : p.status === 'pending' ? 'badge-pending' : 'badge-rejected';
+          let badgeText = p.status === 'approved' ? 'معتمد' : p.status === 'pending' ? 'معلق' : 'مرفوض';
+          let visibilityText = p.status === 'approved' ? '<span style="color: #1A6D3A; font-weight:700;">مرئي للعملاء (CON-01)</span>' : '<span style="color: #A82222; font-weight:700;">محجوب (غير منشور)</span>';
+          return `
+            <tr>
+              <td class="col-shipment">#${p.id}</td>
+              <td style="font-weight: 700;">${p.name}</td>
+              <td>${p.category}</td>
+              <td><strong>${p.stock} قطعة</strong></td>
+              <td class="col-price">$${p.price}</td>
+              <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+              <td>${visibilityText}</td>
+              <td>
+                <button class="btn-secondary" onclick="showToast('تم فتح محرر تفاصيل المنتج')">تعديل</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // 5. Inventory Table Page
+      const invBody = document.getElementById('inventory-table-body');
+      if (invBody) {
+        invBody.innerHTML = AppState.products.map(p => {
+          let warnBadge = p.stock === 0 ? '<span class="badge badge-rejected">نفد المخزون</span>' :
+                          p.stock < 5 ? '<span class="badge badge-pending">مخزون حرج (&lt;5)</span>' :
+                          '<span class="badge badge-approved">وفير</span>';
+          let guardText = p.stock > 0 ? '<span style="color: #1A6D3A;">متاح للطلب</span>' : '<span style="color: #A82222; font-weight: 700;">محمي: يرفض الطلب (CON-03)</span>';
+
+          return `
+            <tr>
+              <td style="font-weight: 700;">${p.name}</td>
+              <td>${p.category}</td>
+              <td style="font-family: 'Outfit'; font-weight: 800; font-size: 15px;">${p.stock}</td>
+              <td>${warnBadge}</td>
+              <td>
+                <div class="stock-counter">
+                  <button onclick="updateProductStock('${p.id}', -1)">-</button>
+                  <span>${p.stock}</span>
+                  <button onclick="updateProductStock('${p.id}', 1)">+</button>
+                </div>
+              </td>
+              <td>${guardText}</td>
+            </tr>
+          `;
+        }).join('');
+      }
 
       // Update counters
+      const placedCount = AppState.orders.filter(o => o.status === 'Placed').length;
+      const prepShipCount = AppState.orders.filter(o => o.status === 'Preparing' || o.status === 'Shipping').length;
+      
       const placedKpi = document.getElementById('kpi-placed');
+      if (placedKpi) placedKpi.innerText = placedCount;
       const prepShipKpi = document.getElementById('kpi-prep-ship');
-      placedKpi.innerText = Math.max(0, parseInt(placedKpi.innerText) - 1);
-      prepShipKpi.innerText = parseInt(prepShipKpi.innerText) + 1;
+      if (prepShipKpi) prepShipKpi.innerText = prepShipCount;
 
-      const opsPlaced = document.getElementById('ops-count-placed');
-      const opsPrep = document.getElementById('ops-count-preparing');
-      opsPlaced.innerText = Math.max(0, parseInt(opsPlaced.innerText) - 1);
-      opsPrep.innerText = parseInt(opsPrep.innerText) + 1;
+      // Inventory KPI summary
+      const lowItems = AppState.products.filter(p => p.stock > 0 && p.stock < 5).length;
+      const outItems = AppState.products.filter(p => p.stock === 0).length;
+      const totalQty = AppState.products.reduce((acc, p) => acc + p.stock, 0);
 
-      appendAuditLog(`تحديث مسار الشحنة #SO-${orderId}`, 'أزياء الشام - Placed → Preparing', 'statusChange');
+      const invLow = document.getElementById('inv-low-items');
+      if (invLow) invLow.innerText = lowItems;
+      const invOut = document.getElementById('inv-out-items');
+      if (invOut) invOut.innerText = outItems;
+      const invTotal = document.getElementById('inv-total-qty');
+      if (invTotal) invTotal.innerText = totalQty;
+    }
+
+    // Render Operations Dashboard
+    function renderOperationsDashboard() {
+      // 1. Pending Queue (Overview)
+      const pendingList = document.getElementById('ops-pending-list');
+      if (pendingList) {
+        let html = '';
+        if (AppState.pendingShops.length > 0) {
+          const shop = AppState.pendingShops[0];
+          html += `
+            <li class="list-item" id="pending-item-${shop.id}">
+              <div class="list-item-meta">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div class="list-item-title">${shop.name}</div>
+                  <span class="badge badge-pending">معلق (Pending)</span>
+                </div>
+                <div class="list-item-sub">${shop.type} • ${shop.doc}</div>
+              </div>
+              <div class="action-btn-group">
+                <button class="btn-action-primary" onclick="opsApproveShop('${shop.id}', '${shop.name}')">اعتماد ونشر</button>
+                <button class="btn-action-danger" onclick="opsRejectShop('${shop.id}', '${shop.name}')">رفض</button>
+              </div>
+            </li>
+          `;
+        }
+
+        const pendingProds = AppState.products.filter(p => p.status === 'pending');
+        if (pendingProds.length > 0) {
+          const prod = pendingProds[0];
+          html += `
+            <li class="list-item" id="pending-item-${prod.id}">
+              <div class="list-item-meta">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div class="list-item-title">${prod.name} – أزياء الشام</div>
+                  <span class="badge badge-pending">معلق (Pending)</span>
+                </div>
+                <div class="list-item-sub">منتج • تم فحص الصور ومطابقة المعايير</div>
+              </div>
+              <div class="action-btn-group">
+                <button class="btn-action-primary" onclick="opsApproveProduct('${prod.id}', '${prod.name}')">اعتماد ونشر</button>
+                <button class="btn-action-danger" onclick="opsRejectProduct('${prod.id}', '${prod.name}')">رفض</button>
+              </div>
+            </li>
+          `;
+        }
+        pendingList.innerHTML = html;
+      }
+
+      // 2. Full Shops Queue
+      const fullShops = document.getElementById('ops-full-shops-queue');
+      if (fullShops) {
+        fullShops.innerHTML = AppState.pendingShops.length > 0 ? AppState.pendingShops.map(s => `
+          <li class="list-item">
+            <div class="list-item-meta">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="list-item-title" style="font-size: 15px;">${s.name}</div>
+                <span class="badge badge-pending">بانتظار الموافقة</span>
+              </div>
+              <div class="list-item-sub">${s.type} • ${s.doc}</div>
+            </div>
+            <div class="action-btn-group">
+              <button class="btn-action-primary" onclick="opsApproveShop('${s.id}', '${s.name}')">اعتماد ونشر للجمهور</button>
+              <button class="btn-action-danger" onclick="opsRejectShop('${s.id}', '${s.name}')">رفض</button>
+            </div>
+          </li>
+        `).join('') : '<div style="padding: 20px; text-align: center; color: var(--text-muted);">لا توجد متاجر معلقة حالياً</div>';
+      }
+
+      // 3. Full Products Queue
+      const fullProds = document.getElementById('ops-full-products-queue');
+      if (fullProds) {
+        const pending = AppState.products.filter(p => p.status === 'pending');
+        fullProds.innerHTML = pending.length > 0 ? pending.map(p => `
+          <li class="list-item">
+            <div class="list-item-meta">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="list-item-title" style="font-size: 15px;">${p.name}</div>
+                <span class="badge badge-pending">بانتظار المراجعة</span>
+              </div>
+              <div class="list-item-sub">السعر: $${p.price} • المخزون: ${p.stock} • المواصفات: ${p.specs}</div>
+            </div>
+            <div class="action-btn-group">
+              <button class="btn-action-primary" onclick="opsApproveProduct('${p.id}', '${p.name}')">اعتماد ونشر (CON-01)</button>
+              <button class="btn-action-danger" onclick="opsRejectProduct('${p.id}', '${p.name}')">رفض</button>
+            </div>
+          </li>
+        `).join('') : '<div style="padding: 20px; text-align: center; color: var(--text-muted);">كافة المنتجات تم تدقيقها واعتمادها بنجاح</div>';
+      }
+
+      // 4. Returns & Exchanges List
+      const returnsList = document.getElementById('ops-returns-list');
+      if (returnsList) {
+        returnsList.innerHTML = AppState.returns.map(r => `
+          <li class="list-item" id="return-item-${r.id}">
+            <div class="list-item-meta">
+              <div class="list-item-title">${r.title}</div>
+              <div class="list-item-sub">${r.condition}</div>
+            </div>
+            <div class="action-btn-group">
+              <button class="btn-action-primary" onclick="opsApproveReturn('${r.id}')">اعتماد الاستبدال</button>
+              <button class="btn-action-danger" onclick="opsRejectReturn('${r.id}')">رفض</button>
+            </div>
+          </li>
+        `).join('');
+      }
+
+      // 5. Returns Page Table
+      const returnsTableBody = document.getElementById('ops-returns-table-body');
+      if (returnsTableBody) {
+        returnsTableBody.innerHTML = AppState.returns.map(r => `
+          <tr>
+            <td class="col-shipment">${r.shipment}</td>
+            <td><strong>${r.customer}</strong></td>
+            <td>${r.store}</td>
+            <td>استبدال مقاس (M → L)</td>
+            <td><span class="badge badge-approved">مستوفٍ للشروط (&lt;14 يوم)</span></td>
+            <td>
+              <div class="action-btn-group">
+                <button class="btn-action-primary" onclick="opsApproveReturn('${r.id}')">اعتماد الاستبدال</button>
+                <button class="btn-action-danger" onclick="opsRejectReturn('${r.id}')">رفض</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // 6. Global Orders Table Page
+      const globalOrdersBody = document.getElementById('ops-global-orders-body');
+      if (globalOrdersBody) {
+        globalOrdersBody.innerHTML = AppState.globalOrders.map(o => {
+          let badgeClass = `badge-${o.status.toLowerCase()}`;
+          return `
+            <tr>
+              <td class="col-shipment">${o.shipment}</td>
+              <td style="font-weight: 700;">${o.store}</td>
+              <td>${o.customer}</td>
+              <td>${o.product}</td>
+              <td class="col-price">$${o.price}</td>
+              <td><span class="badge ${badgeClass}">${o.status}</span></td>
+              <td>
+                <button class="btn-secondary" onclick="showToast('تم التحقق من بيانات الشحنة ومطابقتها')">فحص البوليصة</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // Counters
+      const pendingTotal = AppState.pendingShops.length + AppState.products.filter(p => p.status === 'pending').length;
+      const pendingBadge = document.getElementById('ops-pending-stores');
+      if (pendingBadge) pendingBadge.innerText = `${pendingTotal} بانتظار الاعتماد`;
+    }
+
+    // Actions: Merchant Order Transitions
+    function merchantStartPreparing(orderId) {
+      const order = AppState.orders.find(o => o.id === orderId);
+      if (order) order.status = 'Preparing';
+      
+      const globalOrder = AppState.globalOrders.find(o => o.id === orderId);
+      if (globalOrder) globalOrder.status = 'Preparing';
+
+      addAuditEntry(`تحديث مسار الشحنة #SO-${orderId}`, 'أزياء الشام - Placed → Preparing', 'statusChange');
+      renderMerchantDashboard();
+      renderOperationsDashboard();
       showToast(`تم بدء تحضير الشحنة #SO-${orderId} وتوثيق الحالة في سجل التدقيق`);
     }
 
     function merchantHandoverToShipping(orderId) {
-      const badge = document.getElementById(`badge-${orderId}`);
-      const actionCell = document.getElementById(`action-${orderId}`);
-      
-      badge.className = 'badge badge-shipping';
-      badge.innerText = 'Shipping';
-      
-      actionCell.innerHTML = `
-        <span class="status-text-completed">بانتظار شركة الشحن</span>
-      `;
+      const order = AppState.orders.find(o => o.id === orderId);
+      if (order) order.status = 'Shipping';
 
-      const opsPrep = document.getElementById('ops-count-preparing');
-      const opsShip = document.getElementById('ops-count-shipping');
-      opsPrep.innerText = Math.max(0, parseInt(opsPrep.innerText) - 1);
-      opsShip.innerText = parseInt(opsShip.innerText) + 1;
+      const globalOrder = AppState.globalOrders.find(o => o.id === orderId);
+      if (globalOrder) globalOrder.status = 'Shipping';
 
-      appendAuditLog(`تسليم الشحنة #SO-${orderId} للناقل`, 'أزياء الشام - Preparing → Shipping', 'statusChange');
+      addAuditEntry(`تسليم الشحنة #SO-${orderId} للناقل`, 'أزياء الشام - Preparing → Shipping', 'statusChange');
+      renderMerchantDashboard();
+      renderOperationsDashboard();
       showToast(`تم تسليم الشحنة #SO-${orderId} لشركة الشحن بنجاح`);
     }
 
     function merchantRejectOrder(orderId) {
-      const badge = document.getElementById(`badge-${orderId}`);
-      const actionCell = document.getElementById(`action-${orderId}`);
-      
-      badge.className = 'badge badge-rejected';
-      badge.innerText = 'Rejected';
-      
-      actionCell.innerHTML = `
-        <span class="status-text-completed" style="color: var(--status-rejected-text)">تم الرفض</span>
-      `;
+      const order = AppState.orders.find(o => o.id === orderId);
+      if (order) order.status = 'Rejected';
 
-      const placedKpi = document.getElementById('kpi-placed');
-      placedKpi.innerText = Math.max(0, parseInt(placedKpi.innerText) - 1);
+      const globalOrder = AppState.globalOrders.find(o => o.id === orderId);
+      if (globalOrder) globalOrder.status = 'Rejected';
 
-      const opsPlaced = document.getElementById('ops-count-placed');
-      const opsRejected = document.getElementById('ops-count-rejected');
-      opsPlaced.innerText = Math.max(0, parseInt(opsPlaced.innerText) - 1);
-      opsRejected.innerText = parseInt(opsRejected.innerText) + 1;
-
-      appendAuditLog(`رفض الشحنة #SO-${orderId}`, 'أزياء الشام (عدم توفر المقاس)', 'orderRejected');
+      addAuditEntry(`رفض الشحنة #SO-${orderId}`, 'أزياء الشام (عدم توفر المقاس)', 'orderRejected');
+      renderMerchantDashboard();
+      renderOperationsDashboard();
       showToast(`تم رفض الطلب #SO-${orderId} وإلغاء حجز المخزون`);
     }
 
-    // Modal controls
+    // Update Product Stock In-line
+    function updateProductStock(prodId, delta) {
+      const prod = AppState.products.find(p => p.id === prodId);
+      if (prod) {
+        prod.stock = Math.max(0, prod.stock + delta);
+        renderMerchantDashboard();
+        showToast(`تم تحديث رصيد مخزون (${prod.name}) إلى ${prod.stock} قطع`);
+      }
+    }
+
+    // Modal: Add Product
     function openAddProductModal() {
       document.getElementById('add-product-modal').classList.add('open');
     }
@@ -1439,148 +2393,251 @@
 
     function submitNewProduct() {
       const name = document.getElementById('new-prod-name').value.trim();
-      const stock = document.getElementById('new-prod-stock').value.trim() || '1';
-      
+      const cat = document.getElementById('new-prod-category').value;
+      const price = parseFloat(document.getElementById('new-prod-price').value.trim()) || 250;
+      const stock = parseInt(document.getElementById('new-prod-stock').value.trim()) || 5;
+      const specs = document.getElementById('new-prod-specs').value.trim() || 'جميع المقاسات';
+
       if (!name) {
-        alert('يرجى إدخال اسم المنتج');
+        alert('يرجى إدخال اسم المنتج الفاخر');
         return;
       }
 
-      // Add to merchant list
-      const list = document.getElementById('merchant-product-list');
-      const li = document.createElement('li');
-      li.className = 'list-item';
-      li.innerHTML = `
-        <div class="list-item-meta">
-          <div class="list-item-title">${name}</div>
-          <div class="list-item-sub">متبقي ${stock}</div>
-        </div>
-        <span class="badge badge-pending">معلق</span>
-      `;
-      list.appendChild(li);
+      const newProd = {
+        id: 'p_' + Date.now().toString().slice(-4),
+        name: name,
+        category: cat,
+        specs: specs,
+        price: price,
+        stock: stock,
+        status: 'pending',
+      };
 
-      // Add to Operations queue
-      const opsPendingList = document.getElementById('ops-pending-list');
-      const opsLi = document.createElement('li');
-      opsLi.className = 'list-item';
-      const prodId = 'prod-' + Date.now();
-      opsLi.id = `pending-item-${prodId}`;
-      opsLi.innerHTML = `
-        <div class="list-item-meta">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <div class="list-item-title">${name} – أزياء الشام</div>
-            <span class="badge badge-pending">معلق (Pending)</span>
-          </div>
-          <div class="list-item-sub">منتج • تم الإرسال من لوحة التاجر</div>
-        </div>
-        <div class="action-btn-group">
-          <button class="btn-action-primary" onclick="opsApproveProduct('${prodId}', '${name}')">اعتماد ونشر</button>
-          <button class="btn-action-danger" onclick="opsRejectProduct('${prodId}', '${name}')">رفض</button>
-        </div>
-      `;
-      opsPendingList.insertBefore(opsLi, opsPendingList.firstChild);
-
-      appendAuditLog(`تقديم منتج جديد للاعتماد: ${name}`, 'أزياء الشام', 'productSubmission');
+      AppState.products.unshift(newProd);
+      addAuditEntry(`تقديم منتج جديد للاعتماد: ${name}`, 'أزياء الشام', 'productSubmission');
+      
       closeAddProductModal();
       document.getElementById('new-prod-name').value = '';
-      showToast(`تم إرسال المنتج (${name}) إلى طابور اعتماد إدارة العمليات`);
+      
+      renderMerchantDashboard();
+      renderOperationsDashboard();
+      showToast(`تم تسجيل المنتج (${name}) وإرساله إلى طابور اعتماد إدارة العمليات (CON-01)`);
     }
 
-    // Operations Dashboard Actions
-    function opsApproveShop(shopKey, shopName) {
-      const item = document.getElementById(`pending-item-${shopKey}`);
-      if (item) item.remove();
+    // Operations Approvals
+    function opsApproveShop(shopId, shopName) {
+      AppState.pendingShops = AppState.pendingShops.filter(s => s.id !== shopId);
       
       const approvedBadge = document.getElementById('ops-approved-stores');
-      const pendingBadge = document.getElementById('ops-pending-stores');
-      approvedBadge.innerText = `${parseInt(approvedBadge.innerText) + 1} متاجر معتمدة`;
-      pendingBadge.innerText = `${Math.max(0, parseInt(pendingBadge.innerText) - 1)} بانتظار الاعتماد`;
+      if (approvedBadge) {
+        approvedBadge.innerText = `${parseInt(approvedBadge.innerText) + 1} متاجر معتمدة`;
+      }
 
-      appendAuditLog(`اعتماد ونشر متجر: ${shopName}`, 'أحمد سالم (مدير العمليات)', 'shopApproval');
-      showToast(`تم اعتماد متجر (${shopName}) بنجاح ونشره للعملاء`);
+      addAuditEntry(`اعتماد ونشر متجر: ${shopName}`, 'أحمد سالم (مدير العمليات)', 'shopApproval');
+      renderOperationsDashboard();
+      showToast(`تم اعتماد متجر (${shopName}) بنجاح وتوثيقه بسجل الحوكمة`);
     }
 
-    function opsRejectShop(shopKey, shopName) {
-      const item = document.getElementById(`pending-item-${shopKey}`);
-      if (item) item.remove();
-
-      const pendingBadge = document.getElementById('ops-pending-stores');
-      pendingBadge.innerText = `${Math.max(0, parseInt(pendingBadge.innerText) - 1)} بانتظار الاعتماد`;
-
-      appendAuditLog(`رفض اعتماد متجر: ${shopName}`, 'أحمد سالم (مدير العمليات)', 'shopRejection');
+    function opsRejectShop(shopId, shopName) {
+      AppState.pendingShops = AppState.pendingShops.filter(s => s.id !== shopId);
+      addAuditEntry(`رفض اعتماد متجر: ${shopName}`, 'أحمد سالم (مدير العمليات)', 'shopRejection');
+      renderOperationsDashboard();
       showToast(`تم رفض طلب اعتماد المتجر (${shopName})`);
     }
 
-    function opsApproveProduct(prodKey, prodName) {
-      const item = document.getElementById(`pending-item-${prodKey}`);
-      if (item) item.remove();
+    function opsApproveProduct(prodId, prodName) {
+      const prod = AppState.products.find(p => p.id === prodId || p.name.includes(prodName));
+      if (prod) {
+        prod.status = 'approved';
+      }
 
-      // Update in Merchant List if matching
-      const merchantProducts = document.querySelectorAll('#merchant-product-list .list-item');
-      merchantProducts.forEach(el => {
-        if (el.querySelector('.list-item-title').innerText.includes(prodName)) {
-          const badge = el.querySelector('.badge');
-          badge.className = 'badge badge-approved';
-          badge.innerText = 'معتمد';
-        }
-      });
-
-      appendAuditLog(`اعتماد ونشر منتج: ${prodName}`, 'أحمد سالم (مدير العمليات)', 'productApproval');
-      showToast(`تم اعتماد منتج (${prodName}) وأصبح مرئياً لجميع العملاء (CON-01)`);
+      addAuditEntry(`اعتماد ونشر منتج: ${prodName}`, 'أحمد سالم (مدير العمليات)', 'productApproval');
+      renderMerchantDashboard();
+      renderOperationsDashboard();
+      showToast(`تم اعتماد منتج (${prodName}) ونشره رسمياً لجميع العملاء (CON-01)`);
     }
 
-    function opsRejectProduct(prodKey, prodName) {
-      const item = document.getElementById(`pending-item-${prodKey}`);
-      if (item) item.remove();
+    function opsRejectProduct(prodId, prodName) {
+      const prod = AppState.products.find(p => p.id === prodId || p.name.includes(prodName));
+      if (prod) {
+        prod.status = 'rejected';
+      }
 
-      const merchantProducts = document.querySelectorAll('#merchant-product-list .list-item');
-      merchantProducts.forEach(el => {
-        if (el.querySelector('.list-item-title').innerText.includes(prodName)) {
-          const badge = el.querySelector('.badge');
-          badge.className = 'badge badge-rejected';
-          badge.innerText = 'مرفوض';
-        }
-      });
-
-      appendAuditLog(`رفض منتج: ${prodName}`, 'أحمد سالم (مدير العمليات)', 'productRejection');
-      showToast(`تم رفض المنتج (${prodName})`);
+      addAuditEntry(`رفض منتج: ${prodName}`, 'أحمد سالم (مدير العمليات)', 'productRejection');
+      renderMerchantDashboard();
+      renderOperationsDashboard();
+      showToast(`تم رفض المنتج (${prodName}) لحين استيفاء الشروط الفنية`);
     }
 
     function opsApproveReturn(returnId) {
-      const item = document.getElementById(`return-item-${returnId}`);
-      if (item) {
-        item.innerHTML = `
-          <div class="list-item-meta">
-            <div class="list-item-title">استبدال مقاس #SO-${returnId} – M → L</div>
-            <div class="list-item-sub" style="color: var(--status-delivered-text); font-weight: 700;">تمت الموافقة على الاستبدال وإصدار بوليصة الإرجاع</div>
-          </div>
-          <span class="badge badge-approved">معتمد</span>
-        `;
-      }
-      const returnBadge = document.getElementById('ops-return-badge');
-      if (returnBadge) returnBadge.innerText = '0 جديد';
+      AppState.returns = AppState.returns.filter(r => r.id !== returnId);
+      const badge = document.getElementById('ops-return-badge');
+      if (badge) badge.innerText = `${AppState.returns.length} جديد`;
 
-      appendAuditLog(`اعتماد استبدال المقاس للطلب #SO-${returnId}`, 'أحمد سالم (مدير العمليات)', 'returnApproved');
-      showToast(`تم اعتماد طلب الاستبدال للشحنة #SO-${returnId} وتوليد معاملة التدقيق`);
+      addAuditEntry(`اعتماد استبدال المقاس للطلب #SO-${returnId}`, 'أحمد سالم (مدير العمليات)', 'returnApproved');
+      renderOperationsDashboard();
+      showToast(`تم اعتماد طلب الاستبدال للشحنة #SO-${returnId} وإصدار البوليصة`);
     }
 
     function opsRejectReturn(returnId) {
-      const item = document.getElementById(`return-item-${returnId}`);
-      if (item) {
-        item.innerHTML = `
-          <div class="list-item-meta">
-            <div class="list-item-title">استبدال مقاس #SO-${returnId} – M → L</div>
-            <div class="list-item-sub" style="color: var(--status-rejected-text); font-weight: 700;">تم رفض الطلب لانتهاء المهلة الزمنية</div>
-          </div>
-          <span class="badge badge-rejected">مرفوض</span>
-        `;
-      }
-      const returnBadge = document.getElementById('ops-return-badge');
-      if (returnBadge) returnBadge.innerText = '0 جديد';
+      AppState.returns = AppState.returns.filter(r => r.id !== returnId);
+      const badge = document.getElementById('ops-return-badge');
+      if (badge) badge.innerText = `${AppState.returns.length} جديد`;
 
-      appendAuditLog(`رفض طلب استبدال المقاس #SO-${returnId}`, 'أحمد سالم (مدير العمليات)', 'returnRejected');
+      addAuditEntry(`رفض طلب استبدال المقاس #SO-${returnId}`, 'أحمد سالم (مدير العمليات)', 'returnRejected');
+      renderOperationsDashboard();
       showToast(`تم رفض طلب الاستبدال`);
     }
+
+    function opsExecutePayout(storeName, amount) {
+      addAuditEntry(`تحويل أرباح بنكية لمتجر (${storeName}) بمبلغ $${amount}`, 'أحمد سالم (الخزينة والمالية)', 'settlementTransfer');
+      showToast(`تمت معالجة الإيداع البنكي الفوري لحساب (${storeName}) بنجاح`);
+    }
+
+    // Modal: Order Details
+    function openOrderModal(orderId) {
+      const o = AppState.orders.find(item => item.id === orderId);
+      if (!o) return;
+
+      document.getElementById('modal-order-title').innerText = `تفاصيل الشحنة المستقلة ${o.shipment}`;
+      document.getElementById('modal-order-content').innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #FAF8F5; padding: 12px; border-radius: 8px;">
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted);">العميل المستلم:</div>
+            <div style="font-size: 15px; font-weight: 800;">${o.customer}</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted);">قيمة الشحنة:</div>
+            <div style="font-size: 18px; font-weight: 800; font-family: 'Outfit'; color: var(--brand-primary);">$${o.price}</div>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+          <label>عنوان التوصيل المسجل</label>
+          <div style="background: #fff; border: 1px solid var(--border-color); padding: 10px; border-radius: 6px; font-size: 13px;">${o.address}</div>
+        </div>
+        <div class="form-group">
+          <label>المنتج والكمية</label>
+          <div style="background: #fff; border: 1px solid var(--border-color); padding: 10px; border-radius: 6px; font-size: 13px;">${o.product} (الكمية: ${o.qty})</div>
+        </div>
+        <div class="form-group">
+          <label>تاريخ ووقت الإنشاء</label>
+          <div style="font-size: 12px; color: var(--text-secondary);">${o.date} - موثق بالسجل المشفر</div>
+        </div>
+      `;
+      document.getElementById('order-details-modal').classList.add('open');
+    }
+
+    function closeOrderModal() {
+      document.getElementById('order-details-modal').classList.remove('open');
+    }
+
+    // Modal: Payout
+    function openPayoutModal() {
+      document.getElementById('payout-modal').classList.add('open');
+    }
+
+    function closePayoutModal() {
+      document.getElementById('payout-modal').classList.remove('open');
+    }
+
+    function confirmPayoutRequest() {
+      const amount = document.getElementById('payout-amount').value;
+      addAuditEntry(`طلب سحب أرباح بمبلغ $${amount}`, 'أزياء الشام', 'payoutRequest');
+      closePayoutModal();
+      showToast(`تم تقديم طلب سحب الأرباح ($${amount}) للمراجعة المالية الفورية`);
+    }
+
+    function saveStoreSettings() {
+      addAuditEntry('تحديث الملف التعريفي والربط البنكي', 'أزياء الشام', 'settingsUpdate');
+      showToast('تم حفظ تحديثات بيانات المتجر بنجاح');
+    }
+
+    function verifyChainIntegrity() {
+      const badge = document.getElementById('ledger-status-badge');
+      badge.innerText = 'جاري التحقق من التجزئات الرياضية...';
+      badge.className = 'badge badge-pending';
+
+      setTimeout(() => {
+        badge.innerText = 'تم التحقق: كافة السجلات الرياضية غير محرفة (100% Chain Valid - CON-07)';
+        badge.className = 'badge badge-approved';
+        showToast('تم إكمال الفحص التشفيري: السجل متسلسل ولم يتعرض لأي تعديل أو تلاعب');
+      }, 700);
+    }
+
+    // Filter functions for tables
+    function filterProductsTable(status, btn) {
+      if (btn) {
+        btn.parentElement.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      const rows = document.querySelectorAll('#full-products-table-body tr');
+      rows.forEach(r => {
+        if (status === 'all') {
+          r.style.display = '';
+        } else {
+          const badge = r.querySelector('.badge');
+          if (status === 'approved' && badge.classList.contains('badge-approved')) r.style.display = '';
+          else if (status === 'pending' && badge.classList.contains('badge-pending')) r.style.display = '';
+          else if (status === 'rejected' && badge.classList.contains('badge-rejected')) r.style.display = '';
+          else r.style.display = 'none';
+        }
+      });
+    }
+
+    function searchProductsTable(query) {
+      const q = query.toLowerCase();
+      const rows = document.querySelectorAll('#full-products-table-body tr');
+      rows.forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    function filterMerchantOrders(status, btn) {
+      if (btn) {
+        btn.parentElement.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      const rows = document.querySelectorAll('#full-orders-table-body tr');
+      rows.forEach(r => {
+        if (status === 'all') r.style.display = '';
+        else r.style.display = r.innerText.includes(status) ? '' : 'none';
+      });
+    }
+
+    function searchMerchantOrders(query) {
+      const q = query.toLowerCase();
+      const rows = document.querySelectorAll('#full-orders-table-body tr');
+      rows.forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    function filterOpsGlobalOrders(status, btn) {
+      if (btn) {
+        btn.parentElement.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      const rows = document.querySelectorAll('#ops-global-orders-body tr');
+      rows.forEach(r => {
+        if (status === 'all') r.style.display = '';
+        else r.style.display = r.innerText.includes(status) ? '' : 'none';
+      });
+    }
+
+    function searchAuditLedger(query) {
+      const q = query.toLowerCase();
+      const entries = document.querySelectorAll('#full-audit-ledger-list .audit-entry');
+      entries.forEach(e => {
+        e.style.display = e.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderMerchantDashboard();
+      renderOperationsDashboard();
+      renderAuditLogs();
+    });
   </script>
 </body>
 </html>
