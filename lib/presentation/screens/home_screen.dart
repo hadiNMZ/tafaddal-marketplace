@@ -8,6 +8,7 @@ import '../../services/catalog_service.dart';
 import '../../utils/bidi_utils.dart';
 import '../theme/app_theme.dart';
 import '../widgets/atelier_components.dart';
+import 'product_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(int)? onNavigateTab;
@@ -930,6 +931,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _openProductDetails(Product product) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ProductDetailsScreen(
+          product: product,
+          onNavigateTab: widget.onNavigateTab,
+        ),
+      ),
+    );
+  }
+
   /// Editorial Lookbook Item: Pure fashion visual + editorial typography, no outer card box
   Widget _buildProductCard(Product p) {
     final isFav = _favorites.contains(p.id);
@@ -943,12 +955,18 @@ class _HomeScreenState extends State<HomeScreen> {
         Expanded(
           child: Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: AtelierProductVisual(
-                  productName: p.name,
-                  category: p.category,
-                  borderRadius: BorderRadius.circular(14),
+              Positioned.fill(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => _openProductDetails(p),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: AtelierProductVisual(
+                      productName: p.name,
+                      category: p.category,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
                 ),
               ),
               // Remaining stock pill (Right side in RTL)
@@ -1026,43 +1044,56 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
 
         // Editorial Metadata (Directly on canvas)
-        const SizedBox(height: 8),
-        Text(
-          p.name,
-          textAlign: TextAlign.right,
-          style: GoogleFonts.tajawal(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
-            color: AtelierColors.textPrimary,
-            height: 1.25,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: 2),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              storeName,
-              style: GoogleFonts.tajawal(
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-                color: AtelierColors.textSecondary,
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => _openProductDetails(p),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 8),
+              Text(
+                p.name,
+                textAlign: TextAlign.right,
+                style: GoogleFonts.tajawal(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AtelierColors.textPrimary,
+                  height: 1.25,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-            const SizedBox(width: 3),
-            const Icon(Icons.verified, size: 12, color: AtelierColors.gold),
-          ],
-        ),
-        const SizedBox(height: 1),
-        Text(
-          p.specs,
-          textAlign: TextAlign.right,
-          style: GoogleFonts.tajawal(
-            fontSize: 10,
-            fontWeight: FontWeight.w400,
-            color: AtelierColors.textMuted,
+              const SizedBox(height: 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    storeName,
+                    style: GoogleFonts.tajawal(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: AtelierColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 3),
+                  const Icon(
+                    Icons.verified,
+                    size: 12,
+                    color: AtelierColors.gold,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 1),
+              Text(
+                p.specs,
+                textAlign: TextAlign.right,
+                style: GoogleFonts.tajawal(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: AtelierColors.textMuted,
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 8),

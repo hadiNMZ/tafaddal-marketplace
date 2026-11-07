@@ -3,10 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/shipment_order.dart';
 import '../../services/cart_service.dart';
+import '../../services/catalog_service.dart';
 import '../../services/order_service.dart';
 import '../../utils/bidi_utils.dart';
 import '../theme/app_theme.dart';
 import '../widgets/atelier_components.dart';
+import 'product_details_screen.dart';
 
 class CartCheckoutScreen extends StatefulWidget {
   final Function(ShipmentOrder)? onOrderSubmitted;
@@ -466,47 +468,84 @@ class _CartCheckoutScreenState extends State<CartCheckoutScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // Right side in RTL: Mini couture thumbnail visual
-        SizedBox(
-          width: 50,
-          height: 50,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: AtelierProductVisual(
-              productName: item.title,
-              category: '',
-              height: 50,
-              borderRadius: BorderRadius.circular(10),
-            ),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            final prod = CatalogService.instance.getProduct(item.id);
+            if (prod != null) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailsScreen(
+                    product: prod,
+                    onNavigateTab: widget.onNavigateTab,
+                  ),
+                ),
+              );
+            }
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: AtelierProductVisual(
+                    productName: item.title,
+                    category: '',
+                    height: 50,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+            ],
           ),
         ),
-        const SizedBox(width: 12),
         // Middle: Title and Specs (Aligned to Right in RTL)
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.tajawal(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: AtelierColors.textPrimary,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              final prod = CatalogService.instance.getProduct(item.id);
+              if (prod != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailsScreen(
+                      product: prod,
+                      onNavigateTab: widget.onNavigateTab,
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.tajawal(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AtelierColors.textPrimary,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                formatBidi(item.specs),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.tajawal(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: AtelierColors.textMuted,
+                const SizedBox(height: 2),
+                Text(
+                  formatBidi(item.specs),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.tajawal(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: AtelierColors.textMuted,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         const SizedBox(width: 8),

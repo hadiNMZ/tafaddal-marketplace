@@ -5,7 +5,9 @@ import 'package:tafaddal_marketplace/presentation/screens/home_screen.dart';
 import 'package:tafaddal_marketplace/presentation/screens/cart_checkout_screen.dart';
 import 'package:tafaddal_marketplace/presentation/screens/order_details_screen.dart';
 import 'package:tafaddal_marketplace/presentation/screens/admin_dashboard_screen.dart';
+import 'package:tafaddal_marketplace/presentation/screens/product_details_screen.dart';
 import 'package:tafaddal_marketplace/services/cart_service.dart';
+import 'package:tafaddal_marketplace/services/catalog_service.dart';
 
 void main() {
   Widget buildRtlTestApp(Widget child) {
@@ -200,5 +202,84 @@ void main() {
 
       expect(find.byType(SnackBar), findsOneWidget);
     });
+
+    testWidgets(
+      'HomeScreen tapping on product item navigates to ProductDetailsScreen',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(360, 780);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.reset);
+
+        await tester.pumpWidget(buildRtlTestApp(const HomeScreen()));
+        final dressProductItem = find.text('فستان سهرة كريب');
+        expect(dressProductItem, findsOneWidget);
+
+        await tester.ensureVisible(dressProductItem);
+        await tester.tap(dressProductItem);
+        await tester.pumpAndSettle();
+
+        // Verify ProductDetailsScreen opened and rendered matching design
+        expect(find.byType(ProductDetailsScreen), findsOneWidget);
+        expect(find.text('متجر معتمد وموثق'), findsOneWidget);
+        expect(find.text('\$240'), findsOneWidget);
+        expect(find.text('أزياء الشام • فساتين'), findsOneWidget);
+        expect(find.text('المقاس'), findsOneWidget);
+        expect(find.text('اللون'), findsOneWidget);
+        expect(find.text('الوصف'), findsOneWidget);
+        expect(find.text('زمردي'), findsOneWidget);
+        expect(find.text('أسود'), findsOneWidget);
+        expect(find.text('ذهبي'), findsOneWidget);
+        expect(find.text('إضافة إلى السلة'), findsOneWidget);
+
+        // Tap Size 'L'
+        final sizeL = find.text('L');
+        expect(sizeL, findsOneWidget);
+        await tester.tap(sizeL);
+        await tester.pumpAndSettle();
+
+        // Tap Add to Cart
+        final addToCartBtn = find.text('إضافة إلى السلة');
+        await tester.tap(addToCartBtn);
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.text('عرض السلة'), findsOneWidget);
+
+        // Tap Back button to pop back to HomeScreen
+        final backBtn = find.byIcon(Icons.chevron_right_rounded);
+        expect(backBtn, findsOneWidget);
+        await tester.tap(backBtn);
+        await tester.pumpAndSettle();
+
+        expect(find.byType(ProductDetailsScreen), findsNothing);
+        expect(find.byType(HomeScreen), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'ProductDetailsScreen renders all design elements and handles interactions',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(360, 780);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.reset);
+
+        final dress = CatalogService.instance.getProduct('p_dress')!;
+        await tester.pumpWidget(
+          buildRtlTestApp(ProductDetailsScreen(product: dress)),
+        );
+
+        expect(find.text('فستان سهرة كريب'), findsOneWidget);
+        expect(find.text('\$240'), findsOneWidget);
+        expect(find.text('متجر معتمد وموثق'), findsOneWidget);
+        expect(find.text('إرجاع/استبدال خلال 14 يوماً'), findsOneWidget);
+
+        // Test favorite toggle
+        final favBtn = find.byIcon(Icons.favorite_border_rounded).first;
+        await tester.tap(favBtn);
+        await tester.pumpAndSettle();
+
+        expect(find.byIcon(Icons.favorite), findsWidgets);
+      },
+    );
   });
 }
