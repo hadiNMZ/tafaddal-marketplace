@@ -442,16 +442,24 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: Column(
                 children: [
-                  Text(
-                    'تفضّل',
-                    style: GoogleFonts.tajawal(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w800,
-                      color: AtelierColors.primary,
-                      height: 1.1,
-                      letterSpacing: -0.5,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const AtelierBrandLogo(size: 24),
+                      const SizedBox(width: 8),
+                      Text(
+                        'تفضّل',
+                        style: GoogleFonts.tajawal(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w800,
+                          color: AtelierColors.primary,
+                          height: 1.1,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 2),
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(

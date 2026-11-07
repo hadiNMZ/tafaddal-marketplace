@@ -803,3 +803,82 @@ Widget _buildNotificationItemTile({
     ),
   );
 }
+
+/// Minimalist Haute-Couture Brand Emblem for Tafaddal
+class AtelierBrandLogo extends StatelessWidget {
+  final double size;
+  final bool showText;
+
+  const AtelierBrandLogo({super.key, this.size = 38, this.showText = false});
+
+  @override
+  Widget build(BuildContext context) {
+    final emblem = Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(size * 0.28),
+        boxShadow: [
+          BoxShadow(
+            color: AtelierColors.primary.withValues(alpha: 0.18),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(size * 0.28),
+        child: Image.asset(
+          'assets/logo/tafaddal_logo.png',
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: AtelierColors.primary,
+              child: const Icon(
+                Icons.auto_awesome,
+                color: AtelierColors.gold,
+                size: 18,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+
+    if (!showText) return emblem;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        emblem,
+        const SizedBox(width: 8),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'تفضّل',
+              style: GoogleFonts.tajawal(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AtelierColors.primary,
+                height: 1.1,
+              ),
+            ),
+            Text(
+              'ATELIER MARKETPLACE',
+              style: GoogleFonts.outfit(
+                fontSize: 7,
+                fontWeight: FontWeight.w700,
+                color: AtelierColors.goldDark,
+                letterSpacing: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

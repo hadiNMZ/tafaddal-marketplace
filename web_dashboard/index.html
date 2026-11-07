@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفضّل | بوابات الإدارة والعمليات</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Tajawal:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-canvas: #FAF8F3;
+      --bg-surface: #FFFFFF;
+      --bg-surface-elevated: #F6F3EC;
+      --border-color: #EDE8DE;
+      --border-subtle: #F2ECE1;
+      
+      --sidebar-bg: #0F261F;
+      --sidebar-hover: #16382E;
+      --sidebar-active: #1D473B;
+      --sidebar-text: #E5EBE8;
+      --sidebar-text-muted: #86A798;
+      
+      --brand-primary: #102A22;
+      --brand-primary-light: #1A4034;
+      --brand-gold: #B89358;
+      --brand-gold-dark: #8F6D35;
+      --brand-gold-tint: #FDF9F0;
+      --brand-gold-border: #EFE4CC;
+      
+      --text-main: #191817;
+      --text-secondary: #5C5852;
+      --text-muted: #8F8A81;
+      
+      --status-placed-bg: #E8F2FC;
+      --status-placed-text: #195593;
+      --status-preparing-bg: #FEF4E5;
+      --status-preparing-text: #B26E17;
+      --status-shipping-bg: #FAF2E8;
+      --status-shipping-text: #8A6726;
+      --status-delivered-bg: #EAF7EE;
+      --status-delivered-text: #1A6D3A;
+      --status-rejected-bg: #FEEAEA;
+      --status-rejected-text: #A82222;
+      --status-pending-bg: #FEF6E8;
+      --status-pending-text: #B87A1E;
+      
+      --shadow-sm: 0 1px 3px rgba(16, 42, 34, 0.04);
+      --shadow-md: 0 4px 12px rgba(16, 42, 34, 0.06);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Universal Portal Switcher Topbar */
+    .portal-switcher-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: #091713;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .portal-switcher-tabs {
+      display: flex;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 3px;
+      border-radius: var(--radius-pill);
+    }
+
+    .portal-tab-btn {
+      background: transparent;
+      border: none;
+      color: #A2B9AF;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .portal-tab-btn.active {
+      background: var(--brand-gold);
+      color: #0F261F;
+      font-weight: 700;
+    }
+
+    .portal-brand-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--brand-gold);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Main Container & Layout */
+    .app-layout {
+      display: flex;
+      width: 100%;
+      margin-top: 48px;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 250px;
+      background-color: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: fixed;
+      top: 48px;
+      bottom: 0;
+      right: 0;
+      z-index: 100;
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sidebar-header {
+      padding: 24px 20px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .sidebar-logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1C4D3B 0%, #0A1F16 100%);
+      border: 1px solid var(--brand-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-gold);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .sidebar-brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.1;
+    }
+
+    .sidebar-brand-sub {
+      font-size: 11px;
+      color: var(--sidebar-text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .sidebar-menu {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .sidebar-menu-item a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--sidebar-text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-menu-item.active a,
+    .sidebar-menu-item a:hover {
+      background-color: var(--sidebar-active);
+      color: #FFFFFF;
+    }
+
+    .sidebar-menu-item.active a {
+      box-shadow: inset 3px 0 0 var(--brand-gold);
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--sidebar-text);
+    }
+
+    .sidebar-user-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    /* Content Area */
+    .main-viewport {
+      margin-right: 250px;
+      flex: 1;
+      padding: 32px 36px 60px;
+      max-width: 1380px;
+    }
+
+    /* Header Section */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .dashboard-title-group h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dashboard-title-group p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-primary {
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      transition: background 0.15s ease;
+      box-shadow: 0 2px 6px rgba(16, 42, 34, 0.15);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--brand-primary-light);
+    }
+
+    /* KPI Cards Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-grid-5 {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .kpi-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .kpi-card.golden-kpi {
+      background: var(--brand-gold-tint);
+      border-color: var(--brand-gold-border);
+    }
+
+    .kpi-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .kpi-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+
+    .kpi-card.golden-kpi .kpi-value {
+      color: var(--brand-gold-dark);
+    }
+
+    /* Dashboard Columns Split */
+    .dashboard-split {
+      display: grid;
+      grid-template-columns: 310px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .dashboard-split-equal {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Card Panels */
+    .panel-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: 'Outfit', 'Tajawal', sans-serif;
+    }
+
+    /* Lists inside panels */
+    .list-group {
+      list-style: none;
+    }
+
+    .list-item {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.15s ease;
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-item-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .list-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .list-item-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .badge-approved { background: var(--status-delivered-bg); color: var(--status-delivered-text); }
+    .badge-pending { background: var(--status-pending-bg); color: var(--status-pending-text); }
+    .badge-rejected { background: var(--status-rejected-bg); color: var(--status-rejected-text); }
+    .badge-placed { background: var(--status-placed-bg); color: var(--status-placed-text); }
+    .badge-preparing { background: var(--status-preparing-bg); color: var(--status-preparing-text); }
+    .badge-shipping { background: var(--status-shipping-bg); color: var(--status-shipping-text); }
+    .badge-delivered { background: var(--status-delivered-bg); color: var(--status-delivered-text); }
+    .badge-count { background: #E8F2FC; color: #195593; font-family: 'Outfit', sans-serif; }
+
+    /* Alert Box */
+    .alert-card {
+      background: #FDF9F0;
+      border: 1px solid #F4E2C5;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .alert-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #946824;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .alert-body {
+      font-size: 12px;
+      color: #7A551A;
+      line-height: 1.5;
+    }
+
+    /* Table Styling */
+    .data-table-container {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+    }
+
+    .data-table th {
+      background: #FAF8F5;
+      padding: 12px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 13px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .data-table tr:hover {
+      background: rgba(16, 42, 34, 0.015);
+    }
+
+    .col-price {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .col-shipment {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* Action Buttons in Table & Lists */
+    .action-btn-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-action-primary {
+      background: var(--brand-primary);
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-primary:hover {
+      background: var(--brand-primary-light);
+    }
+
+    .btn-action-danger {
+      background: #FFFFFF;
+      color: var(--status-rejected-text);
+      border: 1px solid var(--status-rejected-text);
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .btn-action-danger:hover {
+      background: var(--status-rejected-bg);
+    }
+
+    .status-text-completed {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Audit Log Cryptographic Styles */
+    .audit-entry {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .audit-entry-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .audit-entry-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .audit-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--brand-gold);
+    }
+
+    .audit-entry-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .audit-hash-chain {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #64748B;
+      background: #F8FAFC;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 4px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .card-footer-note {
+      padding: 10px 18px;
+      background: #FAF8F5;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(9, 23, 19, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      width: 480px;
+      max-width: 90%;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--brand-primary);
+    }
+
+    .modal-close-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .modal-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--brand-gold);
+    }
+
+    .modal-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border-subtle);
+      background: #FAF8F5;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.25s ease-out;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1080px) {
+      .dashboard-split {
+        grid-template-columns: 1fr;
+      }
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .kpi-grid-5 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Universal Switcher Bar -->
+  <header class="portal-switcher-bar">
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="portal-brand-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        TAFADDAL ATELIER ECOSYSTEM
+      </div>
+      <div class="portal-switcher-tabs">
+        <button class="portal-tab-btn active" id="tab-merchant-btn" onclick="switchPortal('merchant')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          لوحة التاجر (أزياء الشام)
+        </button>
+        <button class="portal-tab-btn" id="tab-ops-btn" onclick="switchPortal('ops')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          لوحة العمليات والحوكمة (تفضّل Ops)
+        </button>
+      </div>
+    </div>
+    <div style="font-size: 12px; color: #86A798; font-weight: 500;">
+      نظام تفضّل الموزع • معايير الحوكمة (CON-01 .. CON-07)
+    </div>
+  </header>
+
+  <div class="app-layout">
+
+    <!-- ========================================== -->
+    <!-- PORTAL 1: MERCHANT DASHBOARD (لوحة التاجر) -->
+    <!-- ========================================== -->
+    <div id="merchant-portal" style="display: flex; width: 100%;">
+      
+      <!-- Merchant Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+          <div>
+            <div class="sidebar-brand-name">تفضّل</div>
+            <div class="sidebar-brand-sub">لوحة صاحب المتجر</div>
+          </div>
+        </div>
+        
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item active">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              لوحة التاجر
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              المنتجات
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              المخزون
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              الطلبات
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+              المبيعات والمستحقات
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              الإعدادات
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-user-avatar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="sidebar-user-name">أزياء الشام</div>
+        </div>
+      </aside>
+
+      <!-- Merchant Main Viewport -->
+      <main class="main-viewport">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+          <div class="dashboard-title-group">
+            <h1>لوحة تحكم المتجر – أزياء الشام</h1>
+            <p>متجر معتمد وموثق • عمولة المنصة 15%</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn-primary" onclick="openAddProductModal()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              إضافة منتج
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Indicator Cards Row -->
+        <div class="kpi-grid">
+          <div class="kpi-card golden-kpi">
+            <div class="kpi-label">صافي المستحقات (بعد العمولة)</div>
+            <div class="kpi-value">$2,082</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">مبيعات الأسبوع</div>
+            <div class="kpi-value">$2,450</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">قيد التحضير / الشحن</div>
+            <div class="kpi-value" id="kpi-prep-ship">5</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">طلبات جديدة (Placed)</div>
+            <div class="kpi-value" id="kpi-placed">3</div>
+          </div>
+        </div>
+
+        <!-- Split Columns: Left info cards, Right Orders Table -->
+        <div class="dashboard-split">
+          
+          <!-- Left Column (Product Approvals & Inventory Alert) -->
+          <div>
+            <!-- Product Approval Status Card -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title">حالة اعتماد المنتجات</div>
+              </div>
+              <ul class="list-group" id="merchant-product-list">
+                <li class="list-item">
+                  <div class="list-item-meta">
+                    <div class="list-item-title">فستان سهرة كريب</div>
+                    <div class="list-item-sub">متبقي 6</div>
+                  </div>
+                  <span class="badge badge-approved">معتمد</span>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-meta">
+                    <div class="list-item-title">فستان سواريه مطرز</div>
+                    <div class="list-item-sub">متبقي 4</div>
+                  </div>
+                  <span class="badge badge-pending">معلق</span>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-meta">
+                    <div class="list-item-title">كاب صوف إيطالي</div>
+                    <div class="list-item-sub">متبقي 0</div>
+                  </div>
+                  <span class="badge badge-rejected">مرفوض</span>
+                </li>
+              </ul>
+              <div class="card-footer-note">
+                المنتجات غير المعتمدة لا تظهر للعملاء (CON-01)
+              </div>
+            </div>
+
+            <!-- Stock Alert Card -->
+            <div class="alert-card">
+              <div class="alert-header">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                تنبيه المخزون
+              </div>
+              <div class="alert-body">
+                مخزون "سترة جلد سويدي" أقل من 5 قطع. لا يمكن قبول كمية تتجاوز المتاح (CON-03).
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Orders Table -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">الطلبات الواردة إلى المتجر</div>
+              <div class="panel-subtitle">كل طلب = شحنة واحدة (Shipment Order)</div>
+            </div>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>الشحنة</th>
+                    <th>العميل</th>
+                    <th>المنتج</th>
+                    <th>المبلغ</th>
+                    <th>الحالة</th>
+                    <th>الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="merchant-orders-body">
+                  <!-- Row 1: Placed -->
+                  <tr id="order-row-902">
+                    <td class="col-shipment">#SO-902</td>
+                    <td>سامر الأحمد</td>
+                    <td>فستان سهرة كريب</td>
+                    <td class="col-price">$240</td>
+                    <td><span class="badge badge-placed" id="badge-902">Placed</span></td>
+                    <td id="action-902">
+                      <div class="action-btn-group">
+                        <button class="btn-action-primary" onclick="merchantStartPreparing('902')">بدء التحضير</button>
+                        <button class="btn-action-danger" onclick="merchantRejectOrder('902')">رفض</button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <!-- Row 2: Preparing -->
+                  <tr id="order-row-897">
+                    <td class="col-shipment">#SO-897</td>
+                    <td>ليلى حداد</td>
+                    <td>معطف صوف فاخر</td>
+                    <td class="col-price">$185</td>
+                    <td><span class="badge badge-preparing" id="badge-897">Preparing</span></td>
+                    <td id="action-897">
+                      <button class="btn-action-primary" onclick="merchantHandoverToShipping('897')">تسليم لشركة الشحن</button>
+                    </td>
+                  </tr>
+
+                  <!-- Row 3: Shipping -->
+                  <tr id="order-row-890">
+                    <td class="col-shipment">#SO-890</td>
+                    <td>نور القاسم</td>
+                    <td>عباية حرير مطرزة</td>
+                    <td class="col-price">$310</td>
+                    <td><span class="badge badge-shipping">Shipping</span></td>
+                    <td><span class="status-text-completed">بانتظار شركة الشحن</span></td>
+                  </tr>
+
+                  <!-- Row 4: Delivered -->
+                  <tr id="order-row-884">
+                    <td class="col-shipment">#SO-884</td>
+                    <td>رامي العلي</td>
+                    <td>حقيبة جلدية أصلية</td>
+                    <td class="col-price">$130</td>
+                    <td><span class="badge badge-delivered">Delivered</span></td>
+                    <td><span class="status-text-completed">مكتمل</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+
+    <!-- ======================================================== -->
+    <!-- PORTAL 2: OPERATIONS & GOVERNANCE DASHBOARD (لوحة العمليات) -->
+    <!-- ======================================================== -->
+    <div id="ops-portal" style="display: none; width: 100%;">
+      
+      <!-- Operations Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="sidebar-brand-name">تفضّل</div>
+            <div class="sidebar-brand-sub">تفضّل Ops – إدارة العمليات والرقابة</div>
+          </div>
+        </div>
+        
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item active">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              لوحة العمليات
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              اعتماد المتاجر والمنتجات
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              متابعة الطلبات
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+              الإرجاع والاستبدال
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+              العمولات والتسويات
+            </a>
+          </li>
+          <li class="sidebar-menu-item">
+            <a href="#">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              سجل التدقيق
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-user-avatar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="sidebar-user-name">أحمد سالم</div>
+        </div>
+      </aside>
+
+      <!-- Operations Main Viewport -->
+      <main class="main-viewport">
+        <!-- Operations Header -->
+        <div class="dashboard-header">
+          <div class="dashboard-title-group">
+            <h1>لوحة العمليات والحوكمة</h1>
+            <p>اعتماد المتاجر والمنتجات • متابعة الطلبات • سجل التدقيق غير القابل للتعديل</p>
+          </div>
+          <div class="header-actions">
+            <span class="badge badge-approved" id="ops-approved-stores" style="padding: 6px 14px; font-size: 13px;">8 متاجر معتمدة</span>
+            <span class="badge badge-pending" id="ops-pending-stores" style="padding: 6px 14px; font-size: 13px;">4 بانتظار الاعتماد</span>
+          </div>
+        </div>
+
+        <!-- 5 Status Counters Row -->
+        <div class="kpi-grid kpi-grid-5">
+          <div class="kpi-card" style="align-items: center; text-align: center;">
+            <span class="badge badge-rejected" style="font-family: 'Outfit'; font-size: 11px;">Rejected</span>
+            <div class="kpi-value" id="ops-count-rejected" style="margin-top: 6px;">4</div>
+          </div>
+          <div class="kpi-card" style="align-items: center; text-align: center;">
+            <span class="badge badge-delivered" style="font-family: 'Outfit'; font-size: 11px;">Delivered</span>
+            <div class="kpi-value" id="ops-count-delivered" style="margin-top: 6px;">86</div>
+          </div>
+          <div class="kpi-card" style="align-items: center; text-align: center;">
+            <span class="badge badge-shipping" style="font-family: 'Outfit'; font-size: 11px;">Shipping</span>
+            <div class="kpi-value" id="ops-count-shipping" style="margin-top: 6px;">14</div>
+          </div>
+          <div class="kpi-card" style="align-items: center; text-align: center;">
+            <span class="badge badge-preparing" style="font-family: 'Outfit'; font-size: 11px;">Preparing</span>
+            <div class="kpi-value" id="ops-count-preparing" style="margin-top: 6px;">9</div>
+          </div>
+          <div class="kpi-card" style="align-items: center; text-align: center;">
+            <span class="badge badge-placed" style="font-family: 'Outfit'; font-size: 11px;">Placed</span>
+            <div class="kpi-value" id="ops-count-placed" style="margin-top: 6px;">12</div>
+          </div>
+        </div>
+
+        <!-- Split Columns: Left Immutable Audit Log, Right Pending Approvals & Returns -->
+        <div class="dashboard-split dashboard-split-equal">
+          
+          <!-- Left Column: Immutable Security Audit Log (Read-Only) -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                سجل التدقيق الأمني (للقراءة فقط)
+              </div>
+            </div>
+            
+            <div id="audit-log-entries">
+              <!-- Entry 1 -->
+              <div class="audit-entry">
+                <div class="audit-entry-top">
+                  <div class="audit-entry-title">
+                    <span class="audit-dot"></span>
+                    اعتماد متجر #0412-S
+                  </div>
+                  <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">shopApproval</span>
+                </div>
+                <div class="audit-entry-sub">بواسطة: أحمد سالم (مدير العمليات)</div>
+                <div class="audit-hash-chain">prev: a91f...03c2 → tx: 5c07...e1b8</div>
+              </div>
+
+              <!-- Entry 2 -->
+              <div class="audit-entry">
+                <div class="audit-entry-top">
+                  <div class="audit-entry-title">
+                    <span class="audit-dot"></span>
+                    تحديث مسار الشحنة #SO-897
+                  </div>
+                  <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">statusChange</span>
+                </div>
+                <div class="audit-entry-sub">بواسطة: أزياء الشام - Placed → Preparing</div>
+                <div class="audit-hash-chain">prev: 5c07...e1b8 → tx: 7d4e...9a10</div>
+              </div>
+
+              <!-- Entry 3 -->
+              <div class="audit-entry">
+                <div class="audit-entry-top">
+                  <div class="audit-entry-title">
+                    <span class="audit-dot"></span>
+                    طلب استبدال للطلب #SO-884
+                  </div>
+                  <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">returnRequest</span>
+                </div>
+                <div class="audit-entry-sub">طلب استبدال المقاس من M إلى L (CON-05 Valid)</div>
+                <div class="audit-hash-chain">prev: 7d4e...9a10 → tx: f2b3...44d7</div>
+              </div>
+            </div>
+
+            <div class="card-footer-note">
+              كل سجل مرتبط بتجزئة السجل السابق (previousHash) فلا يمكن حذفه أو تعديله (CON-07).
+            </div>
+          </div>
+
+          <!-- Right Column: Pending Approvals & Returns -->
+          <div>
+            <!-- Card 1: Pending Approvals -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title">طلبات الاعتماد المعلقة (أحدث طلبين)</div>
+              </div>
+              <ul class="list-group" id="ops-pending-list">
+                <!-- Shop Approval Item -->
+                <li class="list-item" id="pending-item-zaizafoun">
+                  <div class="list-item-meta">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div class="list-item-title">أتيليه الزيزفون</div>
+                      <span class="badge badge-pending">معلق (Pending)</span>
+                    </div>
+                    <div class="list-item-sub">متجر • السجل التجاري pdf</div>
+                  </div>
+                  <div class="action-btn-group">
+                    <button class="btn-action-primary" onclick="opsApproveShop('zaizafoun', 'أتيليه الزيزفون')">اعتماد ونشر</button>
+                    <button class="btn-action-danger" onclick="opsRejectShop('zaizafoun', 'أتيليه الزيزفون')">رفض</button>
+                  </div>
+                </li>
+
+                <!-- Product Approval Item -->
+                <li class="list-item" id="pending-item-dress-sham">
+                  <div class="list-item-meta">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div class="list-item-title">فستان سواريه مطرز – أزياء الشام</div>
+                      <span class="badge badge-pending">معلق (Pending)</span>
+                    </div>
+                    <div class="list-item-sub">منتج • تم فحص الصور ومطابقة المعايير</div>
+                  </div>
+                  <div class="action-btn-group">
+                    <button class="btn-action-primary" onclick="opsApproveProduct('dress-sham', 'فستان سواريه مطرز')">اعتماد ونشر</button>
+                    <button class="btn-action-danger" onclick="opsRejectProduct('dress-sham', 'فستان سواريه مطرز')">رفض</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Card 2: Return & Exchange Queue -->
+            <div class="panel-card">
+              <div class="panel-header">
+                <div class="panel-title">طلبات الإرجاع والاستبدال</div>
+                <span class="badge badge-count" id="ops-return-badge">1 جديد</span>
+              </div>
+              <ul class="list-group" id="ops-returns-list">
+                <li class="list-item" id="return-item-884">
+                  <div class="list-item-meta">
+                    <div class="list-item-title">استبدال مقاس #SO-884 – M → L</div>
+                    <div class="list-item-sub">الحالة: مؤهل للإرجاع (Delivered) ، ضمن مهلة 14 يوماً</div>
+                  </div>
+                  <div class="action-btn-group">
+                    <button class="btn-action-primary" onclick="opsApproveReturn('884')">اعتماد الاستبدال</button>
+                    <button class="btn-action-danger" onclick="opsRejectReturn('884')">رفض</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Add Product Modal -->
+  <div class="modal-overlay" id="add-product-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>إضافة منتج جديد – أزياء الشام</h3>
+        <button class="modal-close-btn" onclick="closeAddProductModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>اسم المنتج الفاخر</label>
+          <input type="text" class="form-control" id="new-prod-name" placeholder="مثال: فستان مخمل ملكي مطرز">
+        </div>
+        <div class="form-group">
+          <label>الفئة</label>
+          <select class="form-control" id="new-prod-category">
+            <option value="فساتين">فساتين</option>
+            <option value="معاطف">معاطف</option>
+            <option value="عبايات">عبايات</option>
+            <option value="أحذية">أحذية</option>
+            <option value="حقائب">حقائب</option>
+          </select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label>السعر ($)</label>
+            <input type="number" class="form-control" id="new-prod-price" placeholder="280">
+          </div>
+          <div class="form-group">
+            <label>كمية المخزون</label>
+            <input type="number" class="form-control" id="new-prod-stock" placeholder="5">
+          </div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); background: #FAF8F5; padding: 8px 12px; border-radius: 6px;">
+          تنبيه: سيخضع المنتج لرقابة إدارة العمليات ولن يظهر للعملاء حتى تتم مراجعته واعتماده (CON-01).
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-action-danger" onclick="closeAddProductModal()">إلغاء</button>
+        <button class="btn-primary" onclick="submitNewProduct()">إرسال للاعتماد</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Reactive Logic & Simulation -->
+  <script>
+    // Portal Switcher
+    function switchPortal(portal) {
+      const merchantPortal = document.getElementById('merchant-portal');
+      const opsPortal = document.getElementById('ops-portal');
+      const merchantBtn = document.getElementById('tab-merchant-btn');
+      const opsBtn = document.getElementById('tab-ops-btn');
+
+      if (portal === 'merchant') {
+        merchantPortal.style.display = 'flex';
+        opsPortal.style.display = 'none';
+        merchantBtn.classList.add('active');
+        opsBtn.classList.remove('active');
+      } else {
+        merchantPortal.style.display = 'none';
+        opsPortal.style.display = 'flex';
+        merchantBtn.classList.remove('active');
+        opsBtn.classList.add('active');
+      }
+    }
+
+    // Cryptographic Hash Simulator (Simple Hex Generator for Chained Audit Ledger)
+    let lastTxHash = "f2b3c8a144d7";
+    function generateTxHash() {
+      const chars = "0123456789abcdef";
+      let str = "";
+      for (let i = 0; i < 12; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+      }
+      const prev = lastTxHash.slice(0, 4) + "..." + lastTxHash.slice(-4);
+      lastTxHash = str;
+      const curr = str.slice(0, 4) + "..." + str.slice(-4);
+      return `prev: ${prev} → tx: ${curr}`;
+    }
+
+    function appendAuditLog(title, actor, category) {
+      const auditContainer = document.getElementById('audit-log-entries');
+      const hashStr = generateTxHash();
+      
+      const entry = document.createElement('div');
+      entry.className = 'audit-entry';
+      entry.innerHTML = `
+        <div class="audit-entry-top">
+          <div class="audit-entry-title">
+            <span class="audit-dot"></span>
+            ${title}
+          </div>
+          <span class="badge badge-count" style="font-family: 'Outfit'; font-size: 10px;">${category}</span>
+        </div>
+        <div class="audit-entry-sub">بواسطة: ${actor}</div>
+        <div class="audit-hash-chain">${hashStr}</div>
+      `;
+      auditContainer.insertBefore(entry, auditContainer.firstChild);
+    }
+
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        ${message}
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Merchant Order Transitions
+    function merchantStartPreparing(orderId) {
+      const badge = document.getElementById(`badge-${orderId}`);
+      const actionCell = document.getElementById(`action-${orderId}`);
+      
+      badge.className = 'badge badge-preparing';
+      badge.innerText = 'Preparing';
+      
+      actionCell.innerHTML = `
+        <button class="btn-action-primary" onclick="merchantHandoverToShipping('${orderId}')">تسليم لشركة الشحن</button>
+      `;
+
+      // Update counters
+      const placedKpi = document.getElementById('kpi-placed');
+      const prepShipKpi = document.getElementById('kpi-prep-ship');
+      placedKpi.innerText = Math.max(0, parseInt(placedKpi.innerText) - 1);
+      prepShipKpi.innerText = parseInt(prepShipKpi.innerText) + 1;
+
+      const opsPlaced = document.getElementById('ops-count-placed');
+      const opsPrep = document.getElementById('ops-count-preparing');
+      opsPlaced.innerText = Math.max(0, parseInt(opsPlaced.innerText) - 1);
+      opsPrep.innerText = parseInt(opsPrep.innerText) + 1;
+
+      appendAuditLog(`تحديث مسار الشحنة #SO-${orderId}`, 'أزياء الشام - Placed → Preparing', 'statusChange');
+      showToast(`تم بدء تحضير الشحنة #SO-${orderId} وتوثيق الحالة في سجل التدقيق`);
+    }
+
+    function merchantHandoverToShipping(orderId) {
+      const badge = document.getElementById(`badge-${orderId}`);
+      const actionCell = document.getElementById(`action-${orderId}`);
+      
+      badge.className = 'badge badge-shipping';
+      badge.innerText = 'Shipping';
+      
+      actionCell.innerHTML = `
+        <span class="status-text-completed">بانتظار شركة الشحن</span>
+      `;
+
+      const opsPrep = document.getElementById('ops-count-preparing');
+      const opsShip = document.getElementById('ops-count-shipping');
+      opsPrep.innerText = Math.max(0, parseInt(opsPrep.innerText) - 1);
+      opsShip.innerText = parseInt(opsShip.innerText) + 1;
+
+      appendAuditLog(`تسليم الشحنة #SO-${orderId} للناقل`, 'أزياء الشام - Preparing → Shipping', 'statusChange');
+      showToast(`تم تسليم الشحنة #SO-${orderId} لشركة الشحن بنجاح`);
+    }
+
+    function merchantRejectOrder(orderId) {
+      const badge = document.getElementById(`badge-${orderId}`);
+      const actionCell = document.getElementById(`action-${orderId}`);
+      
+      badge.className = 'badge badge-rejected';
+      badge.innerText = 'Rejected';
+      
+      actionCell.innerHTML = `
+        <span class="status-text-completed" style="color: var(--status-rejected-text)">تم الرفض</span>
+      `;
+
+      const placedKpi = document.getElementById('kpi-placed');
+      placedKpi.innerText = Math.max(0, parseInt(placedKpi.innerText) - 1);
+
+      const opsPlaced = document.getElementById('ops-count-placed');
+      const opsRejected = document.getElementById('ops-count-rejected');
+      opsPlaced.innerText = Math.max(0, parseInt(opsPlaced.innerText) - 1);
+      opsRejected.innerText = parseInt(opsRejected.innerText) + 1;
+
+      appendAuditLog(`رفض الشحنة #SO-${orderId}`, 'أزياء الشام (عدم توفر المقاس)', 'orderRejected');
+      showToast(`تم رفض الطلب #SO-${orderId} وإلغاء حجز المخزون`);
+    }
+
+    // Modal controls
+    function openAddProductModal() {
+      document.getElementById('add-product-modal').classList.add('open');
+    }
+
+    function closeAddProductModal() {
+      document.getElementById('add-product-modal').classList.remove('open');
+    }
+
+    function submitNewProduct() {
+      const name = document.getElementById('new-prod-name').value.trim();
+      const stock = document.getElementById('new-prod-stock').value.trim() || '1';
+      
+      if (!name) {
+        alert('يرجى إدخال اسم المنتج');
+        return;
+      }
+
+      // Add to merchant list
+      const list = document.getElementById('merchant-product-list');
+      const li = document.createElement('li');
+      li.className = 'list-item';
+      li.innerHTML = `
+        <div class="list-item-meta">
+          <div class="list-item-title">${name}</div>
+          <div class="list-item-sub">متبقي ${stock}</div>
+        </div>
+        <span class="badge badge-pending">معلق</span>
+      `;
+      list.appendChild(li);
+
+      // Add to Operations queue
+      const opsPendingList = document.getElementById('ops-pending-list');
+      const opsLi = document.createElement('li');
+      opsLi.className = 'list-item';
+      const prodId = 'prod-' + Date.now();
+      opsLi.id = `pending-item-${prodId}`;
+      opsLi.innerHTML = `
+        <div class="list-item-meta">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="list-item-title">${name} – أزياء الشام</div>
+            <span class="badge badge-pending">معلق (Pending)</span>
+          </div>
+          <div class="list-item-sub">منتج • تم الإرسال من لوحة التاجر</div>
+        </div>
+        <div class="action-btn-group">
+          <button class="btn-action-primary" onclick="opsApproveProduct('${prodId}', '${name}')">اعتماد ونشر</button>
+          <button class="btn-action-danger" onclick="opsRejectProduct('${prodId}', '${name}')">رفض</button>
+        </div>
+      `;
+      opsPendingList.insertBefore(opsLi, opsPendingList.firstChild);
+
+      appendAuditLog(`تقديم منتج جديد للاعتماد: ${name}`, 'أزياء الشام', 'productSubmission');
+      closeAddProductModal();
+      document.getElementById('new-prod-name').value = '';
+      showToast(`تم إرسال المنتج (${name}) إلى طابور اعتماد إدارة العمليات`);
+    }
+
+    // Operations Dashboard Actions
+    function opsApproveShop(shopKey, shopName) {
+      const item = document.getElementById(`pending-item-${shopKey}`);
+      if (item) item.remove();
+      
+      const approvedBadge = document.getElementById('ops-approved-stores');
+      const pendingBadge = document.getElementById('ops-pending-stores');
+      approvedBadge.innerText = `${parseInt(approvedBadge.innerText) + 1} متاجر معتمدة`;
+      pendingBadge.innerText = `${Math.max(0, parseInt(pendingBadge.innerText) - 1)} بانتظار الاعتماد`;
+
+      appendAuditLog(`اعتماد ونشر متجر: ${shopName}`, 'أحمد سالم (مدير العمليات)', 'shopApproval');
+      showToast(`تم اعتماد متجر (${shopName}) بنجاح ونشره للعملاء`);
+    }
+
+    function opsRejectShop(shopKey, shopName) {
+      const item = document.getElementById(`pending-item-${shopKey}`);
+      if (item) item.remove();
+
+      const pendingBadge = document.getElementById('ops-pending-stores');
+      pendingBadge.innerText = `${Math.max(0, parseInt(pendingBadge.innerText) - 1)} بانتظار الاعتماد`;
+
+      appendAuditLog(`رفض اعتماد متجر: ${shopName}`, 'أحمد سالم (مدير العمليات)', 'shopRejection');
+      showToast(`تم رفض طلب اعتماد المتجر (${shopName})`);
+    }
+
+    function opsApproveProduct(prodKey, prodName) {
+      const item = document.getElementById(`pending-item-${prodKey}`);
+      if (item) item.remove();
+
+      // Update in Merchant List if matching
+      const merchantProducts = document.querySelectorAll('#merchant-product-list .list-item');
+      merchantProducts.forEach(el => {
+        if (el.querySelector('.list-item-title').innerText.includes(prodName)) {
+          const badge = el.querySelector('.badge');
+          badge.className = 'badge badge-approved';
+          badge.innerText = 'معتمد';
+        }
+      });
+
+      appendAuditLog(`اعتماد ونشر منتج: ${prodName}`, 'أحمد سالم (مدير العمليات)', 'productApproval');
+      showToast(`تم اعتماد منتج (${prodName}) وأصبح مرئياً لجميع العملاء (CON-01)`);
+    }
+
+    function opsRejectProduct(prodKey, prodName) {
+      const item = document.getElementById(`pending-item-${prodKey}`);
+      if (item) item.remove();
+
+      const merchantProducts = document.querySelectorAll('#merchant-product-list .list-item');
+      merchantProducts.forEach(el => {
+        if (el.querySelector('.list-item-title').innerText.includes(prodName)) {
+          const badge = el.querySelector('.badge');
+          badge.className = 'badge badge-rejected';
+          badge.innerText = 'مرفوض';
+        }
+      });
+
+      appendAuditLog(`رفض منتج: ${prodName}`, 'أحمد سالم (مدير العمليات)', 'productRejection');
+      showToast(`تم رفض المنتج (${prodName})`);
+    }
+
+    function opsApproveReturn(returnId) {
+      const item = document.getElementById(`return-item-${returnId}`);
+      if (item) {
+        item.innerHTML = `
+          <div class="list-item-meta">
+            <div class="list-item-title">استبدال مقاس #SO-${returnId} – M → L</div>
+            <div class="list-item-sub" style="color: var(--status-delivered-text); font-weight: 700;">تمت الموافقة على الاستبدال وإصدار بوليصة الإرجاع</div>
+          </div>
+          <span class="badge badge-approved">معتمد</span>
+        `;
+      }
+      const returnBadge = document.getElementById('ops-return-badge');
+      if (returnBadge) returnBadge.innerText = '0 جديد';
+
+      appendAuditLog(`اعتماد استبدال المقاس للطلب #SO-${returnId}`, 'أحمد سالم (مدير العمليات)', 'returnApproved');
+      showToast(`تم اعتماد طلب الاستبدال للشحنة #SO-${returnId} وتوليد معاملة التدقيق`);
+    }
+
+    function opsRejectReturn(returnId) {
+      const item = document.getElementById(`return-item-${returnId}`);
+      if (item) {
+        item.innerHTML = `
+          <div class="list-item-meta">
+            <div class="list-item-title">استبدال مقاس #SO-${returnId} – M → L</div>
+            <div class="list-item-sub" style="color: var(--status-rejected-text); font-weight: 700;">تم رفض الطلب لانتهاء المهلة الزمنية</div>
+          </div>
+          <span class="badge badge-rejected">مرفوض</span>
+        `;
+      }
+      const returnBadge = document.getElementById('ops-return-badge');
+      if (returnBadge) returnBadge.innerText = '0 جديد';
+
+      appendAuditLog(`رفض طلب استبدال المقاس #SO-${returnId}`, 'أحمد سالم (مدير العمليات)', 'returnRejected');
+      showToast(`تم رفض طلب الاستبدال`);
+    }
+  </script>
+</body>
+</html>
